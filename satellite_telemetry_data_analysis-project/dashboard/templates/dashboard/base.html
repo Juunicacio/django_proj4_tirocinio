@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Satellite Telemetry Data Analysis of Adult Sea Turtle Females post-nesting movements in the Mediterranean Sea.">
+    <meta name="author" content="Juliana Nicacio">
+
+    <!-- to add a static folder in the place of an assets folder, in the beginnin of the page write
+    {% load static %}. and where you put the href="assets/css... put "{% static 'css/all.css' %}" -->
+
+    <!-- Font Awesome -->
+    <!-- <link rel="stylesheet" href="{% static 'css/all.css' %}"> -->
+    <!-- Normalize -->
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <!-- Canvas -->
+    <!-- <link rel="stylesheet" href="{% static 'css/canvas_style.css' %}"> -->
+    <!-- Custom -->
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+    <!-- Lightbox  -->
+    <!-- <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}"> -->
+
+    <title>test</title>
+  </head>
+  <body>
+    <!-- Navbar-->
+    {% include 'dashboard/_navbar.html' %}
+
+    {% block content %} {% endblock %}
+
+    <!-- Javascripts -->
+    <!-- <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script> -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- <script src="{% static 'js/canvas.js' %}"></script> -->
+    <!-- <script src="{% static 'js/main.js' %}"></script> -->
+
+
+  </body>
+</html>
