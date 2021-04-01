@@ -1,0 +1,59 @@
+<!--
+    Called in base.html
+    Footer - from https://mdbootstrap.com/docs/standard/navigation/footer/
+-->
+{% load static %}
+{% load fontawesome_5 %}
+<footer class="bg-mine text-center text-white"> <!-- to the footer be black "bg-dark" -->
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Social media -->
+      <section class="mb-4 social_icons">
+        <!-- Facebook -->
+        <!--<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+            <i class="fab fa-facebook-f"></i>
+        </a>-->
+  
+        <!-- Twitter -->
+        <!--<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+          <i class="fab fa-twitter"></i>
+        </a>-->
+  
+        <!-- Google -->
+        <!--<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+            <i class="fab fa-google"></i>
+        </a>-->
+  
+        <!-- Instagram -->
+        <!--<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+            <i class="fab fa-instagram"></i>
+        </a>-->
+  
+        <!-- Linkedin -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+  
+        <!-- Github -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">
+            <i class="fab fa-github"></i>
+        </a>
+      </section>
+      <!-- Section: Social media -->
+    </div>
+    <!-- Grid container -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-3"> <!-- style="background-color: rgba(0, 0, 0, 0.2);">-->
+        <aside class="copyright_left_img">
+            <img src="{% static 'img/{}.turtle_right.png' %}" alt="Turtle" class="img_to_left">
+        </aside>
+            <p class="copyright_text">2021 Juliana Nicacio - Internship Master's Thesis - University of Pisa </p><!--© 2020 Copyright:-->
+        <aside class="copyright_right_img">
+            <img src="{% static 'img/{}.turtle_left.png' %}" alt="Turtle" class="img_to_right">
+        </aside>
+            <!--<a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>-->
+        
+    </div>
+    <!-- Copyright -->
+  </footer>

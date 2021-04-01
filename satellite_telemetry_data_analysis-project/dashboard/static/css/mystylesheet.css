@@ -1,0 +1,187 @@
+/* satellite_telemetry_data_analysis-project
+GPS Tracking - Marine Turtle | Juliana Nicacio */
+
+/* being called in base.html
+
+/* Base styles
+   ========================================================================== */
+/**
+ * Box Model Hack:
+ * 1. Firefox.
+ * 2. Safari/Chrome/iOS/Android.
+ * 3. IE.
+ */
+ *{
+	-moz-box-sizing:border-box; /* 1 */
+	-webkit-box-sizing:border-box; /* 2 */
+	box-sizing:border-box; /* 3 */
+}
+/**
+ * CSS variables - Proj Colors:
+ */
+:root {
+	--greenPlant: #292a0e;
+	--brownGreen: #60643c;
+	--lightBrown: #7e5c14;
+	/*--sarasotaSand: #DFCA86;
+	--don: #E2DDA7;*/
+	--pumpkins: #C48A0A;
+	--oliveGreen: #B4BB61;
+	--solidGround: #70380F;
+	--chocolate: #774F38;
+	/*--strawberrySugar: #E08E79;
+	--creme: #F1D4AF;*/
+	--powderpuff: #ECE5CE;
+	/*--charlotte: #C5E0DC;#833030 */
+	--white: #ffffff; 
+}
+/**
+ * Clear Class (used when floating divs):
+ */
+.clear {
+	clear:both;
+}
+.bg-mine { /*navbar color*/
+	background-color: var(--pumpkins) !important; /* #0d6efd !important;*/
+}
+.navbar-brand img {
+	width: 50px;
+	height: 40px;
+}
+.social_icons {
+	margin-bottom: 0px !important;
+}
+footer img {
+	width: 25px;
+	height: 20px;
+}
+body {
+	background-image: url("../img/{}.Caretta-caretta.jpg");
+	/*background-size: 1000px;
+	background-attachment: fixed;*/		
+	/* Full Page Background Image */
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed; /**/
+}
+/* Layout - Mobile version
+   ========================================================================== */
+
+	/* full_thesis */
+.page_container {
+	width: 100%;
+	margin: 0 auto 0 auto;
+}
+.header { /* 3 */
+	background: var(--powderpuff);/*(--pumpkins);*/
+	padding: 50px; /* 2 */;
+}
+.main {
+	background: var(--white);/*(--powderpuff);*/
+	padding: 30px;
+	text-align: center;
+}
+.main_subtitle{
+	color: var(--brownGreen);
+}
+.main_heading {
+	color: var(--lightBrown);
+	margin-top: 20px;
+	text-align: left;
+	text-align-last: center;
+	margin-left: 15px;	
+}
+.main_text {
+	color: var(--solidGround);
+	margin-top: 20px;
+}
+.align_left{
+	text-align: left;
+	margin-left: 15px;
+}
+.img_to_left {
+	visibility: hidden;
+	display:none
+}
+.img_to_right {
+	display: inline;
+}
+.copyright_left_img {
+	text-align: left;
+}
+/*.copyright_right_img {
+	text-align: right;
+}*/
+/*.copyright_text {
+	display: inline;
+}*/
+	/* _title */
+.title {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.2rem;
+	text-align: center;
+}
+.title_title{
+	color: var(--chocolate);	
+}
+.title_subtitle{
+	color: var(--brownGreen);
+	margin-bottom: 15px;
+	font-size: 1.2rem;
+}
+
+	/* _abstract */
+.abstract {
+	/*margin-block-start: 0.83em;*/ 
+	margin-block-end: 0.83em;
+}
+.sections {
+	margin-top: 50px;
+}
+.justify {
+	text-align: justify;
+}
+
+/* Layout - Desktop version
+   ========================================================================== */
+
+@media only screen and (min-width: 768px) {
+    .navbar-brand.abs {
+             position: absolute;
+             width: 100%;
+             left: 0;
+             text-align: center;
+    }
+	.page_container {
+		width: 1000px;
+		margin: 0 auto 0 auto;
+	}
+	.main {
+		text-align: inherit;
+	}
+	.main_heading, .align_left {
+		text-align: inherit;
+		margin-left: inherit;
+		text-align-last: inherit;
+	}
+	.img_to_left {
+		margin-right: 20px;
+		display: inline-block; /*repeated*/
+		visibility: visible;
+	}
+	.img_to_right {
+		margin-left: 20px;
+		display: inline-block; /*repeated*/
+		visibility: visible;
+	}
+	.copyright_text {
+		display: inline;
+	}
+	.copyright_left_img {
+		display: inline;
+	}
+	.copyright_right_img {
+		display: inline;
+	}
+  }
