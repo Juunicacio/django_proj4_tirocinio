@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'dashboard',
     'thesis',
     'fontawesome_5',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'satellite_telemetry_data_analysis.wsgi.application'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
 # Database

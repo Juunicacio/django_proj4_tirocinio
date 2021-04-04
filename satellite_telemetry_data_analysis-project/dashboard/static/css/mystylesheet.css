@@ -34,11 +34,14 @@ GPS Tracking - Marine Turtle | Juliana Nicacio */
 	--powderpuff: #ECE5CE;
 	/*--charlotte: #C5E0DC;#833030 */
 	--white: #ffffff; 
+	--borderColor: #ECE5CE;
 }
 /**
  * Clear Class (used when floating divs):
  */
-.clear {
+.clearfix {
+	content: "";
+  	display: block;
 	clear:both;
 }
 .bg-mine { /*navbar color*/
@@ -66,12 +69,47 @@ body {
 }
 /* Layout - Mobile version
    ========================================================================== */
+   /* Dashboard*/
+   /* Canvas */
+
+/*#canvas {
+	border: 1px solid black;
+	/*max-width: 500px;
+	max-height: 100px;*/    
+/*}*/
+#turtle_img_source, #background_img_source {
+	/*visibility: hidden;*/
+	display:none; /* Just display the turtle img in the graph */
+}
+
+.canvas_graph, .plotly_dash {
+	width: 100%;	
+	text-align: center;
+}
 
 	/* full_thesis */
 .page_container {
 	width: 100%;
 	margin: 0 auto 0 auto;
 }
+.thesis_full_text, .thesis_side {
+	width: 100%;
+	text-align: center;
+}
+.div_border {
+	/*border: thin 1px solid var(--borderColor);*/
+	/*border-style: solid;
+	border-width: thin;
+	border-color: var(--borderColor);
+	border-radius: 5px;*/
+	border-top-style: solid;
+	border-top-width: 2px;
+	border-color: var(--borderColor);
+	/*border-left-color: var(--borderColor);*/
+	border-left-style: none;
+	border-left-width: none;
+}
+
 .header { /* 3 */
 	background: var(--powderpuff);/*(--pumpkins);*/
 	padding: 50px; /* 2 */;
@@ -153,18 +191,40 @@ body {
              left: 0;
              text-align: center;
     }
+	/* thesis */
 	.page_container {
 		width: 1000px;
 		margin: 0 auto 0 auto;
 	}
-	.main {
-		text-align: inherit;
+	.thesis_full_text{
+		float: left !important;
+		width: 70%;
+		margin-left: 10px;
+		margin-right: 20px;
+	}	
+	.thesis_side {
+		float: left !important;
+		width: 25%;
+		/*margin-right: 2%;
+		margin-left: 3%;*/
+		padding: 3%;
+		height: 100%;
 	}
+	.div_border {
+		border-left-style: solid;
+		border-left-width: 2px;
+		border-top-style: none;
+		border-top-width: none;
+	}
+	/*.main {
+		text-align: inherit;
+	}*/
 	.main_heading, .align_left {
 		text-align: inherit;
 		margin-left: inherit;
 		text-align-last: inherit;
 	}
+	
 	.img_to_left {
 		margin-right: 20px;
 		display: inline-block; /*repeated*/
@@ -183,5 +243,10 @@ body {
 	}
 	.copyright_right_img {
 		display: inline;
+	}
+	/* dashboard */
+	.canvas_graph, .plotly_dash {
+		float: left !important;
+		width: 50%;
 	}
   }

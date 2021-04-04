@@ -1,6 +1,30 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-Dashboard page
+{% load static %}
+<div class="page_container">
+    <header class="header">
+        {% include 'dashboard/_dash_title.html' %}
+    </header>
+    <main class="main">
+        Dashboard page
+        <section class="clearfix">
+            <div class="canvas_graph">
+                <!-- Canvas Section -->
+                {% include 'dashboard/_canvas.html' %}
+                <!--For Images in the js file, assign the path here and then use it in the js file-->
+                <img id="background_img_source" src="{% static 'img/{}.mod_deep_sea_2d_1.jpg' %}" width="50" height="40">           
+                <img id="turtle_img_source" src="{% static 'img/{}.turtle_right.png' %}" width="50" height="40">
+            </div>
+            
+            <div class="plotly_dash">
+                test
+            </div>
+        </section>
+        
+        
+    
+    </main>
+</div>
 
 {% endblock %}

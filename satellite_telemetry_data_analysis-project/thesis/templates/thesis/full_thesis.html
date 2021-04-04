@@ -1,24 +1,32 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-<div class="page_container thesis_page">
+<div class="page_container">
     <header class="header">
         {% include 'thesis/_title.html' %}
     </header>
     <main class="main">
-        <!-- Abstract Section -->
-        {% include 'thesis/_abstract.html' %}
-        <!-- Introduction Section -->
-        {% include 'thesis/_introduction.html' %}
-        <!-- Data and Methodology Section -->
-        {% include 'thesis/_data_and_methodology.html' %}
-        
-        <!-- Discussion Section -->
-        {% include 'thesis/_discussion.html' %}
-        <!-- Conclusion Section -->
-        {% include 'thesis/_conclusion.html' %}
-        <!-- References Section -->
-        {% include 'thesis/_references.html' %}
+        <section class="clearfix">
+            <div class="thesis_full_text">
+                <!-- Abstract Section -->
+                {% include 'thesis/_abstract.html' %}
+                <!-- Introduction Section -->
+                {% include 'thesis/_introduction.html' %}
+                <!-- Data and Methodology Section -->
+                {% include 'thesis/_data_and_methodology.html' %}
+                
+                <!-- Discussion Section -->
+                {% include 'thesis/_discussion.html' %}
+                <!-- Conclusion Section -->
+                {% include 'thesis/_conclusion.html' %}
+                <!-- References Section -->
+                {% include 'thesis/_references.html' %}
+            </div>
+            <div class="thesis_side div_border">
+                <!-- Side Section -->
+                {% include 'thesis/_side_div.html' %}
+            </div>
+        </section>
     </main>
 </div>
 
