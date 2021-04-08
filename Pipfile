@@ -8,6 +8,16 @@ django = "*"
 psycopg2 = "*"
 psycopg2-binary = "*"
 django-fontawesome-5 = "*"
+django-plotly-dash = "*"
+channels = "*"
+daphne = "*"
+redis = "*"
+django-redis = "*"
+channels-redis = "*"
+dash-bootstrap-components = "*"
+crispy-bootstrap5 = "*"
+dpd-static-support = "*"
+whitenoise = "*"
 
 [dev-packages]
 

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +26,8 @@ SECRET_KEY = '-5#dsc#d&3fb=q%c4i-205p8c1dxzlf@s^7&6u5h4gl1u8@n_m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -37,22 +39,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'dashboard.apps.DashboardConfig',
     'dashboard',
     'thesis',
     'fontawesome_5',
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',        
+    'channels_redis',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+# Standard Django middleware with the addition of both
+# whitenoise and django_plotly_dash items
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
 
+      'django.middleware.security.SecurityMiddleware',
+
+      'whitenoise.middleware.WhiteNoiseMiddleware',
+
+      'django.contrib.sessions.middleware.SessionMiddleware',
+      'django.middleware.common.CommonMiddleware',
+      'django.middleware.csrf.CsrfViewMiddleware',
+      'django.contrib.auth.middleware.AuthenticationMiddleware',
+      'django.contrib.messages.middleware.MessageMiddleware',
+
+      'django_plotly_dash.middleware.BaseMiddleware',
+      'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
+
+      'django.middleware.clickjacking.XFrameOptionsMiddleware',
+  ]
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 ROOT_URLCONF = 'satellite_telemetry_data_analysis.urls'
 
 TEMPLATES = [
@@ -72,9 +90,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'satellite_telemetry_data_analysis.wsgi.application'
-
-X_FRAME_OPTIONS = 'SAMEORIGIN'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -122,8 +137,65 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Plotly Dash and Django
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# put adt end
+#ASGI_APPLICATION = "satellite_telemetry_data_analysis.routing.application" # routing of our channel
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            #'hosts': [('127.0.0.1', 6379),],
+            "hosts": [("redis-server-name", 6379)],
+        },
+        #'ROUTING': 'satellite_telemetry_data_analysis.routing.channel_routing',
+    },
+}
+
+STATICFILES_FINDERS = [
+
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder',
+    'django_plotly_dash.finders.DashAppDirectoryFinder',
+]
+
+PLOTLY_COMPONENTS = [
+
+    # Common components
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+
+    # django-plotly-dash components
+    'dpd_components',
+    # static support if serving local assets
+    'dpd_static_support',
+
+    # Other components, as needed
+    'dash_bootstrap_components',
+]
+
+PLOTLY_DASH = {
+# Flag controlling local serving of assets
+"serve_locally": True,
+}
+
+ASGI_APPLICATION = "routing.application" # routing of our channel
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+STATICFILES_LOCATION = 'static'
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+STATICFILES_DIRS = [
+    BASE_DIR / 'satellite_telemetry_data_analysis/static',
+]

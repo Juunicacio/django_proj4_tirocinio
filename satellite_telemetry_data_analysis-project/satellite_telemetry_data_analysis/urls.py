@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from dashboard import views
-from django.urls import include, path
+# bring in the functions of the dashGraphs on dash_apps_finished_apps
+#from dashboard.dash_apps.finished_apps import TurtleDeepData
+from dashboard.dash_apps.finished_apps import simpleExample
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +28,7 @@ urlpatterns = [
     # Dashboard stuff
     path('', views.home, name='home'),
     path('dashboard/', views.dashboard_graphs, name='dashboard_graphs'),
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
     # Thesis stuff
     path('thesis/', include('thesis.urls')),

@@ -1,5 +1,3 @@
-{% load static %}
-{% load fontawesome_5 %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -8,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Satellite Telemetry Data Analysis of Adult Sea Turtle Females post-nesting movements in the Mediterranean Sea.">
     <meta name="author" content="Juliana Nicacio">
+
+    {% load static %}
+    {% load fontawesome_5 %}
+    {% load plotly_dash %}
 
     <!-- to add a static folder in the place of an assets folder, in the beginnin of the page write
     {% load static %}. and where you put the href="assets/css... put "{% static 'css/all.css' %}" -->
@@ -22,7 +24,9 @@
     <!-- Canvas -->
     <!-- <link rel="stylesheet" href="{% static 'css/canvas_style.css' %}"> -->
     <!-- Font Awesome Icons -->
-    {% fontawesome_5_static %} 
+    {% fontawesome_5_static %}
+    <!-- Plotly Header -->
+    {% plotly_header %} 
     <!-- Custom -->
     <link rel="stylesheet" href="{% static 'css/mystylesheet.css' %}">
     <!-- Lightbox  -->
@@ -47,5 +51,7 @@
     <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/canvas.js' %}"></script>
     <!-- <script src="{% static 'js/main.js' %}"></script> -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </body>
+  {% plotly_footer %}
 </html>

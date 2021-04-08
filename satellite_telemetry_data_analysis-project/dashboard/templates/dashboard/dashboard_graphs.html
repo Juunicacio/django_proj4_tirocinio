@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+{% load plotly_dash %}
 <div class="page_container">
     <header class="header">
         {% include 'dashboard/_dash_title.html' %}
@@ -17,8 +18,10 @@
                 <img id="turtle_img_source" src="{% static 'img/{}.turtle_right.png' %}" width="50" height="40">
             </div>
             
-            <div class="plotly_dash">
-                test
+            <div class="{% plotly_class name='SimpleExample' %} plotly_dash card style='height:100%; width:100%;'">
+                {% plotly_app name='SimpleExample' ratio=0.5 %}
+                <!-- {% plotly_direct name="SimpleExample" %} -->
+                test2
             </div>
         </section>
         
