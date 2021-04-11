@@ -4,7 +4,6 @@ import dash_html_components as html
 from django_plotly_dash import DjangoDash
 
 
-
 app = DjangoDash('SimpleExample')   # replaces dash.Dash
 
 app.layout = html.Div([

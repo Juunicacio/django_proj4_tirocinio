@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from dashboard import views
 # bring in the functions of the dashGraphs on dash_apps_finished_apps
-#from dashboard.dash_apps.finished_apps import TurtleDeepData
-from dashboard.dash_apps.finished_apps import simpleExample
+from dashboard.dash_apps.finished_apps import turtles_deep_data_dashboard
+#from dashboard.dash_apps.finished_apps import simpleExample
 
 urlpatterns = [
     path('admin/', admin.site.urls),

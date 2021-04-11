@@ -18,6 +18,9 @@ dash-bootstrap-components = "*"
 crispy-bootstrap5 = "*"
 dpd-static-support = "*"
 whitenoise = "*"
+pandas = "*"
+requests = "*"
+dash-canvas = "*"
 
 [dev-packages]
 

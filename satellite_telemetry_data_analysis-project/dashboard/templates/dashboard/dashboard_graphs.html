@@ -16,15 +16,18 @@
                 <!--For Images in the js file, assign the path here and then use it in the js file-->
                 <img id="background_img_source" src="{% static 'img/{}.mod_deep_sea_2d_1.jpg' %}" width="50" height="40">           
                 <img id="turtle_img_source" src="{% static 'img/{}.turtle_right.png' %}" width="50" height="40">
-            </div>
+            </div>          
+
             
-            <div class="{% plotly_class name='SimpleExample' %} plotly_dash card style='height:100%; width:100%;'">
-                {% plotly_app name='SimpleExample' ratio=0.5 %}
-                <!-- {% plotly_direct name="SimpleExample" %} -->
-                test2
+            
+        </section>
+
+        <section class="clearfix">
+            <div class="{% plotly_class name='TurtleDeepData' %} plotly_dash style='height:100%; width:100%;'">
+                {% plotly_app name='TurtleDeepData' ratio=0.5 %}
+                test3
             </div>
         </section>
-        
         
     
     </main>

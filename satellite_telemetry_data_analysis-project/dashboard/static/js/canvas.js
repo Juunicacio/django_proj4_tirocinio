@@ -49,7 +49,7 @@ var range = n => Array(n + 1).join(1).split('').map((x, i) => i)
 
 
 window.addEventListener('load', () => {
-    const canvas = document.querySelector('#canvas');
+    const canvas = document.querySelector('#canvas_turtle');
     const context = canvas.getContext('2d'); //'#c9f2e7'
     //For Images in the js file, assign the path in the dashboard_graphs.html first
     const background_img = document.getElementById('background_img_source');
@@ -60,7 +60,7 @@ window.addEventListener('load', () => {
     canvas.height = CANVAS_HEIGHT;    
 
     // Draw Background Image ----------------------------------------------------------------
-    context.drawImage(background_img_source, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+    context.drawImage(background_img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
     //context.globalCompositeOperation = 'destination-atop';
     
     
