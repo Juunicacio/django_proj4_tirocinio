@@ -18,6 +18,7 @@ COLOR_LAYER8 = 'purple'
 COLOR_LAYER9 = 'navy'
 COLOR_LAYER10 = 'black'
 
+turtle_img = '../../../static/img/{}.mod_deep_sea_2d_1.jpg'
 
 # ------------------ Creating the body - the Data
 url_depthPointsDegree = 'https://raw.githubusercontent.com/Juunicacio/Track-Turtle-App/gh-pages/flask_plotlydash/static/data/%7B7%7D.depthPointsDegree.json'
@@ -123,18 +124,18 @@ addScatterGraphTrace(jgoscatterGraph,jacquisitionDepth,jlayerDepthsInPercentage1
 
 
 testGraphCanvas = drawCanvasGraphFigure()
-addCanvasGraphTrace(testGraphCanvas, '#c9f2e7', 0, "0 - 5")
-addCanvasGraphTrace(testGraphCanvas, '#a5e1e7', 1, "6-10")
-addCanvasGraphTrace(testGraphCanvas, '#75c8dc', 2, "11-20")
-addCanvasGraphTrace(testGraphCanvas, '#41b2dc', 3, "21-30")
-addCanvasGraphTrace(testGraphCanvas, '#1d9af2', 4, "31-40")
-addCanvasGraphTrace(testGraphCanvas, '#0078f2', 5, "41-50")
-addCanvasGraphTrace(testGraphCanvas, '#005df2', 6, "51-70")
-addCanvasGraphTrace(testGraphCanvas, '#093aff', 7, "71-90")
-addCanvasGraphTrace(testGraphCanvas, '#091bff', 8, "91-110")
-addCanvasGraphTrace(testGraphCanvas, '#0014cc', 9, "111-4095")
-addCanvasGraphTrace(testGraphCanvas, '#0502b0', 10, "4096")
-addCanvasGraphTrace(testGraphCanvas, '#5e512e', 11, "Seabed") 
+addCanvasGraphTrace(testGraphCanvas, '#5e512e', 0, "<b>Seabed</b>")
+addCanvasGraphTrace(testGraphCanvas, '#0502b0', 1, "<b>below 4096</b>", "<br><b>meters</b>")
+addCanvasGraphTrace(testGraphCanvas, '#0014cc', 2, "<b>111-4095</b>", " <b>meters</b>", " <b>Layer 10</b>")
+addCanvasGraphTrace(testGraphCanvas, '#091bff', 3, "<b>91-110</b>", " <b>meters</b>", "<b>Layer 9</b>")
+addCanvasGraphTrace(testGraphCanvas, '#093aff', 4, "<b>71-90</b>", " <b>meters</b>", "<b>Layer 8</b>")
+addCanvasGraphTrace(testGraphCanvas, '#005df2', 5, "<b>51-70</b>", " <b>meters</b>", "<b>Layer 7</b>")
+addCanvasGraphTrace(testGraphCanvas, '#0078f2', 6, "<b>41-50</b>", " <b>meters</b>", "<b>Layer 6</b>")
+addCanvasGraphTrace(testGraphCanvas, '#1d9af2', 7, "<b>31-40</b>", " <b>meters</b>", "<b>Layer 5</b>")
+addCanvasGraphTrace(testGraphCanvas, '#41b2dc', 8, "<b>21-30</b>", " <b>meters</b>", "<b>Layer 4</b>")
+addCanvasGraphTrace(testGraphCanvas, '#75c8dc', 9, "<b>11-20</b>", " <b>meters</b>", "<b>Layer 3</b>")
+addCanvasGraphTrace(testGraphCanvas, '#a5e1e7', 10, "<b>6-10</b>", " <b>meters</b>", "<b>Layer 2</b>")
+addCanvasGraphTrace(testGraphCanvas, '#c9f2e7', 11, "<b>0 - 5</b>", " <b>meters</b>", "<b>Layer 1</b>")
 
 ######################### END DATA GRAPHS #####################################################
 
@@ -155,10 +156,11 @@ dash_app.layout = html.Div(className= 'content-dash-container ml-5 mr-5 clear', 
         #         html.Script(src="{% static 'js/canvas.js' %}")
         #     ])),
         dbc.Col(html.Div(className= 'graph_canvas', children=[
+                #html.Img(src=turtle_img),
                 # ------------------- calling histogram graph ------------------                
                 dcc.Graph(
                     id='mycanvas_graph',
-                    figure=testGraphCanvas,
+                    figure=testGraphCanvas, # () here is where needs to be said the most layer occurrence
                     config={'displayModeBar':False}
                 ), # ------------------- end histogram)
             ]), width=4

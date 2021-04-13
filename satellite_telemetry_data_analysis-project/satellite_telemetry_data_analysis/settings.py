@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'dashboard.apps.DashboardConfig',
-    'dashboard',
+    'dashboard.apps.DashboardConfig',
+    #'dashboard',
     'thesis',
     'fontawesome_5',
     'channels',
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'channels_redis',
     'crispy_forms',
     'crispy_bootstrap5',
+    'dpd_static_support', # img source static
 ]
 
 # Standard Django middleware with the addition of both
@@ -151,8 +152,8 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            #'hosts': [('127.0.0.1', 6379),],
-            "hosts": [("redis-server-name", 6379)],
+            'hosts': [('127.0.0.1', 6379),],
+            #"hosts": [("redis-server-name", 6379)],
         },
         #'ROUTING': 'satellite_telemetry_data_analysis.routing.channel_routing',
     },

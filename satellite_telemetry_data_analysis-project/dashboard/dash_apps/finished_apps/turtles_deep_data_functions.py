@@ -195,49 +195,146 @@ def addScatterGraphTrace(jgoscattermap,jacquisitionDepth,jlayerDepthsInPercentag
 def drawCanvasGraphFigure():
     graphCanvas = go.Figure()
 
+    img_width = 1
+    img_height = 1.5
+
+    # turtle in layers
+    middle_rect_position = 1.22 # higher position of the graph + 0.1
+    middle_rect_layers = []
+    for i in range(1,11):
+        middle_rect_position -= 0.1
+        middle_rect_layers.append(round(middle_rect_position, 2))
+        #[1.12, 1.02, 0.92, 0.82, 0.72, 0.62, 0.52, 0.42, 0.32, 0.22]
+
+    # background img
+    graphCanvas.add_layout_image(
+        dict(
+            x=0,
+            sizex=img_width,
+            y=img_height,
+            sizey=img_height,
+            xref="paper",
+            yref="paper",
+            opacity=1.0,
+            layer="below",
+            sizing="stretch",
+            source='../../../static/img/{}.mod_deep_sea_2d_1.jpg',
+            #source="{% static 'img/{}.mod_deep_sea_2d_1.jpg' %}",
+        )     
+    )
+
+    # # turtle img
+    graphCanvas.add_layout_image(
+        dict(
+            x=0.59, # turtle on paper position
+            y=middle_rect_layers[0], #0.5, # this value needs to change with the data () pass in a variable
+            sizex=0.25,            
+            sizey=0.15,
+            xref="paper",
+            yref="paper",
+            opacity=1.0,
+            #layer="above",
+            #sizing="stretch",
+            source='../../../static/img/{}.turtle_right.png',
+            #source="{% static 'img/{}.mod_deep_sea_2d_1.jpg' %}",
+            xanchor="right",
+            yanchor="bottom",
+        )     
+    )  
+
+    #graphCanvas.update_traces(textposition='outside')
+
     # Set axes properties
-    graphCanvas.update_xaxes(range=[0,1], showgrid=False)
-    graphCanvas.update_yaxes(range=[0,4])    
+    graphCanvas.update_xaxes(range=[0,1], showgrid=False, visible=False)
+    graphCanvas.update_yaxes(range=[0,4], visible=False)   
+
+    graphCanvas.update_layout(
+        width=400, 
+        height=450, 
+        showlegend=False, 
+        template="plotly_white",
+        #margin=dict(l=5, r=20, t=20, b=20),
+        margin=dict(l=0, r=0),
+    ) 
 
     return graphCanvas
 
-def addCanvasGraphTrace(graphCanvas, color, index, text): 
+def addCanvasGraphTrace(graphCanvas, color, index, text, meters="", layers=None): 
     rect_height = 0
     start_rect_layers = []
     for i in range(1,13):
-        rect_height += 0.25
-        start_rect_layers.append(rect_height)
-    #[0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0]
-    # colors=[
-    #     '#c9f2e7', '#a5e1e7', '#75c8dc', '#41b2dc', '#1d9af2', '#0078f2', 
-    #     '#005df2', '#093aff', '#091bff', '#0014cc', '#0502b0', '#5e512e'
-    # ]
-    graphCanvas.add_trace(go.Scatter(
-        # posiiton of the texts
-        x=[4,],
-        y=[1,],
-        text=[text,],
-        mode='text',
-    ))    
+        rect_height += 0.1
+        start_rect_layers.append(round(rect_height, 2))
+    #[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2]
+    
     # Rectangle Positioned Relative to the Plot = xref="paper", yref="paper"
     # Rectangle Positioned Relative to the Axis Data = xref="x", yref="y"
     # Add shapes    
     graphCanvas.add_shape(
         type='rect',
-        xref="x", yref="y",
+        xref="paper", yref="paper",
         # rect positions Relative to the Plot
-        x0=0.25, y0=start_rect_layers[index], x1=0.75, y1=start_rect_layers[index]+0.25,
+        x0=0.25, y0=start_rect_layers[index]-0.05, x1=0.78, y1=start_rect_layers[index]+0.05,
         line=dict(color=color),
         fillcolor=color,
+        layer="below",
     )
-    # graphCanvas.add_shape(
-    #     type='rect',
-    #     xref="paper", yref="paper",
-    #     # rect 1 positions
-    #     x0=0.25, y0=0.5, x1=0.75, y1=0.75,
-    #     line=dict(color='#a5e1e7'),
-    #     fillcolor='#a5e1e7',
-    # )
+    text_height = 0
+    start_text_positions = []
+    for i in range(1,13):
+        text_height += 0.11
+        start_text_positions.append(round(text_height, 2))
+    #[0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6]
+    graphCanvas.add_annotation(
+        xref="paper", yref="paper",
+        x=0.88,
+        y=start_rect_layers[index],
+        text=layers,
+        font=dict(
+            #family="sans serif",
+            size=14,
+            color="Black",
+        ),
+        showarrow=True,
+        arrowcolor=color,
+        arrowsize=0.3, #minimum
+        #arrowwidth=0.1, # thin
+        startarrowsize=0.3,
+        yshift=1,
+        ay=0,
+        ax=0,
+        #xshift=,
+    )
+    graphCanvas.add_annotation(
+        xref="paper", yref="paper",
+        x=0.12,
+        y=start_rect_layers[index],
+        text=text+meters,
+        font=dict(
+            #family="sans serif",
+            #size=12,
+            color="Black",
+        ),
+        showarrow=True,
+        arrowcolor=color,
+        arrowsize=0.3, #minimum
+        #arrowwidth=0.1, # thin
+        startarrowsize=0.3,
+        yshift=1,
+        ay=0,
+        ax=0,
+        #xshift=,
+    )
+
+    # border rect shape
+    graphCanvas.add_shape(
+        type='rect',
+        xref="paper", yref="paper",
+        # rect positions Relative to the Plot
+        x0=0.25, y0=start_rect_layers[0]-0.05, x1=0.78, y1=start_rect_layers[-1]+0.15,
+        line=dict(color="Black"),
+        #layer="below", # to draw below the turtle img
+    )   
 
 #--------------------End Functions ------------------------------- 
 
