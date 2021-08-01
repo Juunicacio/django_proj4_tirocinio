@@ -1,9 +1,8 @@
 import dash 
-import dash_core_components as dcc #
-import dash_html_components as html #
+import dash_core_components as dcc
+import dash_html_components as html
 from django_plotly_dash import DjangoDash
 from .turtles_deep_data_functions import *
-from .app_body_functions import *
 import dash_bootstrap_components as dbc
 from dash_canvas import DashCanvas
 import requests
@@ -140,7 +139,23 @@ addCanvasGraphTrace(testGraphCanvas, '#c9f2e7', 11, "<b>0 - 5</b>", " <b>meters<
 
 ######################### END DATA GRAPHS #####################################################
 
-output1 = html.Div(id='page-content', className= 'graph_canvas', children=[
+dash_app = DjangoDash('TurtleDeepData')   # replaces dash.Dash # I replaced 'app' with 'dash_app'
+
+# ---------- Creating Dash Layout and call the graphs
+dash_app.layout = html.Div(className= 'content-dash-container ml-5 mr-5 clear', children=[    
+    #html.H1(className= 'text-center' ,children='Hello Dash'),
+    #html.Div(id='top', className= 'row', children=[
+    dbc.Row([
+        # trying canvas html
+        # dbc.Col(html.Div(className= 'test2', children=[
+        #         # html.Div(className= 'PROVA', children=[
+        #         #     html.H1(className= 'text-center' ,children='Depth Data'),
+        #         #     html.H4('Intro'), 
+        #         # ])
+        #         DashCanvas(id='canvas_turtle'),
+        #         html.Script(src="{% static 'js/canvas.js' %}")
+        #     ])),
+        dbc.Col(html.Div(className= 'graph_canvas', children=[
                 #html.Img(src=turtle_img),
                 # ------------------- calling histogram graph ------------------                
                 dcc.Graph(
@@ -148,18 +163,14 @@ output1 = html.Div(id='page-content', className= 'graph_canvas', children=[
                     figure=testGraphCanvas, # () here is where needs to be said the most layer occurrence
                     config={'displayModeBar':False}
                 ), # ------------------- end histogram)
-            ]),
-
-output3 = html.Div(id='page-content', className= 'text_box', children=[                            
-                    html.H3(children='About the Graphs'),
-                    html.P('Graphs Description'),                                                                                
-                ]), #width=4
-
-output4 = html.Div(id='page-content clear', className= 'graph_graph', children=[
+            ]), width=4
+        ),
+        dbc.Col(html.Div(className= 'top_div', children=[                                      
                 html.Div(className= 'text_box', children=[                            
                     html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
+                    html.H4('Intro'),                                                                                
+                ]),
+                dcc.Dropdown(
                         id='layer-dropdown',
                         options=[
                             {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
@@ -174,73 +185,53 @@ output4 = html.Div(id='page-content clear', className= 'graph_graph', children=[
                             {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
                         ],
                         value='0'
-                    ),
-                ]),
+                )
+            ]), width=4
+        )
+    ]),
+    dbc.Row([
+        dbc.Col(html.Div(className= 'text_box', children=[                            
+                    html.H3(children='About the Graphs'),
+                    html.P('Graphs Description'),                                                                                
+                ]), width=4
+        ),                
+        dbc.Col(html.Div(className= 'graph_graph', children=[
                 # ------------------- calling histogram graph ------------------                
                 dcc.Graph(
                     id='hist_graph',
                     figure=jfig1,
                     config={'displayModeBar':False}
                 ), # ------------------- end histogram)
-            ]), #width=4
-
-output5 = html.Div(id='page-content', className='graph_graph2', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),
+            ]), width=4
+        ),
+        dbc.Col(html.Div(className='graph_graph2', children=[
                 # ------------------- calling box graph ------------------ 
                 dcc.Graph(
                     id='box_graph',
                     figure= jbox1,
                     config={'displayModeBar':False}
                 ) # ------------------- end box)
-            ]), #width=4
-
-output6 = html.Div(id='page-content div_map_graph clear', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),                     
+            ]), width=4
+        #html.Div(className= 'clear'),
+        ),                
+    ]),               
+    # ----------------------- calling Map graph layer 1 -------------------------------
+    dbc.Row([
+        dbc.Col(html.Div(id='div_map_graph clear', children=[
+                #html.Div(children=[
+                    #html.H2(children='Depth Map'),
+                    #html.Div(children= 'Turtle Track Map')],
+                    #className= 'row3'),                        
                 dcc.Graph(
                     id='map_graph',
                     figure=jgomaptraceLayer1
                 )  # ------------------- end Map
             ])
-
-output7 = html.Div(id='page-content div_scatter_graph clear', children=[
+        )
+    ]),
+    # ---------------------- calling Scatter graph layer 1 ---------------------------
+    dbc.Row([
+        dbc.Col(html.Div(id='div_scatter_graph clear', children=[
             html.Div(className= 'text_box', children=[
                 html.H3(children='About the Graph'),
                 html.Div(children= 'Select Layer(s):'),
@@ -266,136 +257,39 @@ output7 = html.Div(id='page-content div_scatter_graph clear', children=[
                 id='scatter_graph',
                 figure=jgoscatterGraph
             ) # ------------------- end Scatter
-        ])
-
-##################################
-options = [    
-    {'label':'mycanvas_graph', 'value': 'mycanvas_graph'},#1
-    {'label':'hist_graph', 'value': 'hist_graph'},#4 
-    {'label':'box_graph', 'value': 'box_graph'},#5 
-    {'label':'map_graph', 'value': 'map_graph'},#6 
-    {'label':'scatter_graph', 'value': 'scatter_graph'},#7 
-]
-
-dropdown = dcc.Dropdown(
-    id = 'pop_dropdown',
-    options = options,
-    value = 'mycanvas_graph'
-)
-##################################
-
-# ---------- Creating Dash Layout and call the graphs
-
-dash_app = DjangoDash('TurtleDeepData', suppress_callback_exceptions = True)   # replaces dash.Dash # I replaced 'app' with 'dash_app'
-#dash_app.config.suppress_callback_exceptions = True
-"""
-IMPORTANT: In order to make our time series graph interactive, we have to create a 
-callback function for the dropdown menu and output space. However, dash doesn’t 
-allow callbacks for components that don’t exist in the layout. Because there is 
-no dropdown menu or output space in the homepage layout, we must change the 
-configurations of our app.
-"""
-dash_app.layout = html.Div([
-    dropdown,
-    html.Div(id='page-content'),
-    #children=app(output1))
+        ]))
+    ]),            
 ])
-################################## Call graph
-@dash_app.callback(
-    Output('page-content', 'children'),
-    Input('pop_dropdown', 'value'))
-def update_layout(selected_value):
-    if(selected_value == 'mycanvas_graph'):
-        return app(output1)
-    elif (selected_value == 'hist_graph'):
-        return app(output4)
-    elif (selected_value == 'box_graph'):
-        return app(output5)
-    elif (selected_value == 'map_graph'):
-        return app(output6)
-    elif (selected_value == 'scatter_graph'):
-        return app(output7)
-    else:
-        return app(output1)
 
-################################## For hist_graph, box_graph and map_graph, select layer = output2
-@dash_app.callback(
-    Output('hist_graph', 'figure'),    
-    Input('layer-dropdown', 'value'))
-def update_histAndMap(selected_value):
-    if(selected_value == '0'):
-        return jfig1
-    elif (selected_value == '1'):
-        return jfig2
-    elif (selected_value == '2'):
-        return jfig3
-    elif (selected_value == '3'):
-        return jfig4
-    elif (selected_value == '4'):
-        return jfig5
-    elif (selected_value == '5'):
-        return jfig6
-    elif (selected_value == '6'):
-        return jfig7
-    elif (selected_value == '7'):
-        return jfig8
-    elif (selected_value == '8'):
-        return jfig9
-    elif (selected_value == '9'):
-        return jfig10
 
 @dash_app.callback(
-    Output('box_graph', 'figure'),      
-    Input('layer-dropdown', 'value'))
-def update_histAndMap(selected_value):
-    if(selected_value == '0'):
-        return jbox1
-    elif (selected_value == '1'):
-        return jbox2
-    elif (selected_value == '2'):
-        return jbox3
-    elif (selected_value == '3'):
-        return jbox4
-    elif (selected_value == '4'):
-        return jbox5
-    elif (selected_value == '5'):
-        return jbox6
-    elif (selected_value == '6'):
-        return jbox7
-    elif (selected_value == '7'):
-        return jbox8
-    elif (selected_value == '8'):
-        return jbox9
-    elif (selected_value == '9'):
-        return jbox10
-
-@dash_app.callback(
+    Output('hist_graph', 'figure'),
+    Output('box_graph', 'figure'),
     #Output('line_graph', 'figure'), # if active again, include down on return the "jline" for each layer, ex 'jline1'
     Output('map_graph', 'figure'),        
     Input('layer-dropdown', 'value'))
 def update_histAndMap(selected_value):
     if(selected_value == '0'):
-        return jgomaptraceLayer1
+        return jfig1, jbox1, jgomaptraceLayer1
     elif (selected_value == '1'):
-        return jgomaptraceLayer2
+        return jfig2, jbox2, jgomaptraceLayer2
     elif (selected_value == '2'):
-        return jgomaptraceLayer3
+        return jfig3, jbox3, jgomaptraceLayer3
     elif (selected_value == '3'):
-        return jgomaptraceLayer4
+        return jfig4, jbox4, jgomaptraceLayer4
     elif (selected_value == '4'):
-        return jgomaptraceLayer5
+        return jfig5, jbox5, jgomaptraceLayer5
     elif (selected_value == '5'):
-        return jgomaptraceLayer6
+        return jfig6, jbox6, jgomaptraceLayer6
     elif (selected_value == '6'):
-        return jgomaptraceLayer7
+        return jfig7, jbox7, jgomaptraceLayer7
     elif (selected_value == '7'):
-        return jgomaptraceLayer8
+        return jfig8, jbox8, jgomaptraceLayer8
     elif (selected_value == '8'):
-        return jgomaptraceLayer9
+        return jfig9, jbox9, jgomaptraceLayer9
     elif (selected_value == '9'):
-        return jgomaptraceLayer10
+        return jfig10, jbox10, jgomaptraceLayer10
 
-##################################
 @dash_app.callback(
     Output('scatter_graph', 'figure'),        
     Input('layer-checklist', 'value'))
@@ -424,4 +318,6 @@ def update_histAndMap(selected_values):
         addScatterGraphTrace(jgoscatterGraph,jacquisitionDepth,jlayerDepthsInPercentage10,10,-111,-4095, COLOR_LAYER10)
 
     return jgoscatterGraph
+
+#return dash_app.server # app is loaded
 
