@@ -3,7 +3,7 @@
 import os
 import sys
 import django
-from data_analysis.scripts.data_analysis.main import *
+#from data_analysis.scripts.data_analysis.main import *
 
 
 def main():
@@ -20,12 +20,12 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-def run_main_of_data_analysis():
+#def run_main_of_data_analysis():
     #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.setting')
     #django.setup()
     # now your code can go here...
     # Call here the function data_analysis_main() inside main.py of data_analysis app
-    data_analysis_main()
+    #data_analysis_main()
 
 
 if __name__ == '__main__':
