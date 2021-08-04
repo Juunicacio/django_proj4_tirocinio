@@ -7,6 +7,8 @@ from .app_body_functions import *
 import dash_bootstrap_components as dbc
 from dash_canvas import DashCanvas
 import requests
+import json
+from data_analysis.scripts.data_analysis import *
 
 COLOR_LAYER1 = 'orange'
 COLOR_LAYER2 = 'red'
@@ -21,6 +23,14 @@ COLOR_LAYER10 = 'black'
 
 turtle_img = '../../../static/img/{}.mod_deep_sea_2d_1.jpg'
 
+#### I can follow 1 of the 2 paths in this proj to create the body:
+
+# 1- To work with my csv's to json files
+# ------------------ Creating the body - the Data
+
+
+
+# 2- To work with shapefile that has been converted into geo json
 # ------------------ Creating the body - the Data
 url_depthPointsDegree = 'https://raw.githubusercontent.com/Juunicacio/Track-Turtle-App/gh-pages/flask_plotlydash/static/data/%7B7%7D.depthPointsDegree.json'
 url_gpsPoints = 'https://raw.githubusercontent.com/Juunicacio/Track-Turtle-App/gh-pages/flask_plotlydash/static/data/%7B8%7D.gpsPointsDegree.json'
@@ -30,6 +40,8 @@ responseGps = requests.get(url_gpsPoints)
 
 jdata_depthPointsDegree = responseDegree.json()
 jdata_gpsPointsDegree = responseGps.json()
+
+##### ------------------
 
 # Creating a loop through Depth Lon[0] and Lat[1] --------
 jxDegreeDepth = []
@@ -60,6 +72,7 @@ jacquisitionGps = []
 for i in jdata_gpsPointsDegree['features']:
     aquisGps = i['properties']['Acquisitio']
     jacquisitionGps.append(aquisGps)
+
 
 # Call function to return all the variables I need from the Depth data
 # Layer values (float), minimum Layer value (float), maximum Layer value (float), Layer values in Percentage
@@ -269,18 +282,18 @@ output7 = html.Div(id='page-content div_scatter_graph clear', children=[
         ])
 
 ##################################
-options = [    
-    {'label':'mycanvas_graph', 'value': 'mycanvas_graph'},#1
+options = [
+    {'label':'map_graph', 'value': 'map_graph'},#6    
     {'label':'hist_graph', 'value': 'hist_graph'},#4 
-    {'label':'box_graph', 'value': 'box_graph'},#5 
-    {'label':'map_graph', 'value': 'map_graph'},#6 
+    {'label':'box_graph', 'value': 'box_graph'},#5
+    {'label':'mycanvas_graph', 'value': 'mycanvas_graph'},#1    
     {'label':'scatter_graph', 'value': 'scatter_graph'},#7 
 ]
 
 dropdown = dcc.Dropdown(
     id = 'pop_dropdown',
     options = options,
-    value = 'mycanvas_graph'
+    value = 'map_graph'
 )
 ##################################
 
