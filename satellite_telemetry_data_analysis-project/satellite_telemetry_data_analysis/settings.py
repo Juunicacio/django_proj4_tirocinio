@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'dpd_static_support', # img source static
+    'data_analysis',
+    #'django_extensions',
 ]
 
 # Standard Django middleware with the addition of both

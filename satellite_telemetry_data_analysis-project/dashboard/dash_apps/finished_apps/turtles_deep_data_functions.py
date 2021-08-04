@@ -1,6 +1,6 @@
 from dash.dependencies import Input, Output, State
 import pandas as pd
-import json
+#import json
 import plotly.graph_objects as go
 import plotly.express as px # for the 2nd graph
 from datetime import datetime

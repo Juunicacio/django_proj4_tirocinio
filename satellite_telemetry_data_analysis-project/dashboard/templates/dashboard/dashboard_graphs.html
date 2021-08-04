@@ -9,6 +9,12 @@
     </header>
     <main class="main">
         Dashboard page
+        <section class="clearfix">
+            <div class="canvas_graph">
+                <!-- Canvas Section -->
+                {% include 'dashboard/_canvas.html' %}
+            </div>
+        </section>
 
         <section class="clearfix">
             <div class="{% plotly_class name='TurtleDeepData' %} plotly_dash style='height:100%; width:100%;'">
