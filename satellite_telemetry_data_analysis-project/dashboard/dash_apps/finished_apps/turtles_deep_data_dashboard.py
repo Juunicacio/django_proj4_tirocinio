@@ -8,7 +8,7 @@ import dash_bootstrap_components as dbc
 from dash_canvas import DashCanvas
 import requests
 import json
-#from data_analysis.scripts.data_analysis import *
+from data_analysis.scripts.data_analysis import *
 
 COLOR_LAYER1 = 'orange'
 COLOR_LAYER2 = 'red'

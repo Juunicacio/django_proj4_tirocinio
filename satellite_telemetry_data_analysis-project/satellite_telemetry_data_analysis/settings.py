@@ -190,7 +190,8 @@ PLOTLY_COMPONENTS = [
 
 PLOTLY_DASH = {
 # Flag controlling local serving of assets
-"serve_locally": True,
+#"serve_locally": True,
+"serve_locally": False,
 }
 
 ASGI_APPLICATION = "routing.application" # routing of our channel

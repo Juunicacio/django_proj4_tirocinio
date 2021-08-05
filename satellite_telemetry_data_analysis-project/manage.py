@@ -3,7 +3,7 @@
 import os
 import sys
 import django
-#from data_analysis.scripts.data_analysis.main import *
+from data_analysis.scripts.data_analysis.main import *
 
 
 def main():
@@ -29,4 +29,14 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if __name__ == 'daphne satellite_telemetry_data_analysis.asgi:application':
+        """
+        Before running the application, make sure you had ran the script for data analysis before
+        If you had already done that, please ignore this message, and go open your localhost
+        """
+        main()
+    else:
+        data_analysis_main()
+        print('')
+        print("Now, you can run: 'daphne satellite_telemetry_data_analysis.asgi:application' to see the website")
+    
