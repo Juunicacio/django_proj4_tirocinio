@@ -120,6 +120,8 @@ def data_analysis_main():
 
     dTypes(turtlesData)
 
+    getJson(turtlesData)
+
 #if __name__ == "__main__":
     #main()
 

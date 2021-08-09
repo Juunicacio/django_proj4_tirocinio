@@ -21,6 +21,7 @@ whitenoise = "*"
 pandas = "*"
 requests = "*"
 dash-canvas = "*"
+pyproj = "*"
 
 [dev-packages]
 

@@ -9,6 +9,7 @@ from collections import Counter # for reliable gps
 import sys
 #import geopandas as gpd # for geometry column for reliable gps # install first GDAL, then fiona and then geopandas
 import matplotlib.pyplot as plt #produces maps and diagrams
+import json
 
 
 from .staticMethods import *
@@ -180,6 +181,9 @@ class TurtleData:
         #self.depths = []
         #self.GPSRowData = None
         #self.DEPTHRowData = None
+        self.gpsDataJsonName = ""
+        self.depthDataJsonName = ""
+        
 
     def addDataFromCsv(self, filename):
         temporaryDf = pd.read_csv(filename, skiprows=23, names=TurtleData.col_names)        
@@ -885,8 +889,8 @@ class TurtleData:
                 # if I want to use the acquisition time, I use the depthRow.acquisitionTimeString
                 acquisitionDepthTime = convertToStringFromUnixTime(depthRow.acquisitionTimeString)
                 if(acquisitionDepthTime > rgd.gps1.acquisitionTime and acquisitionDepthTime <= rgd.gps2.acquisitionTime):
-                    print("there is a depth data between GPS reliable id " + str(rgd.gps1.reliable_id) + " and " + str(rgd.gps2.reliable_id))
-                    print("depth acquisition time data: " + acquisitionDepthTime + " - depth id: " + str(depthRow.depth_id))
+                    #print("there is a depth data between GPS reliable id " + str(rgd.gps1.reliable_id) + " and " + str(rgd.gps2.reliable_id))
+                    #print("depth acquisition time data: " + acquisitionDepthTime + " - depth id: " + str(depthRow.depth_id))
                     rgd.addDepth(depthRow)
                     depthCoordinates = createPoint(rgd.gps1, rgd.gps2, depthRow)
                     depthCoordinates.DEPTHRowData = depthRow
@@ -898,7 +902,7 @@ class TurtleData:
                     #-----
                     long = depthCoordinates.x
                     lat = depthCoordinates.y
-                    print("Its Long is: " + str(long) + " - its lat is: " + str(lat))
+                    #print("Its Long is: " + str(long) + " - its lat is: " + str(lat))
                     #self.depthApproxLongs.append(long)
                     #self.depthApproxLats.append(lat)
                     #self.pointsList.append(depthCoordinates)
@@ -994,3 +998,28 @@ class TurtleData:
     def printDTypes(self):
         print(self.reliableGpsDf.dtypes)
         print(self.depthDataWithApprxCoordDf.dtypes)
+
+    # ------- working to convert dataframes into JSON files
+
+    def generateGpsDataJsonName(self):
+        print('- gps dataframe file name = ' + self.reliableGpsDfCsvName)
+        # remove everything (the format) after the dot of csv file to give a name to the json file
+        fileNameWithoutFormat = self.reliableGpsDfCsvName.split('.', 1)[0]
+        self.gpsDataJsonName  = fileNameWithoutFormat + '.json'
+        print('- gps json file name = ' + self.gpsDataJsonName)
+    
+    def saveGpsDataDfToJson(self):
+        #df.to_json()
+        return checkIfJsonHasBeenSavedAndSaveJson(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDf, self.gpsDataJsonName)
+    
+    def generateDepthDataJsonName(self):
+        print('- depth dataframe file name = ' + self.depthDataWithApprxCoordDfCsvName)
+        # remove everything (the format) after the dot of csv file to give a name to the json file
+        fileNameWithoutFormat = self.depthDataWithApprxCoordDfCsvName.split('.', 1)[0]
+        self.depthDataJsonName = fileNameWithoutFormat + '.json'
+        print('- depth json file name = ' + self.depthDataJsonName)
+    
+    def saveDepthDataDfToJson(self):
+        #df.to_json()
+        return checkIfJsonHasBeenSavedAndSaveJson(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataWithApprxCoordDf, self.depthDataJsonName)
+    
