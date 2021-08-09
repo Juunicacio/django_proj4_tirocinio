@@ -60,7 +60,7 @@ def checkIfJsonHasBeenSavedAndSaveJson(folderToSaveItems, folderToSave, datafram
     if not JsonInResultsFolder:
         print(f"The filename {stringJsonName} is not yet in the folder... saving json")
         pathToFilePlusJsonName = os.path.join(folderToSave, stringJsonName)
-        out = dataframe.to_json()
+        out = dataframe.to_json(orient="table")
         with open(pathToFilePlusJsonName, 'w') as f:
             f.write(out)
         print(f"{stringJsonName} has been saved in the results folder!")
@@ -69,7 +69,7 @@ def checkIfJsonHasBeenSavedAndSaveJson(folderToSaveItems, folderToSave, datafram
     else:
         print(f"The filename {stringJsonName} is not yet in the folder... saving json")
         pathToFilePlusJsonName = os.path.join(folderToSave, stringJsonName)
-        out = dataframe.to_json()
+        out = dataframe.to_json(orient="table")
         with open(pathToFilePlusJsonName, 'w') as f:
             f.write(out)
         print(f"{stringJsonName} has been saved in the results folder!")

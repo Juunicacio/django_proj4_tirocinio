@@ -28,19 +28,42 @@ from datetime import datetime
 
 def loadLayerData(LayerColumn,JsonDepthData): # 1
 
-    jlayerDepths = [] 
-    for i in JsonDepthData['features']:
-        layer = i['properties'][LayerColumn]
-        jlayerDepths.append(layer) # 1.1     
+    jlayerDepths = []
+    # to run json from url use this below
+    #for i in JsonDepthData['features']:
+    # to run json from file use this below
+    for i in JsonDepthData['data']:
+        # to run json from url use this below
+        #layer = i['properties'][LayerColumn]
+        # to run json from file use this below
+        layer = i[LayerColumn]
+        layerWithoutPercentageSymbol = layer.replace("%", "")
+        layerToFloatNum = float(layerWithoutPercentageSymbol)
+        jlayerDepths.append(layerToFloatNum) # 1.1
+
+    # to run json from url use this below
+    #jminPercLay = min(feature["properties"][LayerColumn] for feature in JsonDepthData['features']) # 1.2
+    #jmaxPercLay = max(feature["properties"][LayerColumn] for feature in JsonDepthData['features']) # 1.2
     
-    jminPercLay = min(feature["properties"][LayerColumn] for feature in JsonDepthData['features']) # 1.2
-    jmaxPercLay = max(feature["properties"][LayerColumn] for feature in JsonDepthData['features']) # 1.2
+    # to run json from file use this below
+    jminPercLay = min(feature[LayerColumn] for feature in JsonDepthData['data']) # 1.2
+    jmaxPercLay = max(feature[LayerColumn] for feature in JsonDepthData['data']) # 1.2
     
     jlayerDepthsInPercentage = []
-    for i in JsonDepthData['features']:
-        intNum = i['properties'][LayerColumn]*100
-        percSymbol = '{:.2f}%'.format( intNum )
+    # to run json from url use this below
+    #for i in JsonDepthData['features']:
+    # to run json from file use this below
+    for i in JsonDepthData['data']:
+        # to run json from url use this below
+        #intNum = i['properties'][LayerColumn]*100
+        # to run json from file use this below
+        string = i[LayerColumn]
+        stringWithoutPercentageSymbol = string.replace("%", "")
+        #intNum = i[LayerColumn]*100
+        stringToFloatNum = float(stringWithoutPercentageSymbol)
+        percSymbol = '{:.2f}%'.format( stringToFloatNum )
         jlayerDepthsInPercentage.append(percSymbol) # 1.3
+
 
     return jlayerDepths,jminPercLay,jmaxPercLay,jlayerDepthsInPercentage #1.4
 
@@ -98,12 +121,12 @@ def generateGeoMap (jyDegreeGps, jxDegreeGps, jacquisitionGps, jyDegreeDepth, jx
                                     marker = {        
                                         'colorscale':[[0, 'green'], [1, 'rgb(0, 0, 255)']],
                                         'color': jlayerDepths,
-                                        'cmax':jmaxPercLay,
-                                        'cmin':jminPercLay,
+                                        'cmax':float(jmaxPercLay.replace("%", "")),
+                                        'cmin':float(jminPercLay.replace("%", "")),
                                         'size': jlayerDepths,
                                         'sizemin':0.1,
                                         'sizemode': 'area',
-                                        'sizeref': jmaxPercLay / 6 **2,
+                                        'sizeref': float(jmaxPercLay.replace("%", "")) / 6 **2,
                                         'showscale':True,
                                         'colorbar': {
                                             'title': f'Layer {LayerNumber} occurrence in %', # including a colorbar
