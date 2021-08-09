@@ -52,6 +52,29 @@ def checkIfDfHasBeenSavedAndSaveDf(folderToSaveItems, folderToSave, dataframe, s
         print(f"{stringDfName} has been saved in the results folder!")
     print('--------------')
 
+def checkIfJsonHasBeenSavedAndSaveJson(folderToSaveItems, folderToSave, dataframe, stringJsonName):
+    JsonInResultsFolder = []
+    for Json in folderToSaveItems:
+        JsonInResultsFolder.append(Json) 
+    print(JsonInResultsFolder)
+    if not JsonInResultsFolder:
+        print(f"The filename {stringJsonName} is not yet in the folder... saving json")
+        pathToFilePlusJsonName = os.path.join(folderToSave, stringJsonName)
+        out = dataframe.to_json()
+        with open(pathToFilePlusJsonName, 'w') as f:
+            f.write(out)
+        print(f"{stringJsonName} has been saved in the results folder!")
+    elif stringJsonName in JsonInResultsFolder:
+        print(f"The CSV {stringJsonName} has already been saved in the results folder")
+    else:
+        print(f"The filename {stringJsonName} is not yet in the folder... saving json")
+        pathToFilePlusJsonName = os.path.join(folderToSave, stringJsonName)
+        out = dataframe.to_json()
+        with open(pathToFilePlusJsonName, 'w') as f:
+            f.write(out)
+        print(f"{stringJsonName} has been saved in the results folder!")
+    print('--------------')
+
 def convertUnixTimeFromString(timeString):
     return dt.datetime.strptime(timeString, '%Y.%m.%d %H:%M:%S').timestamp() #[i] is the position in an array
 
@@ -86,9 +109,9 @@ def createPoint(gps1, gps2, depth):
     #-------------------------------------------
     
     #Sottrazione vettori -----------------------
-    print("calculating diff between lon and lat of gps 1 and gps 2")
+    #print("calculating diff between lon and lat of gps 1 and gps 2")
     vectorDiff = Point(gps2.longitude-gps1.longitude, gps2.latitude-gps1.latitude)
-    print("DIFF:" + str(vectorDiff.x) + " - " + str(vectorDiff.y))
+    #print("DIFF:" + str(vectorDiff.x) + " - " + str(vectorDiff.y))
     
     #Calcolo del modulo del vettore differenza
     modulovectorDiff = np.sqrt((vectorDiff.x**2) + (vectorDiff.y**2))
@@ -97,9 +120,9 @@ def createPoint(gps1, gps2, depth):
     normalizedVector = Point( vectorDiff.x/modulovectorDiff, vectorDiff.y/modulovectorDiff)
     
     #Calcolo lunghezza vettore Depth
-    print("Calcolo lunghezza vettore Depth")
+    #print("Calcolo lunghezza vettore Depth")
     depthVectorLength = ( modulovectorDiff*depthTimePercent)/100
-    print(depthVectorLength)
+    #print(depthVectorLength)
     
     #---------------------- half depth----------
     # #Calcolo lunghezza vettore Half depth
@@ -131,8 +154,8 @@ def createPoint(gps1, gps2, depth):
     # halfDepthPoint = Point(gps1.longitude + halfDepthVector.x, gps1.latitude+halfDepthVector.y)
     # print(halfDepthPoint)
     #-------------------------------------------
-    print("my point of acquisition time depth")
-    print(str(depthPoint.x) + " - " + str(depthPoint.y))
+    #print("my point of acquisition time depth")
+    #print(str(depthPoint.x) + " - " + str(depthPoint.y))
     # print("my point of half time depth")
     # print(str(halfDepthPoint.x) + " - " + str(halfDepthPoint.y))
     

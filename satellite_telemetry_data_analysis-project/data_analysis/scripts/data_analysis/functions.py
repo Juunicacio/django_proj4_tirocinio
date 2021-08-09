@@ -3,6 +3,8 @@ import os
 from .turtleData import TurtleData
 import datetime as dt # to create csv names
 import sys
+import csv
+import json
 
 #if not sys.gettrace()==None:
 # To run with Debug:
@@ -48,7 +50,46 @@ def converting_excel_file_into_csv_file(folder_obj, file):
     # change file format
     file_in_csv = file.replace(".xlsx", ".csv")
     # transform excel to csv file with path to store the CSV file
-    df_xlsx.to_csv(os.path.join(folder_obj, file_in_csv), index = False)        
+    df_xlsx.to_csv(os.path.join(folder_obj, file_in_csv), index = False)
+
+# def converting_csv_file_into_json_file(folder, csvFileName):
+#     # remove everything (the format) after the dot of csv file to give a name to the json file
+#     fileNameWithoutFormat = csvFileName.split('.', 1)[0]
+#     jsonFileName = fileNameWithoutFormat + '.json'
+#     print('- json file name = ' + jsonFileName)
+#     print('- csv file name = ' + csvFileName)
+
+#     data = {}
+#     #open and read the csv
+#     with open(os.path.join(folder ,csvFileName)) as csvFormat:
+#         csvReader = csv.DictReader(csvFormat)
+#         # Convert each row into a dictionary
+#         # and add it to data
+#         line_count = 0
+#         for row in csvReader:
+#             # Assuming a column named 'id' to
+#             # be the primary key
+#             # id = rows[0]
+#             # data[id] = rows
+#             if line_count == 0:
+#                 columns = ", ".join(row)
+#                 print(f'Column names: {columns}')
+#                 print(type(columns))
+#                 headers = columns.split(", ")
+#                 print(headers)
+#                 #data[]
+#                 #line_count += 1
+#             # else:
+#             #     if row:
+#             #         print(f'{row[0]}, {row[1]}, {row[2]}.')
+#             #         line_count +1
+#          #print(f'Processed {line_count} lines')
+
+#     # create a json file and write the data on it
+#     with open(os.path.join(folder ,jsonFileName), 'w') as jsonFormat:
+#         #make it more readable
+#         jsonFormat.write(json.dumps(data, indent=4))
+#         return jsonFileName
 
 # Check if some excel file has not been converted into csv yet
 def check_for_excel_files():
@@ -311,3 +352,41 @@ def askDepthArray(turtlesData):
 def dTypes(turtlesData):
     for turtleData in turtlesData:
         turtleData.printDTypes()
+
+#____________________
+# def makeJson(turtlesData):
+#     csvFiles = []
+#     jsonFiles = []
+#     for fileName in DATACLEANINGRESULTS_FOLDER_ITENS:
+#         if fileName == :
+    # csvFiles = []
+    # jsonFiles = []
+    # for file in DATACLEANINGRESULTS_FOLDER_ITENS:
+    #     if file.endswith('.csv'):
+    #         csvFiles.append(file)
+    # # Create a copy of list
+    # for csvFileName in csvFiles[:]:       
+    #     # remove the csv file from my csvFiles list
+    #     csvFiles.remove(csvFileName)
+
+    #     if any(csvFileName in word for word in csvFiles):
+    #         print(f"-- Excellent! We've already converted the csv file \'{csvFileName}\' into json file")
+    #     else:
+    #         print(f'-- Oh No! The csv file \'{csvFileName}\' has been not converted. Converting it into json file...')
+    #         # Call function "Convert csv files into json"
+    #         jsonFileName = converting_csv_file_into_json_file(DATACLEANINGRESULTS_FOLDER, csvFileName)
+    #         jsonFiles.append(jsonFileName)
+    #         print('---> ' + jsonFileName + ' has been created!')                
+    # # Updated all_my_files List
+    # print('--- json files in the dataResults folder: ', csvFiles)
+
+#____________________
+def getJson(turtlesData):
+    for turtleData in turtlesData:
+        #get gps json from df
+        turtleData.generateGpsDataJsonName()
+        turtleData.saveGpsDataDfToJson()
+
+        #get depth json from df
+        turtleData.generateDepthDataJsonName()
+        turtleData.saveDepthDataDfToJson()
