@@ -190,7 +190,7 @@ output3 = html.Div(id='page-content', className= 'text_box', children=[
 
 output4 = html.Div(id='page-content clear', className= 'graph_graph', children=[
                 html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
                     html.H4('Select the Layer, to see the data:'),
                     dcc.Dropdown(
                         id='layer-dropdown',
@@ -219,7 +219,7 @@ output4 = html.Div(id='page-content clear', className= 'graph_graph', children=[
 
 output5 = html.Div(id='page-content', className='graph_graph2', children=[
                 html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
                     html.H4('Select the Layer, to see the data:'),
                     dcc.Dropdown(
                         id='layer-dropdown',
@@ -248,7 +248,7 @@ output5 = html.Div(id='page-content', className='graph_graph2', children=[
 
 output6 = html.Div(id='page-content div_map_graph clear', children=[
                 html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
                     html.H4('Select the Layer, to see the data:'),
                     dcc.Dropdown(
                         id='layer-dropdown',

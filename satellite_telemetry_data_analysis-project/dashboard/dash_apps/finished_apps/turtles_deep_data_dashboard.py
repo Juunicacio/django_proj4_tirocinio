@@ -1,4 +1,6 @@
-import dash 
+import dash
+from dash_bootstrap_components._components.Col import Col
+from dash_bootstrap_components._components.Row import Row 
 import dash_core_components as dcc #
 import dash_html_components as html #
 from django_plotly_dash import DjangoDash
@@ -334,8 +336,44 @@ addCanvasGraphTrace(t2GraphCanvas, '#c9f2e7', 11, "<b>0 - 5</b>", " <b>meters</b
 #---
 ######################### END DATA GRAPHS #####################################################
 
+options_for_the_layers = [
+    {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
+    {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
+    {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
+    {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
+    {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
+    {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
+    {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
+    {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
+    {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
+    {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
+]
+
+checklist_for_the_layers = [
+    {'label': 'Layer 1', 'value': '0'},
+    {'label': 'Layer 2', 'value': '1'},
+    {'label': 'Layer 3', 'value': '2'},
+    {'label': 'Layer 4', 'value': '3'},
+    {'label': 'Layer 5', 'value': '4'},
+    {'label': 'Layer 6', 'value': '5'},
+    {'label': 'Layer 7', 'value': '6'},
+    {'label': 'Layer 8', 'value': '7'},
+    {'label': 'Layer 9', 'value': '8'},
+    {'label': 'Layer 10', 'value': '9'},
+]
+
+layer_dropdown = html.Div(children=[
+    html.H4('Select the Layer, to see the data:'),
+    dcc.Dropdown(
+        id='layer-dropdown',
+        options= options_for_the_layers,
+        value='0',
+        style={"width": "75%", 'margin-bottom': '0'}
+    )
+])
+
 # - Turtle 1
-t1output1 = html.Div(id='t1-page-content', className= 'graph_canvas', children=[
+t1output1 = html.Div(id='t1-page-content', children=[
                 #html.Img(src=turtle_img),
                 # ------------------- calling histogram graph ------------------                
                 dcc.Graph(
@@ -346,7 +384,7 @@ t1output1 = html.Div(id='t1-page-content', className= 'graph_canvas', children=[
             ]),
 
 # - Turtle 2
-t2output1 = html.Div(id='t2-page-content', className= 'graph_canvas', children=[
+t2output1 = html.Div(id='t2-page-content', children=[
                 #html.Img(src=turtle_img),
                 # ------------------- calling histogram graph ------------------                
                 dcc.Graph(
@@ -358,194 +396,148 @@ t2output1 = html.Div(id='t2-page-content', className= 'graph_canvas', children=[
 #---
 
 # - Turtle 1
-t1output3 = html.Div(id='t1-page-content', className= 'text_box', children=[                            
-                    html.H3(children='t1 About the Graphs'),
+t1output3 = html.Div(id='t1-page-content', children=[                            
+                    # html.H3(children='t1 About the Graphs'),
                     html.P('t1 Graphs Description'),                                                                                
                 ]), #width=4
 
 # - Turtle 2
-t2output3 = html.Div(id='t2-page-content', className= 'text_box', children=[                            
-                    html.H3(children='t2 About the Graphs'),
+t2output3 = html.Div(id='t2-page-content', children=[                            
+                    # html.H3(children='t2 About the Graphs'),
                     html.P('t2 Graphs Description'),                                                                                
                 ]), #width=4
 #---
 
 # - Turtle 1
-t1output4 = html.Div(id='t1-page-content clear', className= 'graph_graph', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),
-                # ------------------- calling histogram graph ------------------                
-                dcc.Graph(
+t1output4 = html.Div(id='t1-page-content clear', children=[
+                #html.Div(children=[
+                    layer_dropdown,
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
+                    # html.H4('Select the Layer, to see the data:'),
+                    # dcc.Dropdown(
+                    #     id='layer-dropdown',
+                    #     options= options_for_the_layers,
+                    #     value='0'
+                    # ),
+                #]),#, style={'columnCount': 2, "width": "50%"}), # wrong
+                # ------------------- calling histogram graph ------------------
+                html.Div([
+                    dcc.Graph(
                     id='hist_graph',
                     figure=t1fig1,
                     config={'displayModeBar':False}
-                ), # ------------------- end histogram)
-            ]), #width=4
+                    ), # ------------------- end histogram)  
+                ])                  
+            ]),
+#])    
+            #], className='col-4', style = {'padding-top' : '1%'}), #width=4
 
 # - Turtle 2
-t2output4 = html.Div(id='t2-page-content clear', className= 'graph_graph', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),
-                # ------------------- calling histogram graph ------------------                
-                dcc.Graph(
-                    id='hist_graph',
-                    figure=t2fig1,
-                    config={'displayModeBar':False}
-                ), # ------------------- end histogram)
+t2output4 = html.Div(id='t2-page-content clear', children=[
+                ##html.Div(children=[
+                    layer_dropdown,                         
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
+                # #     html.H4('Select the Layer, to see the data:'),
+                # #     dcc.Dropdown(
+                # #         id='layer-dropdown',
+                # #         options= options_for_the_layers,
+                # #         value='0'
+                # #     ),
+                # # ]),
+                # ------------------- calling histogram graph ------------------
+                html.Div([            
+                    dcc.Graph(
+                        id='hist_graph',
+                        figure=t2fig1,
+                        config={'displayModeBar':False}
+                    ), # ------------------- end histogram)
+                ])
             ]), #width=4
 #---
 
 # - Turtle 1
-t1output5 = html.Div(id='t1-page-content', className='graph_graph2', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),
+t1output5 = html.Div(id='t1-page-content', children=[
+                ##html.Div(children=[
+                    layer_dropdown,                          
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
+                # #     html.H4('Select the Layer, to see the data:'),
+                # #     dcc.Dropdown(
+                # #         id='layer-drpodown',
+                # #         options=options_for_the_layers,
+                # #         value='0'
+                # #     ),
+                # # ]),
                 # ------------------- calling box graph ------------------ 
-                dcc.Graph(
-                    id='box_graph',
-                    figure= t1box1,
-                    config={'displayModeBar':False}
-                ) # ------------------- end box)
+                html.Div([
+                    dcc.Graph(
+                        id='box_graph',
+                        figure= t1box1,
+                        config={'displayModeBar':False}
+                    ) # ------------------- end box)
+                ])
             ]), #width=4
 
 # - Turtle 2
-t2output5 = html.Div(id='t2-page-content', className='graph_graph2', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),
-                # ------------------- calling box graph ------------------ 
-                dcc.Graph(
-                    id='box_graph',
-                    figure= t2box1,
-                    config={'displayModeBar':False}
-                ) # ------------------- end box)
+t2output5 = html.Div(id='t2-page-content', children=[
+                ##html.Div(children=[
+                    layer_dropdown,                            
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
+                # #     html.H4('Select the Layer, to see the data:'),
+                # #     dcc.Dropdown(
+                # #         id='layer-dropdown',
+                # #         options=options_for_the_layers,
+                # #         value='0'
+                # #     ),
+                # # ]),
+                # ------------------- calling box graph ------------------
+                html.Div([
+                    dcc.Graph(
+                        id='box_graph',
+                        figure= t2box1,
+                        config={'displayModeBar':False}
+                    ) # ------------------- end box)
+                ])
             ]), #width=4
 #---
 
 # - Turtle 1
 t1output6 = html.Div(id='t1-page-content div_map_graph clear', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),                     
-                dcc.Graph(
-                    id='map_graph',
-                    figure=t1gomaptraceLayer1
-                )  # ------------------- end Map
+                ##html.Div(children=[
+                    layer_dropdown,                            
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
+                # #     html.H4('Select the Layer, to see the data:'),
+                # #     dcc.Dropdown(
+                # #         id='layer-dropdown',
+                # #         options=options_for_the_layers,
+                # #         value='0'
+                # #     ),
+                # # ]),
+                html.Div([                     
+                    dcc.Graph(
+                        id='map_graph',
+                        figure=t1gomaptraceLayer1
+                    )  # ------------------- end Map
+                ])
             ])
 
 # - Turtle 2
 t2output6 = html.Div(id='t2-page-content div_map_graph clear', children=[
-                html.Div(className= 'text_box', children=[                            
-                    html.H1(className= 'text-center' ,children='Depth Data'),
-                    html.H4('Select the Layer, to see the data:'),
-                    dcc.Dropdown(
-                        id='layer-dropdown',
-                        options=[
-                            {'label': 'Layer 1 - Occurrence between 0 to -5 meters deep', 'value': '0'},
-                            {'label': 'Layer 2 - Occurrence between -6 to -10 meters deep', 'value': '1'},
-                            {'label': 'Layer 3 - Occurrence between -11 to -20 meters deep', 'value': '2'},
-                            {'label': 'Layer 4 - Occurrence between -21 to -30 meters deep', 'value': '3'},
-                            {'label': 'Layer 5 - Occurrence between -31 to -40 meters deep', 'value': '4'},
-                            {'label': 'Layer 6 - Occurrence between -41 to -50 meters deep', 'value': '5'},
-                            {'label': 'Layer 7 - Occurrence between -51 to -70 meters deep', 'value': '6'},
-                            {'label': 'Layer 8 - Occurrence between -71 to -90 meters deep', 'value': '7'},
-                            {'label': 'Layer 9 - Occurrence between -91 to -110 meters deep', 'value': '8'},
-                            {'label': 'Layer 10 - Occurrence between -111 to -4095 meters deep', 'value': '9'},
-                        ],
-                        value='0'
-                    ),
-                ]),                     
-                dcc.Graph(
-                    id='map_graph',
-                    figure=t2gomaptraceLayer1
-                )  # ------------------- end Map
+                ##html.Div(children=[
+                    layer_dropdown,                         
+                    # html.H1(className= 'text-center' ,children='Depth Data'),
+                # #     html.H4('Select the Layer, to see the data:'),
+                # #     dcc.Dropdown(
+                # #         id='layer-dropdown',
+                # #         options=options_for_the_layers,
+                # #         value='0'
+                # #     ),
+                # # ]),
+                html.Div([                
+                    dcc.Graph(
+                        id='map_graph',
+                        figure=t2gomaptraceLayer1
+                    )  # ------------------- end Map
+                ])
             ])
 #---
 
@@ -556,26 +548,17 @@ t1output7 = html.Div(id='t1-page-content div_scatter_graph clear', children=[
                 html.Div(children= 'Select Layer(s):'),
                 dcc.Checklist(
                     id='layer-checklist',
-                    options=[
-                        {'label': 'Layer 1', 'value': '0'},
-                        {'label': 'Layer 2', 'value': '1'},
-                        {'label': 'Layer 3', 'value': '2'},
-                        {'label': 'Layer 4', 'value': '3'},
-                        {'label': 'Layer 5', 'value': '4'},
-                        {'label': 'Layer 6', 'value': '5'},
-                        {'label': 'Layer 7', 'value': '6'},
-                        {'label': 'Layer 8', 'value': '7'},
-                        {'label': 'Layer 9', 'value': '8'},
-                        {'label': 'Layer 10', 'value': '9'},
-                    ],
+                    options=checklist_for_the_layers,
                     value=['0'],
                     labelStyle={'display': 'inline-block'}
                 )
             ]),
-            dcc.Graph(
-                id='scatter_graph',
-                figure=t1goscatterGraph
-            ) # ------------------- end Scatter
+            html.Div([
+                dcc.Graph(
+                    id='scatter_graph',
+                    figure=t1goscatterGraph
+                ) # ------------------- end Scatter
+            ])
         ])
 
 # - Turtle 2
@@ -585,18 +568,7 @@ t2output7 = html.Div(id='t1-page-content div_scatter_graph clear', children=[
                 html.Div(children= 'Select Layer(s):'),
                 dcc.Checklist(
                     id='layer-checklist',
-                    options=[
-                        {'label': 'Layer 1', 'value': '0'},
-                        {'label': 'Layer 2', 'value': '1'},
-                        {'label': 'Layer 3', 'value': '2'},
-                        {'label': 'Layer 4', 'value': '3'},
-                        {'label': 'Layer 5', 'value': '4'},
-                        {'label': 'Layer 6', 'value': '5'},
-                        {'label': 'Layer 7', 'value': '6'},
-                        {'label': 'Layer 8', 'value': '7'},
-                        {'label': 'Layer 9', 'value': '8'},
-                        {'label': 'Layer 10', 'value': '9'},
-                    ],
+                    options=checklist_for_the_layers,
                     value=['0'],
                     labelStyle={'display': 'inline-block'}
                 )
@@ -620,14 +592,16 @@ options = [
 dropdown = dcc.Dropdown(
     id = 'pop_dropdown',
     options = options,
-    value = 'map_graph'
+    value = 'map_graph',
+    style={"width": "45%"}
+    #style={"width": "45%", 'margin-bottom': '4rem'}#, 'textAlign' : 'center'}
 )
 ##################################
 
-# ---------- Creating Dash Layout and call the graphs
+# ---------- Creating Dash Layout For The First Turtle and call the graphs
 
-dash_app = DjangoDash('TurtleDeepData', suppress_callback_exceptions = True)   # replaces dash.Dash # I replaced 'app' with 'dash_app'
-#dash_app.config.suppress_callback_exceptions = True
+dash_app_turtle1 = DjangoDash('trackingDataTurtle1', suppress_callback_exceptions = True)   # replaces dash.Dash # I replaced 'app' with 'dash_app'
+#dash_app_turtle1.config.suppress_callback_exceptions = True
 """
 IMPORTANT: In order to make our time series graph interactive, we have to create a 
 callback function for the dropdown menu and output space. However, dash doesn’t 
@@ -635,14 +609,22 @@ allow callbacks for components that don’t exist in the layout. Because there i
 no dropdown menu or output space in the homepage layout, we must change the 
 configurations of our app.
 """
-dash_app.layout = html.Div([
-    dropdown,
-    # - Turtle 1
-    html.Div(id='t1-page-content'),
+dash_app_turtle1.layout = html.Div([
+    #html.Div([
+    #html.Div([
+        dropdown, # column 1
+    #]),#, className="six columns"),
+#], className='col-2', style = {'padding-top' : '1%'}),
+    #html.Div([
+        # - Turtle 1
+        html.Div(id='t1-page-content'),# column 2
+    #]),#, className="six columns"),
+])#, style={'columnCount': 2})#, style={'columnCount': 2, 'columnWidth': 30})
+#], className="row")  
     #children=app(output1))
-])
+#])#, style={"width": "50%"})
 ################################## Call graph
-@dash_app.callback(
+@dash_app_turtle1.callback(
     # - Turtle 1
     Output('t1-page-content', 'children'),
     Input('pop_dropdown', 'value'))
@@ -661,7 +643,7 @@ def update_layout(selected_value):
         return app(t1output1)
 
 ################################## For hist_graph, box_graph and map_graph, select layer = output2
-@dash_app.callback(
+@dash_app_turtle1.callback(
     Output('hist_graph', 'figure'),    
     Input('layer-dropdown', 'value'))
 def update_histAndMap(selected_value):
@@ -687,7 +669,7 @@ def update_histAndMap(selected_value):
     elif (selected_value == '9'):
         return t1fig10
 
-@dash_app.callback(
+@dash_app_turtle1.callback(
     Output('box_graph', 'figure'),      
     Input('layer-dropdown', 'value'))
 def update_histAndMap(selected_value):
@@ -713,7 +695,7 @@ def update_histAndMap(selected_value):
     elif (selected_value == '9'):
         return t1box10
 
-@dash_app.callback(
+@dash_app_turtle1.callback(
     #Output('line_graph', 'figure'), # if active again, include down on return the "jline" for each layer, ex 'jline1'
     Output('map_graph', 'figure'),        
     Input('layer-dropdown', 'value'))
@@ -741,7 +723,7 @@ def update_histAndMap(selected_value):
         return t1gomaptraceLayer10
 
 ##################################
-@dash_app.callback(
+@dash_app_turtle1.callback(
     Output('scatter_graph', 'figure'),        
     Input('layer-checklist', 'value'))
 def update_histAndMap(selected_values):
@@ -769,4 +751,151 @@ def update_histAndMap(selected_values):
         addScatterGraphTrace(t1goscatterGraph,jacquisitionDepth_tag_710333a,t1layerDepthsInPercentage10,10,-111,-4095, COLOR_LAYER10)
 
     return t1goscatterGraph
+
+
+# ---------- Creating Dash Layout For The Second Turtle and call the graphs
+
+dash_app_turtle2 = DjangoDash('trackingDataTurtle2', suppress_callback_exceptions = True)   # replaces dash.Dash # I replaced 'app' with 'dash_app'
+#dash_app_turtle2.config.suppress_callback_exceptions = True
+"""
+IMPORTANT: In order to make our time series graph interactive, we have to create a 
+callback function for the dropdown menu and output space. However, dash doesn’t 
+allow callbacks for components that don’t exist in the layout. Because there is 
+no dropdown menu or output space in the homepage layout, we must change the 
+configurations of our app.
+"""
+dash_app_turtle2.layout = html.Div([
+    dropdown,
+    # - Turtle 2
+    html.Div(id='t2-page-content'),
+    #children=app(output1))
+])
+################################## Call graph
+@dash_app_turtle2.callback(
+    # - Turtle 2
+    Output('t2-page-content', 'children'),
+    Input('pop_dropdown', 'value'))
+def update_layout(selected_value):
+    if(selected_value == 'mycanvas_graph'):
+        return app(t2output1)
+    elif (selected_value == 'hist_graph'):
+        return app(t2output4)
+    elif (selected_value == 'box_graph'):
+        return app(t2output5)
+    elif (selected_value == 'map_graph'):
+        return app(t2output6)
+    elif (selected_value == 'scatter_graph'):
+        return app(t2output7)
+    else:
+        return app(t2output1)
+
+################################## For hist_graph, box_graph and map_graph, select layer = output2
+@dash_app_turtle2.callback(
+    Output('hist_graph', 'figure'),    
+    Input('layer-dropdown', 'value'))
+def update_histAndMap(selected_value):
+    # - Turtle 2
+    if(selected_value == '0'):
+        return t2fig1
+    elif (selected_value == '1'):
+        return t2fig2
+    elif (selected_value == '2'):
+        return t2fig3
+    elif (selected_value == '3'):
+        return t2fig4
+    elif (selected_value == '4'):
+        return t2fig5
+    elif (selected_value == '5'):
+        return t2fig6
+    elif (selected_value == '6'):
+        return t2fig7
+    elif (selected_value == '7'):
+        return t2fig8
+    elif (selected_value == '8'):
+        return t2fig9
+    elif (selected_value == '9'):
+        return t2fig10
+
+@dash_app_turtle2.callback(
+    Output('box_graph', 'figure'),      
+    Input('layer-dropdown', 'value'))
+def update_histAndMap(selected_value):
+    # - Turtle 2
+    if(selected_value == '0'):
+        return t2box1
+    elif (selected_value == '1'):
+        return t2box2
+    elif (selected_value == '2'):
+        return t2box3
+    elif (selected_value == '3'):
+        return t2box4
+    elif (selected_value == '4'):
+        return t2box5
+    elif (selected_value == '5'):
+        return t2box6
+    elif (selected_value == '6'):
+        return t2box7
+    elif (selected_value == '7'):
+        return t2box8
+    elif (selected_value == '8'):
+        return t2box9
+    elif (selected_value == '9'):
+        return t2box10
+
+@dash_app_turtle2.callback(
+    #Output('line_graph', 'figure'), # if active again, include down on return the "jline" for each layer, ex 'jline1'
+    Output('map_graph', 'figure'),        
+    Input('layer-dropdown', 'value'))
+def update_histAndMap(selected_value):
+    # - Turtle 2
+    if(selected_value == '0'):
+        return t2gomaptraceLayer1
+    elif (selected_value == '1'):
+        return t2gomaptraceLayer2
+    elif (selected_value == '2'):
+        return t2gomaptraceLayer3
+    elif (selected_value == '3'):
+        return t2gomaptraceLayer4
+    elif (selected_value == '4'):
+        return t2gomaptraceLayer5
+    elif (selected_value == '5'):
+        return t2gomaptraceLayer6
+    elif (selected_value == '6'):
+        return t2gomaptraceLayer7
+    elif (selected_value == '7'):
+        return t2gomaptraceLayer8
+    elif (selected_value == '8'):
+        return t2gomaptraceLayer9
+    elif (selected_value == '9'):
+        return t2gomaptraceLayer10
+
+##################################
+@dash_app_turtle2.callback(
+    Output('scatter_graph', 'figure'),        
+    Input('layer-checklist', 'value'))
+def update_histAndMap(selected_values):
+    # - Turtle 2
+    t2goscatterGraph = generateScatterGraph()
+    if '0' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage1,1,0,-5, COLOR_LAYER1)
+    if '1' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage2,2,-6,-10, COLOR_LAYER2)
+    if '2' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage3,3,-11,-20, COLOR_LAYER3)
+    if '3' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage4,4,-21,-30, COLOR_LAYER4)
+    if '4' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage5,5,-31,-40, COLOR_LAYER5)
+    if '5' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage6,6,-41,-50, COLOR_LAYER6)
+    if '6' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage7,7,-51,-70, COLOR_LAYER7)
+    if '7' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage8,8,-71,-90, COLOR_LAYER8)
+    if '8' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage9,9,-91,-110, COLOR_LAYER9)
+    if '9' in selected_values :
+        addScatterGraphTrace(t2goscatterGraph,jacquisitionDepth_tag_710348a,t2layerDepthsInPercentage10,10,-111,-4095, COLOR_LAYER10)
+
+    return t2goscatterGraph
 
