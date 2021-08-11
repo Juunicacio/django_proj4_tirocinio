@@ -119,6 +119,10 @@ body {
 	padding: 30px;
 	text-align: center;
 }
+.graphs_page_division{
+	background: var(--brownGreen);/*(--pumpkins);*/
+	padding: 2px; /* 2 */;
+}
 .main_subtitle{
 	color: var(--brownGreen);
 }
@@ -166,6 +170,11 @@ body {
 .title_subtitle{
 	color: var(--brownGreen);
 	margin-bottom: 15px;
+	font-size: 1.2rem;
+}
+.graphs_page_division .title_subtitle{
+	color: var(--white);
+	margin: 5px;
 	font-size: 1.2rem;
 }
 

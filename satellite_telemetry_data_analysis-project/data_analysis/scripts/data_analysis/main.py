@@ -1,4 +1,5 @@
 from .functions import *
+#from dashboard.dash_apps.finished_apps.turtles_deep_data_dashboard import jsonGpsData_tag_710333a
 #from django.core.management.base import NoArgsCommand, make_option
 
 # class Command(NoArgsCommand):
@@ -121,6 +122,12 @@ def data_analysis_main():
     dTypes(turtlesData)
 
     getJson(turtlesData)
+    
+
+    #print(jsonGpsData_tag_710333a)
+    #print(jsonGpsData_tag_710348a)
+    #print(jsonDepthData_tag_710333a)
+    #print(jsonDepthData_tag_710348a)
 
 #if __name__ == "__main__":
     #main()
