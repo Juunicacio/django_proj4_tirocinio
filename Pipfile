@@ -21,11 +21,7 @@ whitenoise = "*"
 pandas = "*"
 requests = "*"
 dash-canvas = "*"
-xlrd = "*"
-openpyxl = "*"
 pyproj = "*"
-matplotlib = "*"
-notebook = "*"
 
 [dev-packages]
 

@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'dpd_static_support', # img source static
+    'data_analysis',
+    #'django_extensions',
 ]
 
 # Standard Django middleware with the addition of both
@@ -188,7 +190,8 @@ PLOTLY_COMPONENTS = [
 
 PLOTLY_DASH = {
 # Flag controlling local serving of assets
-"serve_locally": True,
+#"serve_locally": True,
+"serve_locally": False,
 }
 
 ASGI_APPLICATION = "routing.application" # routing of our channel

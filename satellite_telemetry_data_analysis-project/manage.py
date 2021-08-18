@@ -2,9 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import django
+from data_analysis.scripts.data_analysis.main import *
 
 
 def main():
+    #run_main_of_data_analysis()
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'satellite_telemetry_data_analysis.settings')
     try:
@@ -17,6 +20,23 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+#def run_main_of_data_analysis():
+    #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.setting')
+    #django.setup()
+    # now your code can go here...
+    # Call here the function data_analysis_main() inside main.py of data_analysis app
+    #data_analysis_main()
+
 
 if __name__ == '__main__':
-    main()
+    if __name__ == 'daphne satellite_telemetry_data_analysis.asgi:application':
+        """
+        Before running the application, make sure you had ran the script for data analysis before
+        If you had already done that, please ignore this message, and go open your localhost
+        """
+        main()
+    else:
+        data_analysis_main()
+        print('')
+        print("Now, you can run: 'daphne satellite_telemetry_data_analysis.asgi:application' to see the website")
+    
