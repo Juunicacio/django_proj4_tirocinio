@@ -204,3 +204,8 @@ STATIC_ROOT = 'static'
 STATICFILES_DIRS = [
     BASE_DIR / 'satellite_telemetry_data_analysis/static',
 ]
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
