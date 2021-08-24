@@ -132,7 +132,9 @@ def getTurtlesData():
             for word in filename_splitted:
                 if word.startswith(INITIAL_TAG_DIGITS):
                     csvs.append(file)
-                    currentFileCsv = ASSETS_FOLDER + '\\' + file
+                    #currentFileCsv = ASSETS_FOLDER + '\\' + file
+                    # to work on server:
+                    currentFileCsv = ASSETS_FOLDER + '/' + file
                     print('--------------')
                     print("Found TAG ("+ word +") in filename , check if tag is already associated with an object...")
                     #--------------------                                
