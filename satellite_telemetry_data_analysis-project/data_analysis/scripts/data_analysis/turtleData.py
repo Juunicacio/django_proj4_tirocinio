@@ -153,10 +153,13 @@ class TurtleData:
         #self.allGpsDf2019 = pd.DataFrame()
         self.allCleanedGpsDf = pd.DataFrame()
         self.allCleanedGpsDfCsvName = ""
+        self.totalGpsCoordReceived = None
         self.noReliableGpsDf = pd.DataFrame()
         self.noReliableGpsDfCsvName = ""
+        self.totalnoReliableGpsCoord = None
         self.reliableGpsDf = pd.DataFrame()
         self.reliableGpsDfCsvName = ""
+        self.totalReliableGpsCoord = None
         self.remainingDataDf = pd.DataFrame()
         self.remainingDataDfCsvName = ""
         self.depthDataDf = pd.DataFrame()
@@ -1023,3 +1026,23 @@ class TurtleData:
         #df.to_json()
         return checkIfJsonHasBeenSavedAndSaveJson(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataWithApprxCoordDf, self.depthDataJsonName)
     
+
+    def assignAmountOfDataObtained(self):
+        '''
+        Saving the amount of GPS coordinates obtained
+        '''
+        self.totalGpsCoordReceived = len(self.allCleanedGpsDf.index)
+        self.totalnoReliableGpsCoord = len(self.noReliableGpsDf.index)
+        self.totalReliableGpsCoord = len(self.reliableGpsDf.index)
+    
+
+    def drawGraphs(self):
+        #figsize1=(6,7)
+        #figsize2=(7,7)
+        #colors1= ["#26ed1f", "#1f71ed"]
+        colors2 = ["#26ed1f", "#ff001e"]
+        #startangle1=40
+        startangle2=140
+        pieCompareTwoData(self.totalReliableGpsCoord, self.totalnoReliableGpsCoord, labels=["Positions with acceptable accuracy", "Positions with over-speed errors"],
+            startangle=startangle2, colors= colors2, title= f" GPS Positions transmitted by the {self.turtleTag} Tagged Turtle", folderToSave=self.DATACLEANINGRESULTS_FOLDER
+        )

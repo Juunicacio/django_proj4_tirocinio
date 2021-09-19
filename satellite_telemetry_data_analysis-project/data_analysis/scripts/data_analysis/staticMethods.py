@@ -3,6 +3,9 @@ import datetime as dt # for reliable gps and for depth halfTime
 import numpy as np
 from .Point import Point
 
+# for graphs
+import matplotlib.pyplot as plt
+
 # staticMethodFunctions
 def basedNamesForCsv(lastEntryRowDF, selfDfNameString, selfTurtleTag, selfSpecificFileName=""):
     for value in enumerate(lastEntryRowDF):
@@ -162,3 +165,30 @@ def createPoint(gps1, gps2, depth):
     # If I want to return the HalfTimeDepth I need to put in return below: halfDepthPoint
     # If I want to return the AquisitionTimeDepth I need to put in return below: depthPoint
     return depthPoint
+
+# function to help transform the percentages in the graph in normal values
+def autopct_format(values):
+    def my_format(pct):
+        total= sum(values)
+        val = int(round(pct*total/100.0))
+        return '{v:d} ({p:.2f}%)'.format(v=val, p=pct)
+    return my_format
+
+def lowerStringAndReplace(string):
+    new_string = string.lower()
+    return  new_string.replace(" ", "_")
+
+
+def pieCompareTwoData(group1, group2, labels ,startangle, colors, title, folderToSave):
+    plt.figure(figsize=(10,7))
+    plt.pie([group1, group2], labels=labels, 
+        autopct= autopct_format([group1,group2]), shadow=True, 
+        startangle=startangle, colors=colors, pctdistance=0.6, explode=[0,.1])
+    plt.title(title, fontsize=18) #bbox={'facecolor':'0.9', 'pad':5})
+    #titleToSaveFig = title.rsplit(' ', 10)[0]
+    titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+    #print("TITLE TO SAVE THE FIGURES")
+    print(titleToSaveFig)
+    plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+    #plt.savefig(titleToSaveFig + '.png', dpi=300)
+    #plt.show()

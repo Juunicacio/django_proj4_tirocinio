@@ -121,13 +121,16 @@ def data_analysis_main():
 
     dTypes(turtlesData)
 
-    getJson(turtlesData)
-    
+    getJson(turtlesData)   
 
     #print(jsonGpsData_tag_710333a)
     #print(jsonGpsData_tag_710348a)
     #print(jsonDepthData_tag_710333a)
     #print(jsonDepthData_tag_710348a)
+
+    getAmountOfDataObtained(turtlesData)
+
+    seeGraphs(turtlesData)
 
 #if __name__ == "__main__":
     #main()

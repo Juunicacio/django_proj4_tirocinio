@@ -392,3 +392,11 @@ def getJson(turtlesData):
         #get depth json from df
         turtleData.generateDepthDataJsonName()
         turtleData.saveDepthDataDfToJson()
+
+def getAmountOfDataObtained(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.assignAmountOfDataObtained()
+
+def seeGraphs(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.drawGraphs()
