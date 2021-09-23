@@ -12,6 +12,10 @@ import sys
 import matplotlib.pyplot as plt #produces maps and diagrams
 import json
 
+# for sunset and sunrise time calculation python library
+#import time
+# For the UTC timezone
+#import pytz
 
 from .staticMethods import *
 from .GPSInfo import GPSInfo
@@ -165,6 +169,8 @@ class TurtleData:
         self.totalReliableGpsCoord = None
         self.usedFixCategoriesDict = {}
         self.fixCategoriesDf = pd.DataFrame()
+        self.reliableGpsDfWithSkyIllumination = pd.DataFrame()
+        self.reliableGpsDfWithSkyIlluminationCsvName = ""
         self.remainingDataDf = pd.DataFrame()
         self.remainingDataDfCsvName = ""
         self.depthDataDf = pd.DataFrame()
@@ -1140,3 +1146,89 @@ class TurtleData:
         #drawFixAttemptGraph(self.usedFixCategories)
         #drawFixAttemptGraph(self.noReliableGpsDf, 'GPS Fix Attempt', self.noReliableGpsDf, self.reliableGpsDf, title="Fix Attempt test", folderToSave=self.DATACLEANINGRESULTS_FOLDER)
         drawBarFixAttemptGraph(self.fixCategoriesDf, title= f"{i} Percentage of GPS Data across QFP Position Categories ", turtleTag= self.turtleTag, folderToSaveItems=self.DATACLEANINGRESULTS_FOLDER_ITENS, folderToSave=self.DATACLEANINGRESULTS_FOLDER)
+    
+    def dawnAndDuskTimesBasedOnCoordinates(self):
+        ## Converting data to a NumPy array.        
+        latitudes = self.reliableGpsDf[['GPS Latitude']].to_numpy() 
+        longitudes = self.reliableGpsDf[['GPS Longitude']].to_numpy()
+        acquisitionTimes = self.reliableGpsDf['Acquisition Time'].to_numpy()
+        #print(acquisitionTimes)
+
+        illuminatedSky = []
+        dawnTimes = []
+        duskTimes = []
+
+        #print(self.turtleTag)
+
+        i=0
+        while i < (len(latitudes)):        
+        #while i < 4:
+            #print(latitudes[i], longitudes[i])
+            # datePlusTime = acquisitionTimes[i]
+            # print(datePlusTime) # 2020.08.12 03:33:54
+            # date = dt.datetime.strptime(datePlusTime, "%Y.%m.%d %H:%M:%S")
+            # #date = dt.datetime.strptime(acquisitionTimes[1], "%Y.%m.%d")
+            # print(date) # 2020-08-12 03:33:54
+            # myDataFormat = str(date).replace("-", ", ")[:-8] # 2020, 08, 12 03:33:54 # [:-8] = 2020, 08, 12
+            # print(myDataFormat)
+            thatDate = stringDateFormatToDaySuntime(acquisitionTimes[i])
+            #print(thatDate) # = 'datetime.date' object
+
+            dawn, dusk = additionalLocationsSunInfoAstral(latitudes[i], longitudes[i], thatDate)
+            # 2020-08-12 03:40:39.410554+00:00 # = 'datetime.date' object
+            # 2020-08-12 18:21:12.184868+00:00 # = 'datetime.date' object
+            # stringDawn = dawn.strftime("%Y.%m.%d %H:%M:%S") # 2020.08.12 03:40:39
+            # stringDusk = dusk.strftime( "%Y.%m.%d %H:%M:%S") # 2020.08.12 18:21:12
+            # print(stringDawn)
+            # print(stringDusk)
+            acqTime = acquisitionTimes[i]
+            #print(acqTime) # 2020.08.12 03:33:54
+            acqTimeDatetime= stringIntoDate(acqTime)
+            # add UTC timezone            
+            acqTimeDatetimeAware = addUTCtimezoneToDatetime(acqTimeDatetime)
+            print("acqTimeDatetimeAware, dawn and dusk =")
+            print(acqTimeDatetimeAware)
+            print(dawn)
+            print(dusk)
+            dawnTimes.append(dawn)      
+            duskTimes.append(dusk)      
+            if acqTimeDatetimeAware < dusk and acqTimeDatetimeAware < dawn:
+                isIlluminated = False
+                print("darkness")
+                illuminatedSky.append(isIlluminated)
+            elif acqTimeDatetimeAware > dusk or acqTimeDatetimeAware < dawn:
+                isIlluminated = False
+                print("darkness")
+                illuminatedSky.append(isIlluminated)
+            elif acqTimeDatetimeAware > dawn and acqTimeDatetimeAware < dusk:
+                isIlluminated = True
+                print("lightness")
+                illuminatedSky.append(isIlluminated)
+            else:
+                print("did not enter here")
+            i+=1
+        # see sky list of boolean
+        print(illuminatedSky)
+
+        ### CREATING NEW COLUMNS SAVE THEM INTO A NEW SELF DF       
+        self.reliableGpsDf['Daylight'] = illuminatedSky
+        #  Observer (Lat and Lon) for which to calculate the times of the sun   
+        self.reliableGpsDf['Position Dawn time'] = dawnTimes
+        self.reliableGpsDf['Position Dusk Time'] = duskTimes
+        self.reliableGpsDfWithSkyIllumination = self.reliableGpsDfWithSkyIllumination.append(self.reliableGpsDf, ignore_index=True)        
+        print("Assign the reliableGpsDfWithSkyIllumination GPS DF into self")
+        print(self.reliableGpsDfWithSkyIllumination)
+    
+    def generateReliableGpsDfWithSkyIlluminationCsvName(self):
+        # Last entry:
+        lastEntry = self.reliableGpsDfWithSkyIllumination['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.reliableGpsDfWithSkyIlluminationCsvName = basedNamesForCsv(lastEntry, "reliableGpsDfWithSkyIllumination", self.turtleTag)
+
+    def saveReliableGpsDfWithSkyIllumination(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIllumination, self.reliableGpsDfWithSkyIlluminationCsvName)
+    

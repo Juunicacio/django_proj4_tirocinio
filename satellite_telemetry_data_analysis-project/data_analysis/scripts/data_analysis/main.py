@@ -132,6 +132,8 @@ def data_analysis_main():
 
     seeGraphs(turtlesData)
 
+    getDawnAndDuskTimesBasedOnCoordinates(turtlesData)
+
 #if __name__ == "__main__":
     #main()
 

@@ -402,4 +402,10 @@ def seeGraphs(turtlesData):
     for turtleData in turtlesData:
         i+=1
         turtleData.drawGraphs(i)
+
+def getDawnAndDuskTimesBasedOnCoordinates(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.dawnAndDuskTimesBasedOnCoordinates()
+        turtleData.generateReliableGpsDfWithSkyIlluminationCsvName()
+        turtleData.saveReliableGpsDfWithSkyIllumination()
         

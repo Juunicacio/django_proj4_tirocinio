@@ -9,6 +9,15 @@ import pandas as pd
 # for graphs
 import matplotlib.pyplot as plt
 
+# for sunset and sunrise time calculation python library
+# Additional Locations
+import astral
+from astral.sun import sun
+
+# timezone aware datetime
+import pytz
+
+
 # staticMethodFunctions
 def basedNamesForCsv(lastEntryRowDF, selfDfNameString, selfTurtleTag, selfSpecificFileName=""):
     for value in enumerate(lastEntryRowDF):
@@ -34,6 +43,9 @@ def calculateDistance(geodRef, lon1, lat1, lon2, lat2):
 
 def convertUnixTimeFromString(timeString):
     return dt.datetime.strptime(timeString, '%Y.%m.%d %H:%M:%S').timestamp() #[i] is the position in an array
+
+def stringIntoDate(timeString):
+    return dt.datetime.strptime(timeString, '%Y.%m.%d %H:%M:%S')
 
 def calculateSpeed(d, t1, t2):
     speed = d / (t2 - t1)
@@ -362,3 +374,61 @@ def drawBarFixAttemptGraph(fixDf, title, turtleTag, folderToSaveItems, folderToS
     # fixDf.plot(x =fixDf.index, kind='barh',stacked=True, title=title[1:], mark_right=True)
     # df_rel = fixDf[fixDf.columns[1:]]
     # print(df_rel)
+
+def stringDateFormatToDaySuntime(acqTime): # 2020.08.12 03:33:54 to 2020, 08, 12
+    datePlusTime = acqTime
+    #print(datePlusTime) # 2020.08.12 03:33:54
+    date = dt.datetime.strptime(datePlusTime, "%Y.%m.%d %H:%M:%S")
+    #print(date) # 2020-08-12 03:33:54
+    myDataFormat = str(date).replace("-", ", ")[:-9] # 2020, 08, 12 03:33:54 # [:-9] = 2020, 08, 12
+    #print(myDataFormat) # '2020, 08, 12'
+    separeString = myDataFormat.split(", ")
+    #print(separeString) # ['2020', '08', '12']
+    stringIntoInt = [int(num) for num in separeString]
+    #print(stringIntoInt) # we have a list [2020, 7, 9]
+    year = stringIntoInt[0]
+    #print(year)
+    month = stringIntoInt[1]
+    #print(month)
+    day = stringIntoInt[2]
+    #print(day)
+    thatDate = dt.date(year, month, day) # string to day
+    return thatDate
+
+def additionalLocationsSunInfoAstral(latitude, longitude, thatDate):
+    sunObserver = astral.Observer(latitude,longitude, 0) #, tzinfo=<UTC>
+    s = sun(observer=sunObserver, date=thatDate)
+    #print(sunObserver)
+    #print(s)
+    for key in [
+        'dawn', # datetime.datetime(2020, 8, 12, 3, 40, 39, 410554, tzinfo=<UTC>
+        'dusk', 
+        'noon', 
+        'sunrise', 
+        'sunset' 
+        ]:        
+        #print(f'{key:10s}:', s[key])
+        #print(key)
+        if key == 'dawn':
+            print("--------- There is lightness after: ")
+            print(f'{key:10s}:', s[key])
+            dawn = s[key]
+            print("see dawn") 
+            print(dawn)
+        elif key == 'dusk':
+            print("--------- There is darkness after: ")
+            print(f'{key:10s}:', s[key])
+            dusk = s[key]
+            print("see dusk") 
+            print(dusk)
+        else:
+            break
+    #print(dawn) # 2020-08-12 03:40:39.410554+00:00
+    #print(dusk) # 2020-08-12 18:21:12.184868+00:00
+    return dawn, dusk
+
+def addUTCtimezoneToDatetime(datetimeUnaware):
+    timeZoneAware = datetimeUnaware.replace(tzinfo=pytz.UTC)
+    #print(timeZoneAware) # 2020-08-12 03:02:44+00:00
+    #print("--------- timeZoneAware ABOVE: ")
+    return timeZoneAware
