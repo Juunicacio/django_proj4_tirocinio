@@ -398,5 +398,8 @@ def getAmountOfDataObtained(turtlesData):
         turtleData.assignAmountOfDataObtained()
 
 def seeGraphs(turtlesData):
+    i = 0
     for turtleData in turtlesData:
-        turtleData.drawGraphs()
+        i+=1
+        turtleData.drawGraphs(i)
+        

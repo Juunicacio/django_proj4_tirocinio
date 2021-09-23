@@ -3,6 +3,9 @@ import datetime as dt # for reliable gps and for depth halfTime
 import numpy as np
 from .Point import Point
 
+# for Fix graph
+import pandas as pd
+
 # for graphs
 import matplotlib.pyplot as plt
 
@@ -178,17 +181,184 @@ def lowerStringAndReplace(string):
     new_string = string.lower()
     return  new_string.replace(" ", "_")
 
+def checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, graphTitle):
+    GraphsInResultsFolder = []
+    for file in folderToSaveItems:
+        if file.endswith('.png'):
+            GraphsInResultsFolder.append(file) 
+    print(GraphsInResultsFolder)
+    if not GraphsInResultsFolder:
+        print(f"The Graph {graphTitle} is not yet in the folder... saving graph")
+        pathToFilePlusGraphName = os.path.join(folderToSave, graphTitle)
+        plt.savefig(pathToFilePlusGraphName + '.png', dpi=300)
+        print(f"{graphTitle} has been saved in the results folder!")
+    elif graphTitle + '.png' in GraphsInResultsFolder:
+        print(f"The Graph {graphTitle} has already been saved in the results folder")
+    else:
+        print(f"The Graph {graphTitle} is not yet in the folder... saving graph")
+        pathToFilePlusGraphName = os.path.join(folderToSave, graphTitle)
+        plt.savefig(pathToFilePlusGraphName + '.png', dpi=300)
+        print(f"{graphTitle} has been saved in the results folder!")
+    print('--------------')
 
-def pieCompareTwoData(group1, group2, labels ,startangle, colors, title, folderToSave):
-    plt.figure(figsize=(10,7))
-    plt.pie([group1, group2], labels=labels, 
+
+def pieCompareTwoData(group1, group2, labels ,startangle, colors, title, folderToSaveItems, folderToSave):
+    plt.figure(figsize=(7,7))
+    plt.pie([group1, group2], #labels=labels, 
         autopct= autopct_format([group1,group2]), shadow=True, 
         startangle=startangle, colors=colors, pctdistance=0.6, explode=[0,.1])
     plt.title(title, fontsize=18) #bbox={'facecolor':'0.9', 'pad':5})
     #titleToSaveFig = title.rsplit(' ', 10)[0]
     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
     #print("TITLE TO SAVE THE FIGURES")
+    plt.legend(labels, loc="lower right", fontsize=16)#loc="best")
     print(titleToSaveFig)
-    plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
+    #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
     #plt.savefig(titleToSaveFig + '.png', dpi=300)
     #plt.show()
+
+# def drawFixAttemptGraph(df, columnName, group1, group2, title, folderToSave):
+#     fig, ax = plt.subplots(figsize=(10,4))
+#     for key, grp in df.groupby([columnName]):
+#         ax.plot(grp[group1], grp[group2], label=key)
+#     ax.legend()
+#     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+#     plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+# def drawFixAttemptGraph(dataset1, dataset2, title, folderToSave):
+#     fig = pd.crosstab(dataset1, dataset2).plot(kind='bar', figsize=(7,6), fontsize=14).get_figure()
+#     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+#     #dataset.plot(kind=bar)
+
+# def drawFixAttemptGraph(dataset1, dataset2, title, folderToSave):
+#     bar_width = 0.4
+#     bar_height = 1
+#     # Initialize the vertical-offset for the stacked bar chart.
+#     y_offset = np.zeros(2)#len(columns))
+#     fig, ax = plt.subplots(2)
+#     #plt.xlabel('categories')
+#     plt.ylabel('quantity')
+#     #print("--------------------HERE")
+#     #plt.bar(width=bar_width, height=bar_height, bottom=y_offset)
+#     plt.bar(width=bar_width, height=bar_height, x='categories')
+#     #dict1 = dict(zip(dataset1.array, dataset1.axes[0]))
+#     #print(f"{dict1}--------------dict 01")
+#     #dict2 = dict(zip(dataset2.array, dataset2.axes[0]))
+#     #print(f"{dict2}--------------dict 02")
+#     #print(dataset1.array) #[2832, 173, 6, 204]
+#     #print(dataset1.axes) # [Index(['Resolved QFP', 'Resolved QFP (Uncertain)', 'Succeeded', 'Unresolved QFP']  
+#     ax[0].plot(dataset1.axes[0], dataset1.array)
+#     ax[1].plot(dataset2.axes[0], dataset2.array)
+#     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+# def drawFixAttemptGraph(x1, y1, x2, y2, title, folderToSave):
+#     fig, ax = plt.subplots(nrows=2,ncols=1)
+#     plt.xlabel('categories')
+#     plt.ylabel('quantity')
+#     #print(dataset1.array) #[2832, 173, 6, 204]
+#     #print(dataset1.axes) # [Index(['Resolved QFP', 'Resolved QFP (Uncertain)', 'Succeeded', 'Unresolved QFP']  
+#     ax[0].plot(x1, y1)
+#     ax[1].plot(x2, y2)
+#     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+# def drawFixAttemptGraph(df1, df2, title, folderToSave):
+#     fig = plt.figure(figsize=(8,7))
+#     subplot1 = fig.add_subplot(1,2,1)
+#     subplot1.plot(df1)
+#     subplot2 = fig.add_subplot(2,4,2)
+#     subplot2.plot(df2)
+#     fig.suptitle(title)
+#     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+# def drawFixAttemptGraph(dataset, title, folderToSave):
+#     fig = plt.figure(figsize=(8,7))
+#     #fig = dataset.plot()
+#     #fig.sort_values(['GPS Fix Attempt'], ascending=False).plot(kind='barh'), #y='GPS Fix Attempt', x='GPS Fix Attempt')
+#     fig.plot(kind='barh')#, y='GPS Fix Attempt', x='GPS Fix Attempt')
+#     #fig.suptitle(title)
+#     titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+# def drawBarFixAttemptGraph(dataset1, dataset2, title, folderToSave):
+#     fig = plt.figure(figsize=(8,7))
+#     subplot1 = fig.add_subplot()
+#     subplot1.plot(dataset1.array, dataset1.axes[0])
+#     subplot2 = fig.add_subplot()
+#     subplot2.plot(dataset2.array, dataset2.axes[0])    
+#     fig.suptitle(title)
+#     titleToSaveFig = lowerStringAndReplace(title) + "_bar_graph"
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+# def drawBarFixAttemptGraph(fixDf, title, folderToSave):
+#     plot = fixDf.plot(kind='bar')
+#     print("--------------------HERE")
+#     fig = plot.get_figure()
+#     titleToSaveFig = lowerStringAndReplace(title) + "_bar_chart "
+#     fig.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+
+def drawBarFixAttemptGraph(fixDf, title, turtleTag, folderToSaveItems, folderToSave):
+    red = "#ff001e"
+    green = "#26ed1f"
+    plt.figure(figsize=(16,10))
+    #colors = ['Blue', 'Yellow', 'Red', 'Green']
+    
+    # draw percentages in the graph
+    graph = plt.bar(x=fixDf.index, height=fixDf["Filtered QFP"], align='center', data=fixDf)
+    #graph = plt.bar(fixDf.Format, fixDf["Filtered QFP"], colors=colors)
+    # draw title on the graph
+    titleComplement = turtleTag + " Transmitter Tag Data"
+    graphTitle = plt.title(title[1:] + "\n- " + titleComplement, fontsize=18)
+    print(graphTitle)
+
+    totals = fixDf["Overall Recorded QFP"]
+    greenBars = [i/ j *100 for i, j in zip(fixDf["Mantained QFP"], totals)] # percentage
+    orangeBars = [i/ j *100 for i, j in zip(fixDf["Filtered QFP"], totals)] # percentage
+    #print(greenBars)
+    #print(orangeBars)
+
+    # draw percentages in the graph
+    i = 0
+    for p in graph:
+        width = p.get_width()
+        #height = p.get_heigth()
+        x, y = p.get_xy()
+
+        # the y is the height of the percentages text in the bar
+        plt.text(x+width/2, y+orangeBars[i]*1.01, str(fixDf['Filtered % of Overall'][i])+'%', ha='center', weight='bold')
+        plt.text(x+width/2, y+95*1.01, str(fixDf['Mantained % of Overall'][i])+'%', ha='center', weight='bold')
+        #print("___________________________________________")
+        #print(orangeBars[i]) # percentage value of each column in the bar graph for the filtered data
+        #print(greenBars[i]) # percentage value of each column in the bar graph for the mantained data
+        i+=1
+
+    barWidth = 0.85
+    names = fixDf.index
+    # Create orange Bars
+    plt.bar(names, orangeBars, color = red, #edgecolor='white', 
+        width=barWidth, label="Filtered \nOver-speed \nerrors")
+    # Create green Bars
+    plt.bar(names, greenBars, bottom=orangeBars, color = green, #edgecolor='white', 
+        width=barWidth, label="Reliable \nGPS \nlocations")    
+
+    # Custom x axis
+    #plt.xticks(fixDf.shape[0], names)
+    plt.xticks(names)
+    plt.xlabel("QFP Categories", fontsize=14)
+    plt.ylabel("Overall %", fontsize=14)
+    # Add a legend
+    plt.legend(loc='upper left', bbox_to_anchor=(1,1), ncol=1)
+    titleToSaveFig = lowerStringAndReplace(title) + "_bar_chart"
+    #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
+
+    # #df = fixDf.iloc[:, 0:2]
+    # #df = fixDf.index
+    # #print(df)
+    # fixDf.plot(x =fixDf.index, kind='barh',stacked=True, title=title[1:], mark_right=True)
+    # df_rel = fixDf[fixDf.columns[1:]]
+    # print(df_rel)

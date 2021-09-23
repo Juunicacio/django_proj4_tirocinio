@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from pandas.core.indexes.base import Index
 #import pyproj as pj # for reliable gps
 # or from pyproj import Geod (and remove the pj when executing the functionality)
 from pyproj import Geod, Proj
@@ -154,12 +155,16 @@ class TurtleData:
         self.allCleanedGpsDf = pd.DataFrame()
         self.allCleanedGpsDfCsvName = ""
         self.totalGpsCoordReceived = None
+        self.allSentFixCategoriesDict = {}
         self.noReliableGpsDf = pd.DataFrame()
         self.noReliableGpsDfCsvName = ""
         self.totalnoReliableGpsCoord = None
+        self.deletedFixCategoriesDict = {}
         self.reliableGpsDf = pd.DataFrame()
         self.reliableGpsDfCsvName = ""
         self.totalReliableGpsCoord = None
+        self.usedFixCategoriesDict = {}
+        self.fixCategoriesDf = pd.DataFrame()
         self.remainingDataDf = pd.DataFrame()
         self.remainingDataDfCsvName = ""
         self.depthDataDf = pd.DataFrame()
@@ -1034,9 +1039,91 @@ class TurtleData:
         self.totalGpsCoordReceived = len(self.allCleanedGpsDf.index)
         self.totalnoReliableGpsCoord = len(self.noReliableGpsDf.index)
         self.totalReliableGpsCoord = len(self.reliableGpsDf.index)
+        '''
+        Grouping and perform count over each categorie in GPS Fix Attempt ALL
+        '''
+        allSentFixCategories = self.allCleanedGpsDf.groupby('GPS Fix Attempt')['GPS Fix Attempt'].count()
+        print(f"Quantity of ALL Fix Categories for the {self.turtleTag}")
+        print(allSentFixCategories)
+        self.allSentFixCategoriesDict = dict(zip(allSentFixCategories.axes[0], allSentFixCategories.array))
+        print(f"{self.allSentFixCategoriesDict}--------------allSentFixCategoriesDict dict")
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        '''
+        Grouping and perform count over each categorie in GPS Fix Attempt DELETED
+        '''
+        deletedFixCategories = self.noReliableGpsDf.groupby('GPS Fix Attempt')['GPS Fix Attempt'].count()
+        print(f"Quantity of filtered Fix Categories for the {self.turtleTag}")
+        print(deletedFixCategories)
+        self.deletedFixCategoriesDict = dict(zip(deletedFixCategories.axes[0], deletedFixCategories.array))
+        print(f"{self.deletedFixCategoriesDict}--------------deletedFixCategoriesDict dict")
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        '''
+        Grouping and perform count over each categorie in GPS Fix Attempt USED
+        '''
+        usedFixCategories = self.reliableGpsDf.groupby('GPS Fix Attempt')['GPS Fix Attempt'].count()
+        print(f"Quantity of remaining Fix Categories for the {self.turtleTag}")
+        print(usedFixCategories)
+        #print(usedFixCategories.unstack)
+        #print(usedFixCategories.describe)
+        #print(usedFixCategories.dtype)
+        #print(usedFixCategories.name)
+        #print(usedFixCategories.value_counts)
+        #print(usedFixCategories.values) #[2832  173    6  204]
+        #print(usedFixCategories.sort_values)
+        #print(usedFixCategories.array) #[2832, 173, 6, 204]
+        #print(usedFixCategories.axes[0]) # [Index(['Resolved QFP', 'Resolved QFP (Uncertain)', 'Succeeded', 'Unresolved QFP'],
+        #print(usedFixCategories.items)
+        #print(usedFixCategories.iloc)
+        self.usedFixCategoriesDict = dict(zip(usedFixCategories.axes[0], usedFixCategories.array))
+        print(f"{self.usedFixCategoriesDict}--------------usedFixCategoriesDict dict")
+        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+
+        # creating a df with total of the Fix Attemps in Categories and total of them deleted
+        d = {
+        'Filtered QFP': self.deletedFixCategoriesDict,
+        'Mantained QFP': self.usedFixCategoriesDict,
+        'Overall Recorded QFP': self.allSentFixCategoriesDict,
+        }
+        print(f"{d}-------------------------SEE DF")
+        #temporaryFixDf = pd.DataFrame(d) #columns=)
+        temporaryFixDf = pd.DataFrame(d).reset_index() #columns=['Filtered QFP', 'Overall Recorded QFP']) #columns=)
+        print(f"{temporaryFixDf}-------------------------SEE DF")
+        self.fixCategoriesDf = self.fixCategoriesDf.append(temporaryFixDf, ignore_index=True)
+        print(self.fixCategoriesDf)
+        self.fixCategoriesDf.set_index(['index'], inplace=True)
+        self.fixCategoriesDf.index.names = ['QFP Categories']
+        print(self.fixCategoriesDf)
+        #print(self.fixCategoriesDf.describe)
+
+        # calculating the percentage of the deleted fix attemps and mantained with respect to total receved, 
+        # adding a percentage field in the dataframe
+        filPercentages = []
+        mantPercentages = []
+        #print("df.shape[0] = ")
+        #print(self.fixCategoriesDf.shape[0]) # 4 lines
+        #print(self.fixCategoriesDf.shape[1]) # 2 coluns
+        for i in range(self.fixCategoriesDf.shape[0]):
+            filPct = (self.fixCategoriesDf["Filtered QFP"][i] / self.fixCategoriesDf["Overall Recorded QFP"][i]) *100
+            mantPct = (self.fixCategoriesDf["Mantained QFP"][i] / self.fixCategoriesDf["Overall Recorded QFP"][i]) *100
+            #print(filPct)
+            #print(mantPct)
+            filPercentages.append(round(filPct, 2))
+            mantPercentages.append(round(mantPct, 2))
+            # display percentages
+        #print(filPercentages)
+        #print(mantPercentages)
+        # display data
+        self.fixCategoriesDf['Filtered % of Overall'] = filPercentages
+        self.fixCategoriesDf['Mantained % of Overall'] = mantPercentages
+        # replace NaN values to 0
+        self.fixCategoriesDf = self.fixCategoriesDf.fillna(0)
+        print(self.fixCategoriesDf)
+        #print(self.fixCategoriesDf.index[0]) # Resolved QFP
+        #print("df.__format__ = ")
+        #print(self.fixCategoriesDf.__format__)
     
 
-    def drawGraphs(self):
+    def drawGraphs(self, i):
         #figsize1=(6,7)
         #figsize2=(7,7)
         #colors1= ["#26ed1f", "#1f71ed"]
@@ -1044,5 +1131,12 @@ class TurtleData:
         #startangle1=40
         startangle2=140
         pieCompareTwoData(self.totalReliableGpsCoord, self.totalnoReliableGpsCoord, labels=["Positions with acceptable accuracy", "Positions with over-speed errors"],
-            startangle=startangle2, colors= colors2, title= f" GPS Positions transmitted by the {self.turtleTag} Tagged Turtle", folderToSave=self.DATACLEANINGRESULTS_FOLDER
+            startangle=startangle2, colors= colors2, title= f" GPS Positions recorded by {self.turtleTag} transmitter tag", folderToSaveItems=self.DATACLEANINGRESULTS_FOLDER_ITENS, folderToSave=self.DATACLEANINGRESULTS_FOLDER
         )
+        #drawFixAttemptGraph(self.noReliableGpsDf, self.reliableGpsDf , title="Fix Attempt test", folderToSave=self.DATACLEANINGRESULTS_FOLDER)
+        #drawFixAttemptGraph(self.deletedFixCategories, self.usedFixCategories , title="Fix Attempt test", folderToSave=self.DATACLEANINGRESULTS_FOLDER)
+        #drawFixAttemptGraph(self.deletedFixCategories.axes[0], self.deletedFixCategories.array, self.usedFixCategories.axes[0], self.usedFixCategories.array, title="Fix Attempt test", folderToSave=self.DATACLEANINGRESULTS_FOLDER)
+        #drawFixAttemptGraph(self.deletedFixCategories)
+        #drawFixAttemptGraph(self.usedFixCategories)
+        #drawFixAttemptGraph(self.noReliableGpsDf, 'GPS Fix Attempt', self.noReliableGpsDf, self.reliableGpsDf, title="Fix Attempt test", folderToSave=self.DATACLEANINGRESULTS_FOLDER)
+        drawBarFixAttemptGraph(self.fixCategoriesDf, title= f"{i} Percentage of GPS Data across QFP Position Categories ", turtleTag= self.turtleTag, folderToSaveItems=self.DATACLEANINGRESULTS_FOLDER_ITENS, folderToSave=self.DATACLEANINGRESULTS_FOLDER)
