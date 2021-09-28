@@ -408,4 +408,8 @@ def getDawnAndDuskTimesBasedOnCoordinates(turtlesData):
         turtleData.dawnAndDuskTimesBasedOnCoordinates()
         turtleData.generateReliableGpsDfWithSkyIlluminationCsvName()
         turtleData.saveReliableGpsDfWithSkyIllumination()
+        turtleData.dawnAndDuskTimesBasedOnDepthDataCoordinates()
+        turtleData.generateDepthDataReliableGpsDfWithSkyIlluminationCsvName()
+        turtleData.saveDepthDataReliableGpsDfWithSkyIllumination()
+
         

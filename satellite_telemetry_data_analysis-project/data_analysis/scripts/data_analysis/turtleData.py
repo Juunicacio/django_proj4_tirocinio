@@ -177,6 +177,8 @@ class TurtleData:
         self.depthDataDfCsvName = ""
         self.depthDataWithApprxCoordDf = pd.DataFrame()
         self.depthDataWithApprxCoordDfCsvName = ""
+        self.depthDataWithApprxCoordDfWithSkyIllumination = pd.DataFrame()
+        self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName = ""
         self.crs = ""
         self.ellps = ""
         self.proj4 = ""
@@ -1231,4 +1233,104 @@ class TurtleData:
 
     def saveReliableGpsDfWithSkyIllumination(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIllumination, self.reliableGpsDfWithSkyIlluminationCsvName)
+    
+
+    def dawnAndDuskTimesBasedOnDepthDataCoordinates(self):
+        ## Converting data to a NumPy array.        
+        latitudes = self.depthDataWithApprxCoordDf[['Approx Depth AQ Time Latitude']].to_numpy() 
+        longitudes = self.depthDataWithApprxCoordDf[['Approx Depth AQ Time Longitude']].to_numpy()
+        acquisitionTimes = self.depthDataWithApprxCoordDf['Acquisition Time'].to_numpy()
+        #print(acquisitionTimes)
+
+        illuminatedSky = []
+        dawnTimes = []
+        duskTimes = []
+
+        #print(self.turtleTag)
+
+        i=0
+        while i < (len(latitudes)):      
+        #while i < 4:
+            # check if the variable is equal to itself, if it is not, it is a NaN value.
+            if latitudes[i] != latitudes[i]:
+                print("ENTER TO IF")
+                print(latitudes[i])
+                illuminatedSky.append(None)
+                break
+            else:
+                print(latitudes[i], longitudes[i])
+                # datePlusTime = acquisitionTimes[i]
+                # print(datePlusTime) # 2020.08.12 03:33:54
+                # date = dt.datetime.strptime(datePlusTime, "%Y.%m.%d %H:%M:%S")
+                # #date = dt.datetime.strptime(acquisitionTimes[1], "%Y.%m.%d")
+                # print(date) # 2020-08-12 03:33:54
+                # myDataFormat = str(date).replace("-", ", ")[:-8] # 2020, 08, 12 03:33:54 # [:-8] = 2020, 08, 12
+                # print(myDataFormat)
+                thatDate = stringDateFormatToDaySuntime(acquisitionTimes[i])
+                #print(thatDate) # = 'datetime.date' object
+
+                dawn, dusk = additionalLocationsSunInfoAstral(latitudes[i], longitudes[i], thatDate)
+                # 2020-08-12 03:40:39.410554+00:00 # = 'datetime.date' object
+                # 2020-08-12 18:21:12.184868+00:00 # = 'datetime.date' object
+                # stringDawn = dawn.strftime("%Y.%m.%d %H:%M:%S") # 2020.08.12 03:40:39
+                # stringDusk = dusk.strftime( "%Y.%m.%d %H:%M:%S") # 2020.08.12 18:21:12
+                # print(stringDawn)
+                # print(stringDusk)
+                acqTime = acquisitionTimes[i]
+                #print(acqTime) # 2020.08.12 03:33:54
+                acqTimeDatetime= stringIntoDate(acqTime)
+                # add UTC timezone            
+                acqTimeDatetimeAware = addUTCtimezoneToDatetime(acqTimeDatetime)
+                #print("acqTimeDatetimeAware, dawn and dusk =")
+                #print(acqTimeDatetimeAware)
+                #print(dawn)
+                #print(dusk)
+                dawnTimes.append(dawn)      
+                duskTimes.append(dusk)      
+                if acqTimeDatetimeAware < dusk and acqTimeDatetimeAware < dawn:
+                    isIlluminated = False
+                    print("darkness")
+                    illuminatedSky.append(isIlluminated)
+                elif acqTimeDatetimeAware > dusk or acqTimeDatetimeAware < dawn:
+                    isIlluminated = False
+                    print("darkness")
+                    illuminatedSky.append(isIlluminated)
+                elif acqTimeDatetimeAware > dawn and acqTimeDatetimeAware < dusk:
+                    isIlluminated = True
+                    print("lightness")
+                    illuminatedSky.append(isIlluminated)
+                else:
+                    print("did not enter here")
+                i+=1
+        # see sky list of boolean
+        print(illuminatedSky)
+        
+        #  df and list length
+        print(len(self.depthDataWithApprxCoordDf.index))
+        print(len(illuminatedSky))
+
+        # Length of values (2591) does not match length of index (2592)
+        # The easiest way to fix this error is to simply create a new column using a pandas Series as opposed to a NumPy array. 
+        ### CREATING NEW COLUMNS SAVE THEM INTO A NEW SELF DF       
+        self.depthDataWithApprxCoordDf['Daylight'] = pd.Series(illuminatedSky)
+        #  Observer (Lat and Lon) for which to calculate the times of the sun   
+        self.depthDataWithApprxCoordDf['Position Dawn time'] = pd.Series(dawnTimes)
+        self.depthDataWithApprxCoordDf['Position Dusk Time'] = pd.Series(duskTimes)
+        print("create df ------------------")
+        self.depthDataWithApprxCoordDfWithSkyIllumination = self.reliableGpsDfWithSkyIllumination.append(self.depthDataWithApprxCoordDf, ignore_index=True)        
+        print("Assign the depthDataWithApprxCoordDfWithSkyIllumination Depth DF into self")
+        print(self.depthDataWithApprxCoordDfWithSkyIllumination)
+    
+    def generateDepthDataReliableGpsDfWithSkyIlluminationCsvName(self):
+        # Last entry:
+        lastEntry = self.depthDataWithApprxCoordDfWithSkyIllumination['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName = basedNamesForCsv(lastEntry, "depthDataWithApprxCoordDfWithSkyIllumination", self.turtleTag)
+
+    def saveDepthDataReliableGpsDfWithSkyIllumination(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataWithApprxCoordDfWithSkyIllumination, self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName)
     

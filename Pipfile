@@ -22,6 +22,9 @@ pandas = "*"
 requests = "*"
 dash-canvas = "*"
 pyproj = "*"
+suntime = "*"
+astral = "*"
+jupyter = "*"
 
 [dev-packages]
 
