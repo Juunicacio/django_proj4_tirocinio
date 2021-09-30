@@ -1385,9 +1385,305 @@ class TurtleData:
     def saveDepthDataReliableGpsDfWithSkyIllumination(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataWithApprxCoordDfWithSkyIllumination, self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName)
 
-
-
     def calculatingDistanceByLightsAndMonths(self):
+        newdf = self.reliableGpsDfWithSkyIllumination.copy()    
+        months = {
+            1:january,
+            2:february, 
+            3:march,
+            4:april,
+            5:may,
+            6:june,
+            7:july,
+            8:august,
+            9:september,
+            10:october,
+            11:november,
+            12:december,
+        }
+        bools = {
+            False:noLight,
+            True:light,
+        }
+        # If your research have more than 2 years of data, include more lines in this dict bellow
+        yearsOfResearch = {
+            1:firstYear,
+            2:secondYear,
+        }
+        month2020NightList1 = []
+        month2020DayList1 = []
+        month2020NightList2 = []
+        month2020DayList2 = []
+        month2020NightList3 = []
+        month2020DayList3 = []
+        month2020NightList4 = []
+        month2020DayList4 = []
+        month2020NightList5 = []
+        month2020DayList5 = []
+        month2020NightList6 = []
+        month2020DayList6 = []
+        month2020NightList7 = []
+        month2020DayList7 = []
+        month2020NightList8 = []
+        month2020DayList8 = []
+        month2020NightList9 = []
+        month2020DayList9 = []
+        month2020NightList10 = []
+        month2020DayList10 = []
+        month2020NightList11 = []
+        month2020DayList11 = []
+        month2020NightList12 = []
+        month2020DayList12 = []
+        month2021NightList1 = []
+        month2021DayList1 = []
+        month2021NightList2 = []
+        month2021DayList2 = []
+        month2021NightList3 = []
+        month2021DayList3 = []
+        month2021NightList4 = []
+        month2021DayList4 = []
+        month2021NightList5 = []
+        month2021DayList5 = []
+        month2021NightList6 = []
+        month2021DayList6 = []
+        month2021NightList7 = []
+        month2021DayList7 = []
+        month2021NightList8 = []
+        month2021DayList8 = []
+        month2021NightList9 = []
+        month2021DayList9 = []
+        month2021NightList10 = []
+        month2021DayList10 = []
+        month2021NightList11 = []
+        month2021DayList11 = []
+        month2021NightList12 = []
+        month2021DayList12 = []
+        i=0
+        while i < (len(newdf.index)):                     
+            if newdf['Data Year'][i] == 2020:
+                n = 1
+                selectedYearDf = yearsOfResearch[n](newdf)
+                distanceValue = selectedYearDf['Distance (m)'][i]                
+                boolLight = bools[selectedYearDf['Daylight'][i]]()
+                
+                if selectedYearDf['Data Month'][i] == 1:
+                    month2020NightList1, month2020DayList1 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList1, month2020DayList1, distanceValue)
+                if selectedYearDf['Data Month'][i] == 2:
+                    month2020NightList2, month2020DayList2 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList2, month2020DayList2, distanceValue)
+                if selectedYearDf['Data Month'][i] == 3:
+                    month2020NightList3, month2020DayList3 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList3, month2020DayList3, distanceValue)
+                if selectedYearDf['Data Month'][i] == 4:
+                    month2020NightList4, month2020DayList4 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList4, month2020DayList4, distanceValue)
+                if selectedYearDf['Data Month'][i] == 5:
+                    month2020NightList5, month2020DayList5 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList5, month2020DayList5, distanceValue)
+                if selectedYearDf['Data Month'][i] == 6:
+                    month2020NightList6, month2020DayList6 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList6, month2020DayList6, distanceValue)
+                if selectedYearDf['Data Month'][i] == 7:
+                    month2020NightList7, month2020DayList7 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList7, month2020DayList7, distanceValue)
+                if selectedYearDf['Data Month'][i] == 8:
+                    month2020NightList8, month2020DayList8 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList8, month2020DayList8, distanceValue)
+                if selectedYearDf['Data Month'][i] == 9:
+                    month2020NightList9, month2020DayList9 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList9, month2020DayList9, distanceValue)
+                if selectedYearDf['Data Month'][i] == 10:
+                    month2020NightList10, month2020DayList10 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList10, month2020DayList10, distanceValue)
+                if selectedYearDf['Data Month'][i] == 11:
+                    month2020NightList11, month2020DayList11 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList11, month2020DayList11, distanceValue)
+                if selectedYearDf['Data Month'][i] == 12:
+                    month2020NightList12, month2020DayList12 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList12, month2020DayList12, distanceValue)
+
+
+            if newdf['Data Year'][i] == 2021:
+                n=2
+                selectedYearDf = yearsOfResearch[n](newdf)
+                distanceValue = selectedYearDf['Distance (m)'][i]                
+                boolLight = bools[selectedYearDf['Daylight'][i]]()
+                #isListsEmpty = True
+                #enterMonth == False
+                if selectedYearDf['Data Month'][i] == 1:
+                    month2021NightList1, month2021DayList1 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList1, month2021DayList1, distanceValue)
+                if selectedYearDf['Data Month'][i] == 2:
+                    month2021NightList2, month2021DayList2 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList2, month2021DayList2, distanceValue)
+                if selectedYearDf['Data Month'][i] == 3:
+                    month2021NightList3, month2021DayList3 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList3, month2021DayList3, distanceValue)
+                if selectedYearDf['Data Month'][i] == 4:                  
+                    month2021NightList4, month2021DayList4 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList4, month2021DayList4, distanceValue)
+                if selectedYearDf['Data Month'][i] == 5:
+                    month2021NightList5, month2021DayList5 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList5, month2021DayList5, distanceValue)
+                if selectedYearDf['Data Month'][i] == 6:
+                    month2021NightList6, month2021DayList6 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList6, month2021DayList6, distanceValue)
+                if selectedYearDf['Data Month'][i] == 7:
+                    month2021NightList7, month2021DayList7 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList7, month2021DayList7, distanceValue)
+                if selectedYearDf['Data Month'][i] == 8:
+                    month2021NightList8, month2021DayList8 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList8, month2021DayList8, distanceValue)
+                if selectedYearDf['Data Month'][i] == 9:
+                    month2021NightList9, month2021DayList9 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList9, month2021DayList9, distanceValue)
+                if selectedYearDf['Data Month'][i] == 10:
+                    month2021NightList10, month2021DayList10 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList10, month2021DayList10, distanceValue)
+                if selectedYearDf['Data Month'][i] == 11:
+                    month2021NightList11, month2021DayList11 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList11, month2021DayList11, distanceValue)
+                if selectedYearDf['Data Month'][i] == 12:
+                    month2021NightList12, month2021DayList12 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList12, month2021DayList12, distanceValue)                   
+            i+=1
+
+
+
+
+
+    def anotheranother(self):
+        newdf = self.reliableGpsDfWithSkyIllumination.copy()    
+        months = {
+            1:january,
+            2:february, 
+            3:march,
+            4:april,
+            5:may,
+            6:june,
+            7:july,
+            8:august,
+            9:september,
+            10:october,
+            11:november,
+            12:december,
+        }
+        bools = {
+            False:noLight,
+            True:light,
+        }
+        # If your research have more than 5 years of data, include more lines in this dict bellow
+        yearsOfResearch = {
+            1:firstYear,
+            2:secondYear,
+            3:thirdYear,
+            4:fourthYear,
+            5:fifthYear,
+        }
+        print("HERE IS COMMING THE DICT")
+        yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS) #{1: 2020, 2: 2021}        
+        yearsList = []
+        for key,value in yearsDict.items():
+            yearsList.append(value) #yearsList[0] = 2020 #yearsList[1] = 2021
+        # first df division
+        monthList = []
+        notDuplicatesMonthList = []
+        n = 1
+        df = [n]
+        i=0
+        yearValuePositionInList = n - 1
+        dfCreated = False
+        nightList = []
+        dayList = []
+        while i < (len(newdf.index)):
+            yearDictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]                       
+            if yearDictKey > df:
+                n+=1
+                df = [n]
+                yearValuePositionInList = n - 1 
+                dfCreated = False
+            if yearDictKey == df:
+                yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]
+                #print(yearDf)                       
+                if not dfCreated:
+                    selectedYearDf = yearsOfResearch[n](yearDf)
+                    #print(selectedYearDf)                                             
+                    dfCreated = True
+                #print(selectedYearDf['Data Year'])
+                #monthDictKey = [key for key,value in months.items() if key == selectedYearDf['Data Month'][i]] 
+                #for key,value in months.items():
+                    #if (key == selectedYearDf['Data Month'][i]) and key not in notDuplicatesMonthList:
+                        #notDuplicatesMonthList.append(key)
+                #print(notDuplicatesMonthList)
+                distanceValue = selectedYearDf['Distance (m)'][i]                
+                boolLight = bools[selectedYearDf['Daylight'][i]]()
+                if selectedYearDf['Data Month'][i] == 1:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[1](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 2:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[2](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 3:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[3](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 4:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[4](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 5:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[5](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 6:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[6](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 7:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[7](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 8:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[8](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 9:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[9](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 10:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[10](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 11:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[11](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                if selectedYearDf['Data Month'][i] == 12:
+                    print("enter first--------------")
+                    print(selectedYearDf['Data Month'][i])
+                    months[12](boolLight, nightList, dayList, distanceValue)
+                    nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)
+                    
+                    
+                    
+                #months[notDuplicatesMonthList[0]](boolLight, nightList, dayList, distanceValue)
+
+                #j = 1
+                #while j < 12:
+                    #if notDuplicatesMonthList[j]
+
+                # months[monthDictKey]()  
+                #distanceValue = selectedYearDf['Distance (m)'][i]                
+                #boolLight = bools[selectedYearDf['Daylight'][i]]()
+                # total of distances
+                #nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)                      
+            i+=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def anotherone(self):
         newdf = self.reliableGpsDfWithSkyIllumination.copy()    
         months = {
             1:january,
@@ -1426,22 +1722,30 @@ class TurtleData:
         i=0
         yearValuePositionInList = n - 1
         dfCreated = False
+        nightList = []
+        dayList = []
         while i < (len(newdf.index)):
-            dictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]                       
-            if dictKey > df:
+            yearDictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]                       
+            if yearDictKey > df:
                 n+=1
                 df = [n]
                 yearValuePositionInList = n - 1 
                 dfCreated = False
-            if dictKey == df:
+            if yearDictKey == df:
                 yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]
                 #print(yearDf)                       
                 if not dfCreated:
                     selectedYearDf = yearsOfResearch[n](yearDf)
                     #print(selectedYearDf)                                             
-                    dfCreated = True 
+                    dfCreated = True
+                #print(selectedYearDf['Data Year'])
+                # monthDictKey = [key for key,value in months.items() if key == selectedYearDf['Data Month'][i]] 
+                # print(monthDictKey)
+                # months[monthDictKey]()  
+                distanceValue = selectedYearDf['Distance (m)'][i]                
                 boolLight = bools[selectedYearDf['Daylight'][i]]()
-                months[selectedYearDf['Data Month'][i]](boolLight)                      
+                # total of distances
+                nightList, dayList = months[selectedYearDf['Data Month'][i]](boolLight, nightList, dayList, distanceValue)                      
             i+=1
 
 

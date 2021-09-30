@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 # for sunset and sunrise time calculation python library
 # Additional Locations
 import astral
-from astral.sun import sun
+from astral.sun import night, sun
 
 # timezone aware datetime
 import pytz
@@ -471,106 +471,178 @@ def secondYear(yearDf):
     #print(yearDf)
     secondYearDf = pd.DataFrame(yearDf)
     return secondYearDf
-def thirdYear(yearDf):
-    #print(yearDf)
-    thirdYearDf = pd.DataFrame(yearDf)
-    return thirdYearDf
-def fourthYear(yearDf):
-    #print(yearDf)
-    fourthYearDf = pd.DataFrame(yearDf)
-    return fourthYearDf
-def fifthYear(yearDf):
-    #print(yearDf)
-    fifthYearDf = pd.DataFrame(yearDf)
-    return fifthYearDf
     
 def noLight():
     return False
 def light():
     return True
 
-def january(boolLight):
-    print("1 month")
+def january(boolLight, nightList, dayList, distanceValue):
+    #print("1 month")
     if boolLight == False:
-        print(f"january nigth")
+        #print(f"january nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"january day")
+        #print(f"january day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} january total distance at nigth")
+    print(f"{distanceInMetresInDay} january total distance in day")
+    return nightList, dayList
 
-def february(boolLight):
-    print("2 month")
+def february(boolLight, nightList, dayList, distanceValue):
+    #print("2 month")
     if boolLight == False:
-        print(f"february nigth")
+        #print(f"february nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"february day")
+        #print(f"february day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} february total distance at nigth")
+    print(f"{distanceInMetresInDay} february total distance in day")
+    return nightList, dayList
 
-def march(boolLight):
-    print("3 month")
+def march(boolLight, nightList, dayList, distanceValue):
+    #print("3 month")
     if boolLight == False:
-        print(f"march nigth")
+        #print(f"march nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"march day")
+        #print(f"march day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} march total distance at nigth")
+    print(f"{distanceInMetresInDay} march total distance in day")
+    return nightList, dayList
 
-def april(boolLight):
-    print("4 month")
+def april(boolLight, nightList, dayList, distanceValue):
+    #print("4 month")
     if boolLight == False:
-        print(f"april nigth")
+        #print(f"april nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"april day")
+        #print(f"april day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} april total distance at nigth")
+    print(f"{distanceInMetresInDay} april total distance in day")
+    return nightList, dayList
 
-def may(boolLight):
-    print("5 month")
+def may(boolLight, nightList, dayList, distanceValue):
+    #print("5 month")
     if boolLight == False:
-        print(f"may nigth")
+        #print(f"may nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"may day")
+        #print(f"may day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} may total distance at nigth")
+    print(f"{distanceInMetresInDay} may total distance in day")
+    return nightList, dayList
 
-def june(boolLight):
-    print("6 month")
+def june(boolLight, nightList, dayList, distanceValue):
+    #print("6 month")
     if boolLight == False:
-        print(f"june nigth")
+        #print(f"june nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"june day")
+        #print(f"june day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} june total distance at nigth")
+    print(f"{distanceInMetresInDay} june total distance in day")
+    return nightList, dayList
 
-def july(boolLight):
-    print("7 month")
+def july(boolLight, nightList, dayList, distanceValue):
+    #print("7 month")
     if boolLight == False:
-        print(f"july nigth")
+        #print(f"july nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"july day")
+        #print(f"july day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} july total distance at nigth")
+    print(f"{distanceInMetresInDay} july total distance in day")
+    return nightList, dayList
 
-def august(boolLight):
-    print("8 month")
+def august(boolLight, nightList, dayList, distanceValue):
+    #print("8 month")
     if boolLight == False:
-        print(f"august nigth")
+        #print(f"august nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"august day")
+        #print(f"august day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} august total distance at nigth")
+    print(f"{distanceInMetresInDay} august total distance in day")
+    return nightList, dayList
 
-def september(boolLight):
-    print("9 month")
+def september(boolLight, nightList, dayList, distanceValue):
+    #print("9 month")
     if boolLight == False:
-        print(f"september nigth")
+        #print(f"september nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"september day")
+        #print(f"september day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} september total distance at nigth")
+    print(f"{distanceInMetresInDay} september total distance in day")
+    return nightList, dayList
 
-def october(boolLight):
-    print("10 month")
+def october(boolLight, nightList, dayList, distanceValue):
+    #print("10 month")
     if boolLight == False:
-        print(f"october nigth")
+        #print(f"october nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"october day")
+        #print(f"october day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} october total distance at nigth")
+    print(f"{distanceInMetresInDay} october total distance in day")
+    return nightList, dayList
 
-def november(boolLight):
-    print("11 month")
+def november(boolLight, nightList, dayList, distanceValue):
+    #print("11 month")
     if boolLight == False:
-        print(f"november nigth")
+        #print(f"november nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"november day")
+        #print(f"november day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} november total distance at nigth")
+    print(f"{distanceInMetresInDay} november total distance in day")
+    return nightList, dayList
 
-def december(boolLight):
-    print("12 month")
+def december(boolLight, nightList, dayList, distanceValue):
+    #print("12 month")
     if boolLight == False:
-        print(f"december nigth")
+        #print(f"december nigth")
+        nightList.append(distanceValue)
     else:
-        print(f"december day")
+        #print(f"december day")
+        dayList.append(distanceValue)
+    distanceInMetresAtNight = sum(nightList)
+    distanceInMetresInDay = sum(dayList)
+    print(f"{distanceInMetresAtNight} december total distance at nigth")
+    print(f"{distanceInMetresInDay} december total distance in day")
+    return nightList, dayList
 
         
