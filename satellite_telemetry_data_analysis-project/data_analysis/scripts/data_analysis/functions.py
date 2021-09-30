@@ -416,4 +416,9 @@ def getGPSDfSeparatedByMonth(turtlesData):
     for turtleData in turtlesData:
         turtleData.calculatingDistanceByLightsAndMonths()
 
+# def getDayNightActivityGraphs(turtlesData):
+#     for turtleData in turtlesData:
+#         turtleData.create2020DistanceGraphDayAndNight()
+#         turtleData.create2021DistanceGraphDayAndNight()
+
         

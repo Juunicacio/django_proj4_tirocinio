@@ -136,6 +136,8 @@ def data_analysis_main():
 
     getGPSDfSeparatedByMonth(turtlesData)
 
+    # getDayNightActivityGraphs(turtlesData)
+
 #if __name__ == "__main__":
     #main()
 

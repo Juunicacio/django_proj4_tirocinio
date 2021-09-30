@@ -1464,65 +1464,288 @@ class TurtleData:
                 n = 1
                 selectedYearDf = yearsOfResearch[n](newdf)
                 distanceValue = selectedYearDf['Distance (m)'][i]                
-                boolLight = bools[selectedYearDf['Daylight'][i]]()
-                
+                boolLight = bools[selectedYearDf['Daylight'][i]]()                
                 if selectedYearDf['Data Month'][i] == 1:
                     month2020NightList1, month2020DayList1 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList1, month2020DayList1, distanceValue)
+                
                 if selectedYearDf['Data Month'][i] == 2:
                     month2020NightList2, month2020DayList2 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList2, month2020DayList2, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 3:
                     month2020NightList3, month2020DayList3 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList3, month2020DayList3, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 4:
                     month2020NightList4, month2020DayList4 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList4, month2020DayList4, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 5:
                     month2020NightList5, month2020DayList5 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList5, month2020DayList5, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 6:
                     month2020NightList6, month2020DayList6 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList6, month2020DayList6, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 7:
                     month2020NightList7, month2020DayList7 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList7, month2020DayList7, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 8:
                     month2020NightList8, month2020DayList8 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList8, month2020DayList8, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 9:
                     month2020NightList9, month2020DayList9 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList9, month2020DayList9, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 10:
                     month2020NightList10, month2020DayList10 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList10, month2020DayList10, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 11:
                     month2020NightList11, month2020DayList11 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList11, month2020DayList11, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 12:
                     month2020NightList12, month2020DayList12 = months[selectedYearDf['Data Month'][i]](boolLight, month2020NightList12, month2020DayList12, distanceValue)
-
+                    
 
             if newdf['Data Year'][i] == 2021:
                 n=2
                 selectedYearDf = yearsOfResearch[n](newdf)
                 distanceValue = selectedYearDf['Distance (m)'][i]                
                 boolLight = bools[selectedYearDf['Daylight'][i]]()
-                #isListsEmpty = True
-                #enterMonth == False
                 if selectedYearDf['Data Month'][i] == 1:
                     month2021NightList1, month2021DayList1 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList1, month2021DayList1, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 2:
                     month2021NightList2, month2021DayList2 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList2, month2021DayList2, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 3:
                     month2021NightList3, month2021DayList3 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList3, month2021DayList3, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 4:                  
                     month2021NightList4, month2021DayList4 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList4, month2021DayList4, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 5:
                     month2021NightList5, month2021DayList5 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList5, month2021DayList5, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 6:
                     month2021NightList6, month2021DayList6 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList6, month2021DayList6, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 7:
                     month2021NightList7, month2021DayList7 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList7, month2021DayList7, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 8:
                     month2021NightList8, month2021DayList8 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList8, month2021DayList8, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 9:
                     month2021NightList9, month2021DayList9 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList9, month2021DayList9, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 10:
                     month2021NightList10, month2021DayList10 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList10, month2021DayList10, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 11:
                     month2021NightList11, month2021DayList11 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList11, month2021DayList11, distanceValue)
+                    
                 if selectedYearDf['Data Month'][i] == 12:
                     month2021NightList12, month2021DayList12 = months[selectedYearDf['Data Month'][i]](boolLight, month2021NightList12, month2021DayList12, distanceValue)                   
+                    
+                
+                sumMonth2020NightList1 = sum(month2020NightList1)
+                sumMonth2020DayList1 = sum(month2020DayList1)
+                sumMonth2020NightList2 = sum(month2020NightList2)
+                sumMonth2020DayList2 = sum(month2020DayList2)
+                sumMonth2020NightList3= sum(month2020NightList3)
+                sumMonth2020DayList3 = sum(month2020DayList3)
+                sumMonth2020NightList4 = sum(month2020NightList4)
+                sumMonth2020DayList4 = sum(month2020DayList4)
+                sumMonth2020NightList5 = sum(month2020NightList5)
+                sumMonth2020DayList5 = sum(month2020DayList5)
+                sumMonth2020NightList6 = sum(month2020NightList6)
+                sumMonth2020DayList6 = sum(month2020DayList6)
+                sumMonth2020NightList7 = sum(month2020NightList7)
+                sumMonth2020DayList7 = sum(month2020DayList7)
+                sumMonth2020NightList8 = sum(month2020NightList8)
+                sumMonth2020DayList8 = sum(month2020DayList8)
+                sumMonth2020NightList9 = sum(month2020NightList9)
+                sumMonth2020DayList9 = sum(month2020DayList9)
+                sumMonth2020NightList10 = sum(month2020NightList10)
+                sumMonth2020DayList10 = sum(month2020DayList10)
+                sumMonth2020NightList11 = sum(month2020NightList11)
+                sumMonth2020DayList11 = sum(month2020DayList11)
+                sumMonth2020NightList12 = sum(month2020NightList12)
+                sumMonth2020DayList12 = sum(month2020DayList12)
+
+                sumMonth2021NightList1 = sum(month2021NightList1)
+                sumMonth2021DayList1 = sum(month2021DayList1)
+                sumMonth2021NightList2 = sum(month2021NightList2)
+                sumMonth2021DayList2 = sum(month2021DayList2)
+                sumMonth2021NightList3 = sum(month2021NightList3)
+                sumMonth2021DayList3 = sum(month2021DayList3)
+                sumMonth2021NightList4 = sum(month2021NightList4)
+                sumMonth2021DayList4 = sum(month2021DayList4)
+                sumMonth2021NightList5 = sum(month2021NightList5)
+                sumMonth2021DayList5 = sum(month2021DayList5)
+                sumMonth2021NightList6 = sum(month2021NightList6)
+                sumMonth2021DayList6 = sum(month2021DayList6)
+                sumMonth2021NightList7 = sum(month2021NightList7)
+                sumMonth2021DayList7 = sum(month2021DayList7)
+                sumMonth2021NightList8 = sum(month2021NightList8)
+                sumMonth2021DayList8 = sum(month2021DayList8)
+                sumMonth2021NightList9 = sum(month2021NightList9)
+                sumMonth2021DayList9 = sum(month2021DayList9)
+                sumMonth2021NightList10 = sum(month2021NightList10)
+                sumMonth2021DayList10 = sum(month2021DayList10)
+                sumMonth2021NightList11 = sum(month2021NightList11)
+                sumMonth2021DayList11 = sum(month2021DayList11)
+                sumMonth2021NightList12 = sum(month2021NightList12)
+                sumMonth2021DayList12 = sum(month2021DayList12)
+
+
+                
+                print(sumMonth2020NightList1)
+                print(sumMonth2020NightList2)
+                print(sumMonth2020NightList2)
+                print(sumMonth2020NightList3)
+                print(sumMonth2020NightList4)
+                print(sumMonth2020NightList5)
+                print(sumMonth2020NightList6)
+                print(sumMonth2020NightList7)
+                print(sumMonth2020NightList8)
+                print(sumMonth2020NightList9)
+                print(sumMonth2020NightList10)
+                print(sumMonth2020NightList11)
+                print(sumMonth2021NightList1)
+                print(sumMonth2021NightList2)
+                print(sumMonth2021NightList2)
+                print(sumMonth2021NightList3)
+                print(sumMonth2021NightList4)
+                print(sumMonth2021NightList5)
+                print(sumMonth2021NightList6)
+                print(sumMonth2021NightList7)
+                print(sumMonth2021NightList8)
+                print(sumMonth2021NightList9)
+                print(sumMonth2021NightList10)
+                print(sumMonth2021NightList11)
+                print(sumMonth2020DayList1)
+                print(sumMonth2020DayList2)
+                print(sumMonth2020DayList3)
+                print(sumMonth2020DayList4)
+                print(sumMonth2020DayList5)
+                print(sumMonth2020DayList6)
+                print(sumMonth2020DayList7)
+                print(sumMonth2020DayList8)
+                print(sumMonth2020DayList9)
+                print(sumMonth2020DayList10)
+                print(sumMonth2020DayList11)
+                print(sumMonth2020DayList12)
+                print(sumMonth2021DayList1)
+                print(sumMonth2021DayList2)
+                print(sumMonth2021DayList3)
+                print(sumMonth2021DayList4)
+                print(sumMonth2021DayList5)
+                print(sumMonth2021DayList6)
+                print(sumMonth2021DayList7)
+                print(sumMonth2021DayList8)
+                print(sumMonth2021DayList9)
+                print(sumMonth2021DayList10)
+                print(sumMonth2021DayList11)
+                print(sumMonth2021DayList12)
+
+                df_2020 = {
+                    'x': [],
+                    'y_night' : [
+                    ],
+                    'y_day' : [
+                    ]
+                }
+                doNotRepeatMonth = []
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList1, 'x', "january, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList2, 'x', "february, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList3, 'x', "march, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList4, 'x', "april, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList5, 'x', "may, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList6, 'x', "june, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList7, 'x', "july, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList8, 'x', "august, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList9, 'x', "september, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList10, 'x', "october, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList11, 'x', "november, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_night', sumMonth2020NightList12, 'x', "december, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList1, 'x', "january, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList2, 'x', "february, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList3, 'x', "march, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList4, 'x', "april, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList5, 'x', "may, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList6, 'x', "june, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList7, 'x', "july, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList8, 'x', "august, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList9, 'x', "september, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList10, 'x', "october, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList11, 'x', "november, 2020", doNotRepeatMonth)
+                appendToDictIfNotZero(df_2020, 'y_day', sumMonth2020DayList12, 'x', "december, 2020", doNotRepeatMonth)
+                print(df_2020)
+                
+                
+                # df_2020 = {
+                #     'x': [1,2,3,4,5,6,7,8,9,10,11,12],
+                #     'y_night' : [
+                #         sumMonth2020NightList1,
+                #         sumMonth2020NightList2,
+                #         sumMonth2020NightList3,
+                #         sumMonth2020NightList4,
+                #         sumMonth2020NightList5,
+                #         sumMonth2020NightList6,
+                #         sumMonth2020NightList7,
+                #         sumMonth2020NightList8,
+                #         sumMonth2020NightList9,
+                #         sumMonth2020NightList10,
+                #         sumMonth2020NightList11,
+                #         sumMonth2020NightList12
+                #     ],
+                #     'y_day' : [
+                #         sumMonth2020DayList1,
+                #         sumMonth2020DayList2,
+                #         sumMonth2020DayList3,
+                #         sumMonth2020DayList4,
+                #         sumMonth2020DayList5,
+                #         sumMonth2020DayList6,
+                #         sumMonth2020DayList7,
+                #         sumMonth2020DayList8,
+                #         sumMonth2020DayList9,
+                #         sumMonth2020DayList10,
+                #         sumMonth2020DayList11,
+                #         sumMonth2020DayList12
+                #     ]
+                # }
+                df_2021 = {
+                    'x': [1,2,3,4,5,6,7,8,9,10,11,12],
+                    'y_night' : [
+                        sumMonth2021NightList1,
+                        sumMonth2021NightList2,
+                        sumMonth2021NightList3,
+                        sumMonth2021NightList4,
+                        sumMonth2021NightList5,
+                        sumMonth2021NightList6,
+                        sumMonth2021NightList7,
+                        sumMonth2021NightList8,
+                        sumMonth2021NightList9,
+                        sumMonth2021NightList10,
+                        sumMonth2021NightList11,
+                        sumMonth2021NightList12
+                    ],
+                    'y_day' : [
+                        sumMonth2021DayList1,
+                        sumMonth2021DayList2,
+                        sumMonth2021DayList3,
+                        sumMonth2021DayList4,
+                        sumMonth2021DayList5,
+                        sumMonth2021DayList6,
+                        sumMonth2021DayList7,
+                        sumMonth2021DayList8,
+                        sumMonth2021DayList9,
+                        sumMonth2021DayList10,
+                        sumMonth2021DayList11,
+                        sumMonth2021DayList12,
+                    ]
+                }
+                create2020DistanceGraphDayAndNight(df_2020)
+                create2021DistanceGraphDayAndNight(df_2021)
+                plot_2_dataframes_on_same_graph(df_2020, df_2021)
+            
             i+=1
 
 
@@ -1553,9 +1776,6 @@ class TurtleData:
         yearsOfResearch = {
             1:firstYear,
             2:secondYear,
-            3:thirdYear,
-            4:fourthYear,
-            5:fifthYear,
         }
         print("HERE IS COMMING THE DICT")
         yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS) #{1: 2020, 2: 2021}        
@@ -1707,9 +1927,6 @@ class TurtleData:
         yearsOfResearch = {
             1:firstYear,
             2:secondYear,
-            3:thirdYear,
-            4:fourthYear,
-            5:fifthYear,
         }
         print("HERE IS COMMING THE DICT")
         yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS) #{1: 2020, 2: 2021}        
@@ -1780,9 +1997,6 @@ class TurtleData:
         yearsOfResearch = {
             1:firstYear,
             2:secondYear,
-            3:thirdYear,
-            4:fourthYear,
-            5:fifthYear,
         }
         print("HERE IS COMMING THE DICT")
         yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS) #{1: 2020, 2: 2021}        
