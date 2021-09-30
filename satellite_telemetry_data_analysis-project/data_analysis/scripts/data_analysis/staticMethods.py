@@ -410,17 +410,17 @@ def additionalLocationsSunInfoAstral(latitude, longitude, thatDate):
         #print(f'{key:10s}:', s[key])
         #print(key)
         if key == 'dawn':
-            print("--------- There is lightness after: ")
-            print(f'{key:10s}:', s[key])
+            #print("--------- There is lightness after: ")
+            #print(f'{key:10s}:', s[key])
             dawn = s[key]
-            print("see dawn") 
-            print(dawn)
+            #print("see dawn") 
+            #print(dawn)
         elif key == 'dusk':
-            print("--------- There is darkness after: ")
-            print(f'{key:10s}:', s[key])
+            #print("--------- There is darkness after: ")
+            #print(f'{key:10s}:', s[key])
             dusk = s[key]
-            print("see dusk") 
-            print(dusk)
+            #print("see dusk") 
+            #print(dusk)
         else:
             break
     #print(dawn) # 2020-08-12 03:40:39.410554+00:00
@@ -432,3 +432,145 @@ def addUTCtimezoneToDatetime(datetimeUnaware):
     #print(timeZoneAware) # 2020-08-12 03:02:44+00:00
     #print("--------- timeZoneAware ABOVE: ")
     return timeZoneAware
+
+def extractYearAndMonthfromtheDate(dateString):
+    acqTime = dateString
+    #print(acqTime) # 2020.08.12 03:33:54
+    splitDatetime = acqTime.split(" ", 1) # Split into "2020.08.12" and "03:33:54"
+    justDate = splitDatetime[0]
+    #print(justDate)
+    # # Create date object in given time format yyyy-mm-dd
+    myDate = dt.datetime.strptime(justDate, "%Y.%m.%d")
+    #print(myDate)
+    #print('Month: ', myDate.month) # To Get month from date
+    #print('Year: ', myDate.year) # To Get month from year
+    return myDate
+
+def createDictOfElementsInList(list):
+    #for x in list:
+        #print(x)
+    # Creating an empty dict
+    yearsDict = dict()
+    
+    # Iterating the elements in list
+    i = 1
+    while i < len(list):
+        for x in list:
+            yearsDict[i] = x
+            i+=1
+    print(yearsDict)
+    return yearsDict
+
+# yearsOfResearch
+def firstYear(yearDf):
+    # first division of the dataframe is in yearDf
+    #print(yearDf)
+    firstYearDf = pd.DataFrame(yearDf)
+    return firstYearDf
+def secondYear(yearDf):
+    #print(yearDf)
+    secondYearDf = pd.DataFrame(yearDf)
+    return secondYearDf
+def thirdYear(yearDf):
+    #print(yearDf)
+    thirdYearDf = pd.DataFrame(yearDf)
+    return thirdYearDf
+def fourthYear(yearDf):
+    #print(yearDf)
+    fourthYearDf = pd.DataFrame(yearDf)
+    return fourthYearDf
+def fifthYear(yearDf):
+    #print(yearDf)
+    fifthYearDf = pd.DataFrame(yearDf)
+    return fifthYearDf
+    
+def noLight():
+    return False
+def light():
+    return True
+
+def january(boolLight):
+    #print("1 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def february(boolLight):
+    #print("2 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def march(boolLight):
+    #print("3 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def april(boolLight):
+    #print("4 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def may(boolLight):
+    #print("5 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def june(boolLight):
+    #print("6 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def july(boolLight):
+    #print("7 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def august(boolLight):
+    #print("8 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def september(boolLight):
+    #print("9 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def october(boolLight):
+    #print("10 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def november(boolLight):
+    #print("11 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+def december(boolLight):
+    #print("12 month")
+    if boolLight == False:
+        pass#print("nigth")
+    else:
+        pass#print("day")
+
+        

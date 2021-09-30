@@ -134,6 +134,8 @@ def data_analysis_main():
 
     getDawnAndDuskTimesBasedOnCoordinates(turtlesData)
 
+    getGPSDfSeparatedByMonth(turtlesData)
+
 #if __name__ == "__main__":
     #main()
 

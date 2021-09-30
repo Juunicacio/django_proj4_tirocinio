@@ -199,6 +199,9 @@ class TurtleData:
         #self.DEPTHRowData = None
         self.gpsDataJsonName = ""
         self.depthDataJsonName = ""
+        # Create a new set to puth set of years present in the data
+        self.setOfResearchYearsGPS = set()
+        self.setOfResearchYearsDepth = set()
         
 
     def addDataFromCsv(self, filename):
@@ -1159,98 +1162,19 @@ class TurtleData:
         illuminatedSky = []
         dawnTimes = []
         duskTimes = []
+        monthNumber = []
+        researchYearsGPS = []
 
         #print(self.turtleTag)
 
         i=0
-        while i < (len(latitudes)):        
+        while i < (len(latitudes)):
         #while i < 4:
-            #print(latitudes[i], longitudes[i])
-            # datePlusTime = acquisitionTimes[i]
-            # print(datePlusTime) # 2020.08.12 03:33:54
-            # date = dt.datetime.strptime(datePlusTime, "%Y.%m.%d %H:%M:%S")
-            # #date = dt.datetime.strptime(acquisitionTimes[1], "%Y.%m.%d")
-            # print(date) # 2020-08-12 03:33:54
-            # myDataFormat = str(date).replace("-", ", ")[:-8] # 2020, 08, 12 03:33:54 # [:-8] = 2020, 08, 12
-            # print(myDataFormat)
-            thatDate = stringDateFormatToDaySuntime(acquisitionTimes[i])
-            #print(thatDate) # = 'datetime.date' object
-
-            dawn, dusk = additionalLocationsSunInfoAstral(latitudes[i], longitudes[i], thatDate)
-            # 2020-08-12 03:40:39.410554+00:00 # = 'datetime.date' object
-            # 2020-08-12 18:21:12.184868+00:00 # = 'datetime.date' object
-            # stringDawn = dawn.strftime("%Y.%m.%d %H:%M:%S") # 2020.08.12 03:40:39
-            # stringDusk = dusk.strftime( "%Y.%m.%d %H:%M:%S") # 2020.08.12 18:21:12
-            # print(stringDawn)
-            # print(stringDusk)
-            acqTime = acquisitionTimes[i]
-            #print(acqTime) # 2020.08.12 03:33:54
-            acqTimeDatetime= stringIntoDate(acqTime)
-            # add UTC timezone            
-            acqTimeDatetimeAware = addUTCtimezoneToDatetime(acqTimeDatetime)
-            print("acqTimeDatetimeAware, dawn and dusk =")
-            print(acqTimeDatetimeAware)
-            print(dawn)
-            print(dusk)
-            dawnTimes.append(dawn)      
-            duskTimes.append(dusk)      
-            if acqTimeDatetimeAware < dusk and acqTimeDatetimeAware < dawn:
-                isIlluminated = False
-                print("darkness")
-                illuminatedSky.append(isIlluminated)
-            elif acqTimeDatetimeAware > dusk or acqTimeDatetimeAware < dawn:
-                isIlluminated = False
-                print("darkness")
-                illuminatedSky.append(isIlluminated)
-            elif acqTimeDatetimeAware > dawn and acqTimeDatetimeAware < dusk:
-                isIlluminated = True
-                print("lightness")
-                illuminatedSky.append(isIlluminated)
-            else:
-                print("did not enter here")
-            i+=1
-        # see sky list of boolean
-        print(illuminatedSky)
-
-        ### CREATING NEW COLUMNS SAVE THEM INTO A NEW SELF DF       
-        self.reliableGpsDf['Daylight'] = illuminatedSky
-        #  Observer (Lat and Lon) for which to calculate the times of the sun   
-        self.reliableGpsDf['Position Dawn time'] = dawnTimes
-        self.reliableGpsDf['Position Dusk Time'] = duskTimes
-        self.reliableGpsDfWithSkyIllumination = self.reliableGpsDfWithSkyIllumination.append(self.reliableGpsDf, ignore_index=True)        
-        print("Assign the reliableGpsDfWithSkyIllumination GPS DF into self")
-        print(self.reliableGpsDfWithSkyIllumination)
-    
-    def generateReliableGpsDfWithSkyIlluminationCsvName(self):
-        # Last entry:
-        lastEntry = self.reliableGpsDfWithSkyIllumination['Acquisition Time'].tail(1)
-        #print(lastEntry)
-        # separing date from time in that column
-        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
-        #print(lastEntry)
-        # assign the Name in the Class Variable
-        self.reliableGpsDfWithSkyIlluminationCsvName = basedNamesForCsv(lastEntry, "reliableGpsDfWithSkyIllumination", self.turtleTag)
-
-    def saveReliableGpsDfWithSkyIllumination(self):
-        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIllumination, self.reliableGpsDfWithSkyIlluminationCsvName)
-    
-
-    def dawnAndDuskTimesBasedOnDepthDataCoordinates(self):
-        ## Converting data to a NumPy array.        
-        latitudes = self.depthDataWithApprxCoordDf[['Approx Depth AQ Time Latitude']].to_numpy() 
-        longitudes = self.depthDataWithApprxCoordDf[['Approx Depth AQ Time Longitude']].to_numpy()
-        acquisitionTimes = self.depthDataWithApprxCoordDf['Acquisition Time'].to_numpy()
-        #print(acquisitionTimes)
-
-        illuminatedSky = []
-        dawnTimes = []
-        duskTimes = []
-
-        #print(self.turtleTag)
-
-        i=0
-        while i < (len(latitudes)):      
-        #while i < 4:
+            # ----- extract Year And Month from the Date and create a new column
+            dateData = extractYearAndMonthfromtheDate(acquisitionTimes[i])
+            monthNumber.append(dateData.month)
+            researchYearsGPS.append(dateData.year)
+            # -----
             # check if the variable is equal to itself, if it is not, it is a NaN value.
             if latitudes[i] != latitudes[i]:
                 print("ENTER TO IF")
@@ -1258,7 +1182,7 @@ class TurtleData:
                 illuminatedSky.append(None)
                 break
             else:
-                print(latitudes[i], longitudes[i])
+                #print(latitudes[i], longitudes[i])
                 # datePlusTime = acquisitionTimes[i]
                 # print(datePlusTime) # 2020.08.12 03:33:54
                 # date = dt.datetime.strptime(datePlusTime, "%Y.%m.%d %H:%M:%S")
@@ -1289,25 +1213,133 @@ class TurtleData:
                 duskTimes.append(dusk)      
                 if acqTimeDatetimeAware < dusk and acqTimeDatetimeAware < dawn:
                     isIlluminated = False
-                    print("darkness")
+                    #print("darkness")
                     illuminatedSky.append(isIlluminated)
                 elif acqTimeDatetimeAware > dusk or acqTimeDatetimeAware < dawn:
                     isIlluminated = False
-                    print("darkness")
+                    #print("darkness")
                     illuminatedSky.append(isIlluminated)
                 elif acqTimeDatetimeAware > dawn and acqTimeDatetimeAware < dusk:
                     isIlluminated = True
-                    print("lightness")
+                    #print("lightness")
                     illuminatedSky.append(isIlluminated)
                 else:
                     print("did not enter here")
                 i+=1
         # see sky list of boolean
         print(illuminatedSky)
+
+        ### CREATING NEW COLUMNS SAVE THEM INTO A NEW SELF DF       
+        self.reliableGpsDf['Daylight'] = illuminatedSky
+        #  Observer (Lat and Lon) for which to calculate the times of the sun   
+        self.reliableGpsDf['Position Dawn time'] = dawnTimes
+        self.reliableGpsDf['Position Dusk Time'] = duskTimes
+
+        # Month from date
+        self.reliableGpsDf['Data Month'] = monthNumber
+        # Year from date
+        self.reliableGpsDf['Data Year'] = researchYearsGPS
+        self.setOfResearchYearsGPS = set(researchYearsGPS)
+
+        self.reliableGpsDfWithSkyIllumination = self.reliableGpsDfWithSkyIllumination.append(self.reliableGpsDf, ignore_index=True)        
+        print("Assign the reliableGpsDfWithSkyIllumination GPS DF into self")
+        print(self.reliableGpsDfWithSkyIllumination)
+    
+    def generateReliableGpsDfWithSkyIlluminationCsvName(self):
+        # Last entry:
+        lastEntry = self.reliableGpsDfWithSkyIllumination['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.reliableGpsDfWithSkyIlluminationCsvName = basedNamesForCsv(lastEntry, "reliableGpsDfWithSkyIllumination", self.turtleTag)
+
+    def saveReliableGpsDfWithSkyIllumination(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIllumination, self.reliableGpsDfWithSkyIlluminationCsvName)
+    
+
+    def dawnAndDuskTimesBasedOnDepthDataCoordinates(self):
+        ## Converting data to a NumPy array.        
+        latitudes = self.depthDataWithApprxCoordDf[['Approx Depth AQ Time Latitude']].to_numpy() 
+        longitudes = self.depthDataWithApprxCoordDf[['Approx Depth AQ Time Longitude']].to_numpy()
+        acquisitionTimes = self.depthDataWithApprxCoordDf['Acquisition Time'].to_numpy()
+        #print(acquisitionTimes)
+
+        illuminatedSky = []
+        dawnTimes = []
+        duskTimes = []
+        monthNumber = []
+        researchYearsDepth = []
+
+        #print(self.turtleTag)
+
+        i=0
+        while i < (len(latitudes)):
+        #while i < 4:
+            # ----- extract Year And Month from the Date and create a new column
+            dateData = extractYearAndMonthfromtheDate(acquisitionTimes[i])
+            monthNumber.append(dateData.month)
+            researchYearsDepth.append(dateData.year)
+            # -----
+            # check if the variable is equal to itself, if it is not, it is a NaN value.
+            if latitudes[i] != latitudes[i]:
+                print("ENTER TO IF")
+                print(latitudes[i])
+                illuminatedSky.append(None)
+                break
+            else:
+                #print(latitudes[i], longitudes[i])
+                # datePlusTime = acquisitionTimes[i]
+                # print(datePlusTime) # 2020.08.12 03:33:54
+                # date = dt.datetime.strptime(datePlusTime, "%Y.%m.%d %H:%M:%S")
+                # #date = dt.datetime.strptime(acquisitionTimes[1], "%Y.%m.%d")
+                # print(date) # 2020-08-12 03:33:54
+                # myDataFormat = str(date).replace("-", ", ")[:-8] # 2020, 08, 12 03:33:54 # [:-8] = 2020, 08, 12
+                # print(myDataFormat)
+                thatDate = stringDateFormatToDaySuntime(acquisitionTimes[i])
+                #print(thatDate) # = 'datetime.date' object
+
+                dawn, dusk = additionalLocationsSunInfoAstral(latitudes[i], longitudes[i], thatDate)
+                # 2020-08-12 03:40:39.410554+00:00 # = 'datetime.date' object
+                # 2020-08-12 18:21:12.184868+00:00 # = 'datetime.date' object
+                # stringDawn = dawn.strftime("%Y.%m.%d %H:%M:%S") # 2020.08.12 03:40:39
+                # stringDusk = dusk.strftime( "%Y.%m.%d %H:%M:%S") # 2020.08.12 18:21:12
+                # print(stringDawn)
+                # print(stringDusk)
+                acqTime = acquisitionTimes[i]
+                #print(acqTime) # 2020.08.12 03:33:54
+
+                acqTimeDatetime= stringIntoDate(acqTime)
+                # add UTC timezone            
+                acqTimeDatetimeAware = addUTCtimezoneToDatetime(acqTimeDatetime)
+                #print("acqTimeDatetimeAware, dawn and dusk =")
+                #print(acqTimeDatetimeAware)
+                #print(dawn)
+                #print(dusk)
+                dawnTimes.append(dawn)      
+                duskTimes.append(dusk)      
+                if acqTimeDatetimeAware < dusk and acqTimeDatetimeAware < dawn:
+                    isIlluminated = False
+                    #print("darkness")
+                    illuminatedSky.append(isIlluminated)
+                elif acqTimeDatetimeAware > dusk or acqTimeDatetimeAware < dawn:
+                    isIlluminated = False
+                    #print("darkness")
+                    illuminatedSky.append(isIlluminated)
+                elif acqTimeDatetimeAware > dawn and acqTimeDatetimeAware < dusk:
+                    isIlluminated = True
+                    #print("lightness")
+                    illuminatedSky.append(isIlluminated)
+                else:
+                    print("did not enter here")
+                i+=1
+        # see sky list of boolean
+        #print(illuminatedSky)
         
         #  df and list length
-        print(len(self.depthDataWithApprxCoordDf.index))
-        print(len(illuminatedSky))
+        #print(len(self.depthDataWithApprxCoordDf.index))
+        #print(len(illuminatedSky))
 
         # Length of values (2591) does not match length of index (2592)
         # The easiest way to fix this error is to simply create a new column using a pandas Series as opposed to a NumPy array. 
@@ -1316,8 +1348,27 @@ class TurtleData:
         #  Observer (Lat and Lon) for which to calculate the times of the sun   
         self.depthDataWithApprxCoordDf['Position Dawn time'] = pd.Series(dawnTimes)
         self.depthDataWithApprxCoordDf['Position Dusk Time'] = pd.Series(duskTimes)
-        print("create df ------------------")
-        self.depthDataWithApprxCoordDfWithSkyIllumination = self.reliableGpsDfWithSkyIllumination.append(self.depthDataWithApprxCoordDf, ignore_index=True)        
+
+        # Month from date
+        self.depthDataWithApprxCoordDf['Data Month'] = pd.Series(monthNumber)
+        # Year from date
+        self.depthDataWithApprxCoordDf['Data Year'] = pd.Series(researchYearsDepth)
+        self.setOfResearchYearsDepth = set(researchYearsDepth)
+
+        # # example: df1['Avg_Annual'] = df1['Avg_Annual'].str.replace(',', '').str.replace('$', '').astype(int)
+        # self.depthDataWithApprxCoordDf['Underwater Percentage'] = self.depthDataWithApprxCoordDf['Underwater Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 1 Percentage'] = self.depthDataWithApprxCoordDf['Layer 1 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 2 Percentage'] = self.depthDataWithApprxCoordDf['Layer 2 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 3 Percentage'] = self.depthDataWithApprxCoordDf['Layer 3 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 4 Percentage'] = self.depthDataWithApprxCoordDf['Layer 4 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 5 Percentage'] = self.depthDataWithApprxCoordDf['Layer 5 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 6 Percentage'] = self.depthDataWithApprxCoordDf['Layer 6 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 7 Percentage'] = self.depthDataWithApprxCoordDf['Layer 7 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 8 Percentage'] = self.depthDataWithApprxCoordDf['Layer 8 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 9 Percentage'] = self.depthDataWithApprxCoordDf['Layer 9 Percentage'].str.replace('%', '').astype(float)
+        # self.depthDataWithApprxCoordDf['Layer 10 Percentage'] = self.depthDataWithApprxCoordDf['Layer 10 Percentage'].str.replace('%', '').astype(float)
+        # removing % of column values 
+        self.depthDataWithApprxCoordDfWithSkyIllumination = self.depthDataWithApprxCoordDfWithSkyIllumination.append(self.depthDataWithApprxCoordDf, ignore_index=True)        
         print("Assign the depthDataWithApprxCoordDfWithSkyIllumination Depth DF into self")
         print(self.depthDataWithApprxCoordDfWithSkyIllumination)
     
@@ -1333,4 +1384,201 @@ class TurtleData:
 
     def saveDepthDataReliableGpsDfWithSkyIllumination(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataWithApprxCoordDfWithSkyIllumination, self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName)
+
+    def calculatingDistanceByLightsAndMonths(self):
+        newdf = self.reliableGpsDfWithSkyIllumination.copy()    
+        months = {
+            1:january,
+            2:february,
+            3:march,
+            4:april,
+            5:may,
+            6:june,
+            7:july,
+            8:august,
+            9:september,
+            10:october,
+            11:november,
+            12:december,
+        }
+        bools = {
+            False:noLight,
+            True:light,
+        }
+        # If your research have more than 5 years of data, include more lines in this dict bellow
+        yearsOfResearch = {
+            1:firstYear,
+            2:secondYear,
+            3:thirdYear,
+            4:fourthYear,
+            5:fifthYear,
+        }
+        print("HERE IS COMMING THE DICT")
+        yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS) #{1: 2020, 2: 2021}        
+        yearsList = []
+        for key,value in yearsDict.items():
+            yearsList.append(value) #yearsList[0] = 2020 #yearsList[1] = 2021
+        # first df division
+        n = 1
+        df = [n]
+        i=0
+        yearValuePositionInList = n - 1     
+        listOfDfs = [] 
+        dfCreated = False         
+        #selectedYearDf.reset_index(drop=True, inplace=True) # reset index
+        while i < (len(newdf.index)):
+            dictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]                       
+            if dictKey > df:
+                n+=1
+                df = [n]
+                yearValuePositionInList = n - 1 
+                dfCreated = False
+            if dictKey == df:
+                #### Eliminate those other year rows from the dataframe
+                #yearDf = newdf.drop(newdf[newdf['Data Year'] != yearsList[yearValuePositionInList]].index, inplace=True)
+                #newdf.drop(newdf[newdf['Data Year'].notna()].index, inplace=True)
+                #newdf.reset_index(drop=True, inplace=True) # reset index
+                yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]                
+                if not dfCreated:
+                    selectedYearDf = yearsOfResearch[n](yearDf)
+                    print(selectedYearDf)   
+                    dfCreated = True                             
+                #print(f"selectedYearDf: {selectedYearDf}")
+                #boolLight = bools[selectedYearDf['Daylight'][i]]()
+                #months[selectedYearDf['Data Month'][i]](boolLight)                          
+            i+=1
+        #print(f"len of listOfDfs: {len(listOfDfs)}")
+        #print(f"listOfDfs: {listOfDfs}")
+
+
+
+
+
+
+
+
     
+    # def another(self):
+    #     newdf = self.reliableGpsDfWithSkyIllumination.copy()    
+    #     months = {
+    #         1:january,
+    #         2:february,
+    #         3:march,
+    #         4:april,
+    #         5:may,
+    #         6:june,
+    #         7:july,
+    #         8:august,
+    #         9:september,
+    #         10:october,
+    #         11:november,
+    #         12:december,
+    #     }
+    #     bools = {
+    #         False:noLight,
+    #         True:light,
+    #     }
+    #     # If your research have more than 5 years of data, include more lines in this dict bellow
+    #     yearsOfResearch = {
+    #         1:firstYear,
+    #         2:secondYear,
+    #         3:thirdYear,
+    #         4:fourthYear,
+    #         5:fifthYear,
+    #     }
+    #     print("HERE IS COMMING THE DICT")
+    #     yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS)
+    #     #{1: 2020, 2: 2021}
+    #     yearsList = []
+    #     for key,value in yearsDict.items():
+    #         yearsList.append(value)
+    #     #yearsList[0] = 2020
+    #     #yearsList[1] = 2021
+    #     #### Eliminate those GPS's null (NaN) rows from the dataframe
+    #     #newdf.drop(newdf[newdf['Data Year'].notna()].index, inplace=True)
+    #     #newdf.reset_index(drop=True, inplace=True) # reset index
+    #     #df.loc[df['column_name'] == some_value]
+    #     # first df division
+    #     n = 1
+    #     df = [n]
+    #     i=0        
+    #     while i < (len(newdf.index)):
+    #         dictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]
+    #         #print(f" data inside table: {newdf['Data Year'][i]}") # 2020
+    #         #print(f"dict key: {dictKey}") # [1]
+    #         #print(f"dict value: {yearsDict[n]}") # [1]
+    #         #print(f"df variable: {df}") # [1]   
+    #         #print(f"row: {i}")
+    #         #print(f"yearsList: {len(yearsList)}") # 2
+    #         yearValuePositionInList = n - 1
+    #         if dictKey > df: #[2] [1]
+    #             #print("-------------------enter first if")
+    #             n+=1
+    #             df = [n]
+    #         if dictKey == df: #[1] [1]
+    #             #print("--------------------enter second if")
+    #             # Filtering data by month
+    #             # i=0
+    #             # while i < (len(newdf.index)):
+    #             #dataMonthNum = newdf['Data Month'][i]           
+    #             #print("here")
+    #             #yearsList[0] = 2020
+    #             #yearsList[1] = 2021
+    #             #print(yearsList[yearValuePositionInList])        
+    #             yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]
+    #             selectedYearDf = yearsOfResearch[n](yearDf)
+    #             selectedYearDf.reset_index(drop=True, inplace=True) # reset index
+    #             #newdf.loc[newdf['Data Year'] == yearsDict[n]]
+    #             print(f"selectedYearDf: {selectedYearDf}")
+    #             boolLight = bools[selectedYearDf['Daylight'][i]]()
+    #             months[selectedYearDf['Data Month'][i]](boolLight)                          
+    #         i+=1
+                
+
+
+
+
+
+
+
+
+    #     # Filtering data by month
+    #     i=0
+    #     while i < (len(newdf.index)):
+    #         #dataMonthNum = newdf['Data Month'][i]           
+    #         #print("here")
+    #         boolLight = bools[newdf['Daylight'][i]]()
+    #         months[newdf['Data Month'][i]](boolLight)
+    #         i+=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #         # if dataMonthNum == months:
+    #         #     print("January")
+    #         #     print(newdf)
+    #         #     # separate January data
+    #         #     # if it is not the row I'm looking for, drop it.
+    #         #     #januaryDf = januaryDf.append(newdf[i])#.drop(i, inplace=True, axis=1)
+    #         #     #januaryDf = (newdf[newdf['Data Month']]
+    #         # else:
+    #         #     return
+    #         #     print(f"month = {months}, we don't have data of this month in the dataframe")
+    #         # # dataByMonth = (temporaryNoGPSData[~temporaryNoGPSData['Data Month'].notna()])
+    #         # # temporaryNoGPSData.reset_index(drop=True, inplace=True) # reset index        
+    #         # # print('Temporary No GPS df is temporaryNoGPSData')
+    #         # # print(temporaryNoGPSData)
+    #         # if months < (12):
+    #         #     months +=1
+    #         # else:
+    #         #     months = 1
