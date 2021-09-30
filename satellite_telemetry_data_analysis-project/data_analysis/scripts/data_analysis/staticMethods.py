@@ -490,87 +490,87 @@ def light():
     return True
 
 def january(boolLight):
-    #print("1 month")
+    print("1 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"january nigth")
     else:
-        pass#print("day")
+        print(f"january day")
 
 def february(boolLight):
-    #print("2 month")
+    print("2 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"february nigth")
     else:
-        pass#print("day")
+        print(f"february day")
 
 def march(boolLight):
-    #print("3 month")
+    print("3 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"march nigth")
     else:
-        pass#print("day")
+        print(f"march day")
 
 def april(boolLight):
-    #print("4 month")
+    print("4 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"april nigth")
     else:
-        pass#print("day")
+        print(f"april day")
 
 def may(boolLight):
-    #print("5 month")
+    print("5 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"may nigth")
     else:
-        pass#print("day")
+        print(f"may day")
 
 def june(boolLight):
-    #print("6 month")
+    print("6 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"june nigth")
     else:
-        pass#print("day")
+        print(f"june day")
 
 def july(boolLight):
-    #print("7 month")
+    print("7 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"july nigth")
     else:
-        pass#print("day")
+        print(f"july day")
 
 def august(boolLight):
-    #print("8 month")
+    print("8 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"august nigth")
     else:
-        pass#print("day")
+        print(f"august day")
 
 def september(boolLight):
-    #print("9 month")
+    print("9 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"september nigth")
     else:
-        pass#print("day")
+        print(f"september day")
 
 def october(boolLight):
-    #print("10 month")
+    print("10 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"october nigth")
     else:
-        pass#print("day")
+        print(f"october day")
 
 def november(boolLight):
-    #print("11 month")
+    print("11 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"november nigth")
     else:
-        pass#print("day")
+        print(f"november day")
 
 def december(boolLight):
-    #print("12 month")
+    print("12 month")
     if boolLight == False:
-        pass#print("nigth")
+        print(f"december nigth")
     else:
-        pass#print("day")
+        print(f"december day")
 
         

@@ -1385,11 +1385,78 @@ class TurtleData:
     def saveDepthDataReliableGpsDfWithSkyIllumination(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataWithApprxCoordDfWithSkyIllumination, self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName)
 
+
+
     def calculatingDistanceByLightsAndMonths(self):
         newdf = self.reliableGpsDfWithSkyIllumination.copy()    
         months = {
             1:january,
-            2:february,
+            2:february, 
+            3:march,
+            4:april,
+            5:may,
+            6:june,
+            7:july,
+            8:august,
+            9:september,
+            10:october,
+            11:november,
+            12:december,
+        }
+        bools = {
+            False:noLight,
+            True:light,
+        }
+        # If your research have more than 5 years of data, include more lines in this dict bellow
+        yearsOfResearch = {
+            1:firstYear,
+            2:secondYear,
+            3:thirdYear,
+            4:fourthYear,
+            5:fifthYear,
+        }
+        print("HERE IS COMMING THE DICT")
+        yearsDict = createDictOfElementsInList(self.setOfResearchYearsGPS) #{1: 2020, 2: 2021}        
+        yearsList = []
+        for key,value in yearsDict.items():
+            yearsList.append(value) #yearsList[0] = 2020 #yearsList[1] = 2021
+        # first df division
+        n = 1
+        df = [n]
+        i=0
+        yearValuePositionInList = n - 1
+        dfCreated = False
+        while i < (len(newdf.index)):
+            dictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]                       
+            if dictKey > df:
+                n+=1
+                df = [n]
+                yearValuePositionInList = n - 1 
+                dfCreated = False
+            if dictKey == df:
+                yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]
+                #print(yearDf)                       
+                if not dfCreated:
+                    selectedYearDf = yearsOfResearch[n](yearDf)
+                    #print(selectedYearDf)                                             
+                    dfCreated = True 
+                boolLight = bools[selectedYearDf['Daylight'][i]]()
+                months[selectedYearDf['Data Month'][i]](boolLight)                      
+            i+=1
+
+
+
+
+
+
+
+
+
+    def stillOther(self):
+        newdf = self.reliableGpsDfWithSkyIllumination.copy()    
+        months = {
+            1:january,
+            2:february, 
             3:march,
             4:april,
             5:may,
@@ -1423,8 +1490,9 @@ class TurtleData:
         df = [n]
         i=0
         yearValuePositionInList = n - 1     
-        listOfDfs = [] 
-        dfCreated = False         
+        #listOfDfs = [] 
+        dfCreated = False    
+        monthDfCreated = False      
         #selectedYearDf.reset_index(drop=True, inplace=True) # reset index
         while i < (len(newdf.index)):
             dictKey = [key for key,value in yearsDict.items() if value == newdf['Data Year'][i]]                       
@@ -1434,21 +1502,37 @@ class TurtleData:
                 yearValuePositionInList = n - 1 
                 dfCreated = False
             if dictKey == df:
+                #thatYearDf = pd.DataFrame()
                 #### Eliminate those other year rows from the dataframe
                 #yearDf = newdf.drop(newdf[newdf['Data Year'] != yearsList[yearValuePositionInList]].index, inplace=True)
                 #newdf.drop(newdf[newdf['Data Year'].notna()].index, inplace=True)
                 #newdf.reset_index(drop=True, inplace=True) # reset index
-                yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]                
+                yearDf = newdf[newdf['Data Year'] == yearsList[yearValuePositionInList]]   
+                boolLight = bools[yearDf['Daylight'][i]]()
+                months[yearDf['Data Month'][i]](boolLight)              
                 if not dfCreated:
                     selectedYearDf = yearsOfResearch[n](yearDf)
-                    print(selectedYearDf)   
-                    dfCreated = True                             
+                    #print(selectedYearDf) 
+                    
+                    #thatYearDf = thatYearDf.append(selectedYearDf, ignore_index=True)                                       
+                    dfCreated = True                                    
                 #print(f"selectedYearDf: {selectedYearDf}")
-                #boolLight = bools[selectedYearDf['Daylight'][i]]()
-                #months[selectedYearDf['Data Month'][i]](boolLight)                          
+                
+                # print("enter here monthDfCreated--------------------------")
+                # selectedMonthDf = months[selectedYearDf['Data Month'][i]](selectedYearDf)
+                # print(selectedMonthDf)                          
             i+=1
         #print(f"len of listOfDfs: {len(listOfDfs)}")
         #print(f"listOfDfs: {listOfDfs}")
+
+
+
+
+
+
+
+
+        
 
 
 
