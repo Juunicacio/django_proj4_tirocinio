@@ -652,8 +652,17 @@ def appendToDictIfNotZero(dic, key, value, anotherKey, month_year, doNotRepeatMo
             doNotRepeatMonth.append(month_year)
             dic.setdefault(anotherKey,[]).append(month_year)
 
-def create2020DistanceGraphDayAndNight(d):
-    df = pd.DataFrame(d)
+def totalDistanceAtNightAndInDay(boolLight, nightList, dayList, distanceValue, timeList, timeOfThatDistanceValue):
+    if boolLight == False:
+        nightList.append(distanceValue)
+        timeList.append(timeOfThatDistanceValue)
+    else:
+        dayList.append(distanceValue)
+        timeList.append(timeOfThatDistanceValue)
+    return nightList, dayList, timeList
+
+def createDistanceWithLighAndDarkAlongYearsGraph(distanceWithLighAndDarkAlongYears):
+    df = pd.DataFrame(distanceWithLighAndDarkAlongYears)
 
     df['y_night']=df['y_night'].astype(float)
     df['y_day']=df['y_day'].astype(float)
@@ -661,28 +670,37 @@ def create2020DistanceGraphDayAndNight(d):
     df.plot('x',y=['y_night','y_day'])
     plt.show()
 
-def create2021DistanceGraphDayAndNight(d):
-    df = pd.DataFrame(d)
+# def create2020DistanceGraphDayAndNight(d):
+#     df = pd.DataFrame(d)
 
-    df['y_night']=df['y_night'].astype(float)
-    df['y_day']=df['y_day'].astype(float)
+#     df['y_night']=df['y_night'].astype(float)
+#     df['y_day']=df['y_day'].astype(float)
 
-    df.plot('x',y=['y_night','y_day'])
-    plt.show()
+#     df.plot('x',y=['y_night','y_day'])
+#     plt.show()
 
-def plot_2_dataframes_on_same_graph(d1, d2):
-    fig, (d1, d2) = plt.subplots(1, 2)
-    fig.suptitle('Horizontally stacked subplots')
-    d1.plot('x', y=['y_night','y_day'])
-    d2.plot('x', y=['y_night','y_day'])
-    #plt.figure() 
-    #width = 0.35 
-    #df = pd.DataFrame(d)
+# def create2021DistanceGraphDayAndNight(d):
+#     df = pd.DataFrame(d)
 
-    #df.plot(x=[d1['x'], d2['x']],y=['y_night','y_day'])
+#     df['y_night']=df['y_night'].astype(float)
+#     df['y_day']=df['y_day'].astype(float)
 
-    #plt.bar('x', menMeans, width, color='r', yerr=menStd, label='Men means')
-    #ax = d1.plot()
-    #d2.plot(ax=ax)
+#     df.plot('x',y=['y_night','y_day'])
+#     plt.show()
+
+# def plot_2_dataframes_on_same_graph(d1, d2):
+#     fig, (d1, d2) = plt.subplots(1, 2)
+#     fig.suptitle('Horizontally stacked subplots')
+#     d1.plot('x', y=['y_night','y_day'])
+#     d2.plot('x', y=['y_night','y_day'])
+#     #plt.figure() 
+#     #width = 0.35 
+#     #df = pd.DataFrame(d)
+
+#     #df.plot(x=[d1['x'], d2['x']],y=['y_night','y_day'])
+
+#     #plt.bar('x', menMeans, width, color='r', yerr=menStd, label='Men means')
+#     #ax = d1.plot()
+#     #d2.plot(ax=ax)
 
         

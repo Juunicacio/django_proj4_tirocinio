@@ -412,6 +412,11 @@ def getDawnAndDuskTimesBasedOnCoordinates(turtlesData):
         turtleData.generateDepthDataReliableGpsDfWithSkyIlluminationCsvName()
         turtleData.saveDepthDataReliableGpsDfWithSkyIllumination()
 
+
+def getMedianDistances(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.totalOfDistances()
+
 def getGPSDfSeparatedByMonth(turtlesData):
     for turtleData in turtlesData:
         turtleData.calculatingDistanceByLightsAndMonths()

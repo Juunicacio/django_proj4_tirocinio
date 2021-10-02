@@ -134,6 +134,8 @@ def data_analysis_main():
 
     getDawnAndDuskTimesBasedOnCoordinates(turtlesData)
 
+    getMedianDistances(turtlesData)
+
     getGPSDfSeparatedByMonth(turtlesData)
 
     # getDayNightActivityGraphs(turtlesData)
