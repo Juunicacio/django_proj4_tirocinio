@@ -174,6 +174,8 @@ class TurtleData:
         self.fixCategoriesDf = pd.DataFrame()
         self.reliableGpsDfWithSkyIllumination = pd.DataFrame()
         self.reliableGpsDfWithSkyIlluminationCsvName = ""
+        self.reliableGpsDfWithSkyIlluminationAndKmHColumn = pd.DataFrame()
+        self.reliableGpsDfWithSkyIlluminationAndKmHColumnCsvName = ""
         self.remainingDataDf = pd.DataFrame()
         self.remainingDataDfCsvName = ""
         self.depthDataDf = pd.DataFrame()
@@ -1180,7 +1182,7 @@ class TurtleData:
             # -----
             # check if the variable is equal to itself, if it is not, it is a NaN value.
             if latitudes[i] != latitudes[i]:
-                print("ENTER TO IF")
+                #print("ENTER TO IF")
                 print(latitudes[i])
                 illuminatedSky.append(None)
                 break
@@ -1287,7 +1289,7 @@ class TurtleData:
             # -----
             # check if the variable is equal to itself, if it is not, it is a NaN value.
             if latitudes[i] != latitudes[i]:
-                print("ENTER TO IF")
+                #print("ENTER TO IF")
                 print(latitudes[i])
                 illuminatedSky.append(None)
                 break
@@ -1372,8 +1374,8 @@ class TurtleData:
         # self.depthDataWithApprxCoordDf['Layer 10 Percentage'] = self.depthDataWithApprxCoordDf['Layer 10 Percentage'].str.replace('%', '').astype(float)
         # removing % of column values 
         self.depthDataWithApprxCoordDfWithSkyIllumination = self.depthDataWithApprxCoordDfWithSkyIllumination.append(self.depthDataWithApprxCoordDf, ignore_index=True)        
-        print("Assign the depthDataWithApprxCoordDfWithSkyIllumination Depth DF into self")
-        print(self.depthDataWithApprxCoordDfWithSkyIllumination)
+        #print("Assign the depthDataWithApprxCoordDfWithSkyIllumination Depth DF into self")
+        #print(self.depthDataWithApprxCoordDfWithSkyIllumination)
     
     def generateDepthDataReliableGpsDfWithSkyIlluminationCsvName(self):
         # Last entry:
@@ -1781,3 +1783,24 @@ class TurtleData:
         appendToDictIfNotZero(distanceWithLighAndDarkAlongYears, 'y_day', sumMonth2021DayList12, 'x', "december, 2021", doNotRepeatMonth)#,, "month total time", sumTimeList2021DayList12)
         print(distanceWithLighAndDarkAlongYears)
         createDistanceWithLighAndDarkAlongYearsGraph(distanceWithLighAndDarkAlongYears)
+    
+    def createKmHSpeedValueColumn(self):
+        newdf = self.reliableGpsDfWithSkyIllumination.copy()
+        newdf = changeColumnValueCreatingAnotherColumn(newdf, 'Speed m/s', 'Speed km/h')
+        self.reliableGpsDfWithSkyIlluminationAndKmHColumn = self.reliableGpsDfWithSkyIlluminationAndKmHColumn.append(newdf, ignore_index=True)        
+        print("Assign the reliableGpsDfWithSkyIlluminationAndKmHColumn gps DF into self")
+        print(self.reliableGpsDfWithSkyIlluminationAndKmHColumn)
+        #reliableGpsDfWithSkyIlluminationAndKmHColumnCsvName
+    
+    def generateReliableGpsDfWithSkyIlluminationAndKmHColumnCsvName(self):
+        # Last entry:
+        lastEntry = self.reliableGpsDfWithSkyIlluminationAndKmHColumn['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.reliableGpsDfWithSkyIlluminationAndKmHColumnCsvName = basedNamesForCsv(lastEntry, "reliableGpsDfWithSkyIlluminationAndKmHColumn", self.turtleTag)
+
+    def saveReliableGpsDfWithSkyIlluminationAndKmHColumnn(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIlluminationAndKmHColumn, self.reliableGpsDfWithSkyIlluminationAndKmHColumnCsvName)

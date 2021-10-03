@@ -421,9 +421,14 @@ def getGPSDfSeparatedByMonth(turtlesData):
     for turtleData in turtlesData:
         turtleData.calculatingDistanceByLightsAndMonths()
 
-# def getDayNightActivityGraphs(turtlesData):
-#     for turtleData in turtlesData:
-#         turtleData.create2020DistanceGraphDayAndNight()
-#         turtleData.create2021DistanceGraphDayAndNight()
+def getDfKmHSpeedValueColumn(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.createKmHSpeedValueColumn()
+
+def getDfKmHSpeedValueColumn(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.createKmHSpeedValueColumn()
+        turtleData.generateReliableGpsDfWithSkyIlluminationAndKmHColumnCsvName()
+        turtleData.saveReliableGpsDfWithSkyIlluminationAndKmHColumnn()
 
         

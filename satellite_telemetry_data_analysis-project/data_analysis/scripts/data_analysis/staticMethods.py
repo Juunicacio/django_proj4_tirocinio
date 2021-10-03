@@ -703,4 +703,10 @@ def createDistanceWithLighAndDarkAlongYearsGraph(distanceWithLighAndDarkAlongYea
 #     #ax = d1.plot()
 #     #d2.plot(ax=ax)
 
+def msToKm(x):
+    return x * 3600/1000
+def changeColumnValueCreatingAnotherColumn(df, columnName, newColumnName):
+    df[newColumnName] = df[columnName].apply(msToKm)
+    return df
+
         
