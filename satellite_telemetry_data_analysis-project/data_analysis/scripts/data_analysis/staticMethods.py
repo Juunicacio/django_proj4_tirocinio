@@ -800,7 +800,7 @@ def makeADictOfMonthsAndDays(dictKeys, dictValues):
     return daysInMonths
 
 def generateSpeedGraph(df, xAxisColumn, YAxisColumn, tag, daysInMonthsDictLen, folderToSaveItems, folderToSave):
-    df[xAxisColumn] = df[xAxisColumn].astype('str')
+    #df[xAxisColumn] = df[xAxisColumn].astype('str')
     x,y = df[xAxisColumn], df[YAxisColumn]
 
     fig, ax = plt.subplots(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
@@ -837,7 +837,7 @@ def generateSpeedGraph(df, xAxisColumn, YAxisColumn, tag, daysInMonthsDictLen, f
     plt.title(title+titleCont, fontdict={'fontsize': 16, 'fontweight': 'medium'}, loc='center')
     #plt.show()
 
-    titleToSaveFig = lowerStringAndReplace(title) + "_scatter"
+    titleToSaveFig = lowerStringAndReplace(title) + "_scatter_days"
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
 
@@ -886,17 +886,16 @@ def generateSpeedGraph(df, xAxisColumn, YAxisColumn, tag, daysInMonthsDictLen, f
 #     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
 
 def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave):
-    fig, axs = plt.subplots(1, 2, tight_layout=True, figsize=(15, 5))
-
+    plt.figure(figsize=(15, 5))
     x = df[xAxisColumn]
 
     # N is the count in each bin, bins is the lower-limit of the bin
-    N, bins, patches = axs[0].hist(x, bins=n_bins)
-    axs[0].set_xlim(xmax = 4.2)
-    axs[0].set_ylim(ymin=0, ymax = 420)
-    axs[0].set_xlabel('Speed km/h', fontsize=14)
-    axs[0].set_ylabel('Frequency', fontsize=14)
-    axs[0].grid(axis='y', alpha=0.75)
+    N, bins, patches = plt.hist(x, bins=n_bins)
+    plt.xlim(xmax = 4.2)
+    plt.ylim(ymin=0, ymax = 420)
+    plt.xlabel('Speed km/h', fontsize=14)
+    plt.ylabel('Amount of Samples Obtained', fontsize=14)
+    plt.grid(axis='y', alpha=0.75)
 
     # We'll color code by height, but you could use any scalar
     fracs = N / N.max()
@@ -911,26 +910,173 @@ def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave
     
     sm = plt.cm.ScalarMappable(cmap=number_of_colors, norm=norm) #(0.267004, 0.004874, 0.329415, 1.0)
     sm.set_array([])
-    plt.colorbar(sm, label='Density Gradient')#, ticks=np.arange(0,n))
-
-    # We can also normalize our inputs by the total number of counts
-    axs[1].hist(x, bins=n_bins, density=True)
-
-    # Now we format the y-axis to display percentage
-    axs[1].yaxis.set_major_formatter(PercentFormatter(xmax=1)) 
+    plt.colorbar(sm, label='Density Gradient')
     
-    plt.grid(axis='y', alpha=0.75)
+    plt.suptitle("Loggerhead Sea Turtle Speed Histogram", fontdict={'fontsize':22, 'fontweight': 'medium'})#, loc='center')
     
-    plt.xlim(xmax = 4.2)
-    plt.ylim(ymin=0, ymax = 1)
-    plt.xlabel('Speed (Km/h)', fontsize=14)
-    plt.ylabel('Frequency (%)', fontsize=14) 
     title = f"Loggerhead Sea Turtle {tag} Speed Histogram"
     plt.suptitle(title, fontdict={'fontsize': 22, 'fontweight': 'medium'})#, loc='center')
     #plt.show()
-    titleToSaveFig = lowerStringAndReplace(title) + "_speed_histogram"
+    titleToSaveFig = lowerStringAndReplace(title) + "histogram"
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
-    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)  
+    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig) 
+
+
+# def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave):
+#     fig, axs = plt.subplots(1, 2, tight_layout=True, figsize=(15, 5))
+
+#     x = df[xAxisColumn]
+
+#     # N is the count in each bin, bins is the lower-limit of the bin
+#     N, bins, patches = axs[0].hist(x, bins=n_bins)
+#     axs[0].set_xlim(xmax = 4.2)
+#     axs[0].set_ylim(ymin=0, ymax = 420)
+#     axs[0].set_xlabel('Speed km/h', fontsize=14)
+#     axs[0].set_ylabel('Amount of Samples Obtained', fontsize=14)
+#     axs[0].grid(axis='y', alpha=0.75)
+
+#     # We'll color code by height, but you could use any scalar
+#     fracs = N / N.max()
+
+#     # we need to normalize the data to 0..1 for the full range of the colormap
+#     norm = colors.Normalize(fracs.min(), fracs.max())
+
+#     # Now, we'll loop through our objects and set the color of each accordingly
+#     for thisfrac, thispatch in zip(fracs, patches):
+#         color = plt.cm.viridis(norm(thisfrac))
+#         number_of_colors = thispatch.set_facecolor(color)
+    
+#     sm = plt.cm.ScalarMappable(cmap=number_of_colors, norm=norm) #(0.267004, 0.004874, 0.329415, 1.0)
+#     sm.set_array([])
+#     plt.colorbar(sm, label='Density Gradient')#, ticks=np.arange(0,n))
+
+#     # We can also normalize our inputs by the total number of counts
+#     axs[1].hist(x, bins=n_bins, density=True)
+
+#     # Now we format the y-axis to display percentage
+#     axs[1].yaxis.set_major_formatter(PercentFormatter(xmax=1)) 
+    
+#     plt.grid(axis='y', alpha=0.75)
+    
+#     plt.xlim(xmax = 4.2)
+#     plt.ylim(ymin=0, ymax = 1)
+#     plt.xlabel('Speed (Km/h)', fontsize=14)
+#     plt.ylabel('Frequency (%)', fontsize=14) 
+#     title = f"Loggerhead Sea Turtle {tag} Speed Histogram"
+#     plt.suptitle(title, fontdict={'fontsize': 22, 'fontweight': 'medium'})#, loc='center')
+#     #plt.show()
+#     titleToSaveFig = lowerStringAndReplace(title) + "_speed_histogram"
+#     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+#     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig) 
+
+def trackedDaysbyMonthColumn(gpsDfT1, daysInMonths):
+    #gpsDfT1['Data Month'] = gpsDfT1['Data Month'].astype('str')
+    i=0
+    #print(gpsDfT1['Data Month'][0])
+    newColumnList = []
+    while i < len(gpsDfT1['Data Month']):
+        
+        if gpsDfT1['Data Month'][i] == '7':
+            dayStr = str(daysInMonths['7'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"July 2020 ({mod_string})")  
+        elif gpsDfT1['Data Month'][i] == '8':
+            dayStr = str(daysInMonths['8'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"August 2020 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '9':
+            dayStr = str(daysInMonths['9'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"September 2020 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '10':
+            dayStr = str(daysInMonths['10'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"October 2020 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '11':
+            dayStr = str(daysInMonths['11'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"November 2020 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '12':
+            dayStr = str(daysInMonths['12'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"December 2020 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '1':
+            dayStr = str(daysInMonths['1'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"January 2021 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '2':
+            dayStr = str(daysInMonths['2'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"February 2021 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '3':
+            dayStr = str(daysInMonths['3'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"March 2021 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '4':
+            dayStr = str(daysInMonths['4'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"April 2021 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '5':
+            dayStr = str(daysInMonths['5'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"May 2021 ({mod_string})")
+        elif gpsDfT1['Data Month'][i] == '6':
+            dayStr = str(daysInMonths['6'])
+            org_string = dayStr
+            size = len(org_string)
+            # Slice string to remove last 9 characters from string
+            mod_string = org_string[:size - 9]
+            #print(mod_string)
+            newColumnList.append(f"June 2021 ({mod_string})")
+        i+=1
+    print(newColumnList)
+    gpsDfT1['Tracked Days by Month'] = newColumnList
+
+    return gpsDfT1
 
 
 

@@ -145,6 +145,8 @@ def data_analysis_main():
 
     getHowManyDaysInMonthDict(turtlesData)
 
+    getDaysInMonthsGpsAnDepthDf(turtlesData)
+
     getSpeedGraph(turtlesData)
 
 #if __name__ == "__main__":

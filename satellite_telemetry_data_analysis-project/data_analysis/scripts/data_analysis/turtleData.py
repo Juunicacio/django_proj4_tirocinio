@@ -211,6 +211,10 @@ class TurtleData:
         self.setOfResearchYearsGPS = set()
         self.setOfResearchYearsDepth = set()
         self.daysInMonths = {}
+        self.lastReliableGpsDf = pd.DataFrame()
+        self.lastReliableGpsDfCsvName = "" 
+        self.lastDepthDataDf = pd.DataFrame()  
+        self.lastDepthDataDfCsvName = ""           
         
 
     def addDataFromCsv(self, filename):
@@ -1947,13 +1951,52 @@ class TurtleData:
 
         self.daysInMonths = makeADictOfMonthsAndDays(dictKeys, dictValues)
     
+    def getGpsTrackedDaysbyMonthColumn(self):
+        gpsDfT1 = self.reliableGpsDfWithSkyIlluminationAndKmHColumn.copy()
+        dfToSave = trackedDaysbyMonthColumn(gpsDfT1, self.daysInMonths)
+        self.lastReliableGpsDf = self.lastReliableGpsDf.append(dfToSave, ignore_index=True)        
+        print("Assign the lastReliableGpsDf gps DF into self")
+        print(self.lastReliableGpsDf)
+        #lastReliableGpsDfCsvName
+    
+    def generateLastReliableGpsDfCsvName(self):
+        # Last entry:
+        lastEntry = self.lastReliableGpsDf['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.lastReliableGpsDfCsvName = basedNamesForCsv(lastEntry, "reliableGpsDf_lastOne", self.turtleTag)
+
+    def saveLastReliableGpsDf(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER, self.lastReliableGpsDf, self.lastReliableGpsDfCsvName)
+
+    def getDepthTrackedDaysbyMonthColumn(self):
+        depthDf = self.depthDataSkyIlluminationAndFloatValues.copy()  
+        dfToSave = trackedDaysbyMonthColumn(depthDf, self.daysInMonths)
+        self.lastDepthDataDf = self.lastDepthDataDf.append(dfToSave, ignore_index=True)        
+        print("Assign the lastDepthDataDf depth DF into self")
+        print(self.lastDepthDataDf)
+        #lastDepthDataDfCsvName
+    
+    def generateLastDepthDataDfCsvName(self):
+        # Last entry:
+        lastEntry = self.lastDepthDataDf['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.lastDepthDataDfCsvName = basedNamesForCsv(lastEntry, "depthDataDf_lastOne", self.turtleTag)
+
+    def saveLastDepthDataDf(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER, self.lastDepthDataDf, self.lastDepthDataDfCsvName)
 
     def drawSpeedGraphs(self):
-        df = self.reliableGpsDfWithSkyIlluminationAndKmHColumn
-        generateSpeedGraph(df, 'Months by Year', 'Speed km/h',self.turtleTag, len(self.daysInMonths), self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        df = self.lastReliableGpsDf
+        generateSpeedGraph(df, 'Tracked Days by Month', 'Speed km/h',self.turtleTag, len(self.daysInMonths), self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
         # to generate the graph with difference between dayligth and nigth-time, use this functions bellow 
         # instead of the above
         #generateSpeedGraph(df, 'Months by Year', 'Speed km/h', 'Daylight',self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
         speedHistogram(df,'Speed km/h', 20, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
-
-        

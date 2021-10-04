@@ -441,9 +441,15 @@ def getHowManyDaysInMonthDict(turtlesData):
     for turtleData in turtlesData:
         turtleData.howManyDaysInMonth()
 
+def getDaysInMonthsGpsAnDepthDf(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.getGpsTrackedDaysbyMonthColumn()
+        turtleData.generateLastReliableGpsDfCsvName()
+        turtleData.saveLastReliableGpsDf()
+        turtleData.getDepthTrackedDaysbyMonthColumn()
+        turtleData.generateLastDepthDataDfCsvName()
+        turtleData.saveLastDepthDataDf()
+
 def getSpeedGraph(turtlesData):
     for turtleData in turtlesData:
         turtleData.drawSpeedGraphs()
-
-
-        
