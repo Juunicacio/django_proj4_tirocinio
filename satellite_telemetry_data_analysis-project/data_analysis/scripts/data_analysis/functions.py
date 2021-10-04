@@ -431,14 +431,19 @@ def getDfKmHSpeedValueColumn(turtlesData):
         turtleData.generateReliableGpsDfWithSkyIlluminationAndKmHColumnCsvName()
         turtleData.saveReliableGpsDfWithSkyIlluminationAndKmHColumnn()
 
-def getSpeedGraph(turtlesData):
-    for turtleData in turtlesData:
-        turtleData.drawSpeedGraphs()
-
 def getDepthDataSkyIlluminationAndFloatValues(turtlesData):
     for turtleData in turtlesData:
         turtleData.returnPercentageColumnsToFloatValuesDepthDf()
         turtleData.generateDepthDataSkyIlluminationAndFloatValuesCsvName()
         turtleData.saveDepthDataSkyIlluminationAndFloatValues()
+
+def getHowManyDaysInMonthDict(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.howManyDaysInMonth()
+
+def getSpeedGraph(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.drawSpeedGraphs()
+
 
         

@@ -715,23 +715,108 @@ def changeColumnValueCreatingAnotherColumn(df, columnName, newColumnName):
     df[newColumnName] = df[columnName].apply(msToKm)
     return df
 
-def generateSpeedGraph(df, xAxisColumn, YAxisColumn, colorColumn, tag, folderToSaveItems, folderToSave):
+def getFirstDayOfEachMonthPlusLastDayOfData(months, acquisitionTimes):
+    i=0
+    j = months[0]
+    firstDayOfMonth = []
+    toBeKeyOfMonths = []
+    firstDayOfMonth.append(acquisitionTimes[0])
+    toBeKeyOfMonths.append(months[0])
+    #print(len(acquisitionTimes))
+    while i < (len(acquisitionTimes)):    
+        #print(months[i])#8
+        #print(j)#7
+        if months[i] != j:
+            nextMonthaqcTime = acquisitionTimes[i]
+            #print(nextMonthaqcTime)
+            firstDayOfMonth.append(nextMonthaqcTime)
+            j = months[i]
+            toBeKeyOfMonths.append(j)
+        if i == len(acquisitionTimes)-1:
+            #print(i)
+            nextMonthaqcTime = acquisitionTimes[i]
+            #print(nextMonthaqcTime)
+            firstDayOfMonth.append(nextMonthaqcTime)
+            #j = months[i]
+        i+=1
+    #print(firstDayOfMonth)
+    #print(toBeKeyOfMonths)
+    #print(len(firstDayOfMonth))
+    #print(len(toBeKeyOfMonths)) 
+    return firstDayOfMonth, toBeKeyOfMonths
+
+def getNumbersOfDaysForEachResearchMonth(firstDayOfMonth):
+    tripTimes = []
+    #tripTimes.append(0)
+    i=1
+    while i < (len(firstDayOfMonth)):
+        previous = i-1
+        #print(firstDayOfMonth[i])
+        t1 = pd.to_datetime(firstDayOfMonth[previous], format='%Y.%m.%d %H:%M:%S') #remove the brackets of the values in the column
+        t2 = pd.to_datetime(firstDayOfMonth[i], format='%Y.%m.%d %H:%M:%S') #remove the brackets of the values in the column
+        
+        #t1Stamp = dt.datetime.strptime(t1, '%Y.%m.%d %H:%M:%S').timestamp()
+        #print(t1Stamp)
+        daysTime = t2-t1
+        print(daysTime)
+        i+=1
+        tripTimes.append(t2-t1)
+    #print(tripTimes)
+    #print(len(tripTimes))
+    return tripTimes
+
+def getMonthsOfTrackedResearch(toBeKeyOfMonths):
+    i=0
+    dictKeys = []
+    while i < len(toBeKeyOfMonths):
+        key = toBeKeyOfMonths[i][0] #for i, _ in enumerate(toBeKeyOfMonths)
+        #print(i)
+        #print(key)
+        dictKeys.append(key)
+        i+=1
+    print(dictKeys)
+
+    return dictKeys
+
+def getDaysInEachMonthOfTrackedResearch(tripTimes):
+    i=0
+    dictValues = []
+    while i < len(tripTimes):
+        value = tripTimes[i][0]
+        #print(i)
+        #print(value)
+        dictValues.append(value)
+        i+=1
+    print(dictValues)
+    return dictValues
+
+def makeADictOfMonthsAndDays(dictKeys, dictValues):
+    # Get pairs of elements
+    zip_iterator = zip(dictKeys, dictValues)
+    # Convert to dictionary
+    daysInMonths = dict(zip_iterator)
+    print("Dict to use in graphs, to show how many days of data in each month of study")
+    print(daysInMonths)
+    return daysInMonths
+
+def generateSpeedGraph(df, xAxisColumn, YAxisColumn, tag, daysInMonthsDictLen, folderToSaveItems, folderToSave):
+    df[xAxisColumn] = df[xAxisColumn].astype('str')
     x,y = df[xAxisColumn], df[YAxisColumn]
-    #fig, ax = plt.subplots()
+
     fig, ax = plt.subplots(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
-    #figure(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
-    cmap = clrs.ListedColormap(['blue', 'yellow'])
-    scatter1 = plt.scatter(df[xAxisColumn], df[YAxisColumn], c=df[colorColumn]!= True, cmap=cmap, ec='k')
-    scatter2 = plt.scatter(df[xAxisColumn], df[YAxisColumn], c=df[colorColumn]== True, cmap=cmap, ec='k')
+    
+    scatter1 = plt.scatter(df[xAxisColumn], df[YAxisColumn], ec='k')
+    scatter2 = plt.scatter(df[xAxisColumn], df[YAxisColumn], ec='k')
     plt.xlabel('Tracked Months', fontsize=14)
     plt.ylabel('Speed (Km/h)', fontsize=14)
     plt.ylim(ymin=0, ymax = 4.5)
-    plt.xlim(xmax = 12.5)
+    plt.xlim(xmax = daysInMonthsDictLen)
     plt.grid(axis='y', alpha=0.75)
 
     # Calculate the simple average of the data
     y_mean = [np.mean(y)]*len(x)
     y_max = [np.max(y)]*len(x)
+
     # create lines on the graph
     averageLine = plt.plot(y_mean, '-', label="Average Speed", color='green')
     maxLine = plt.plot(y_max, '-', label="Average Speed", color='red')
@@ -740,18 +825,65 @@ def generateSpeedGraph(df, xAxisColumn, YAxisColumn, colorColumn, tag, folderToS
     meanLineLegend = mlines.Line2D(df[xAxisColumn],y_mean, color='green', marker='_',
                             markersize=15, label=f'Estimated Average Speed = {round(y.mean(), 2)} km/h')
     maxLineLegend = mlines.Line2D(df[xAxisColumn],y_mean, color='red', marker='_',
-                            markersize=15, label=f'Estimated Maximum Speed = {round(y.max(), 2)} km/h')
+                            markersize=15, label=f'Maximum Speed = {round(y.max(), 2)} km/h')
 
-    legend1 = plt.legend([scatter1, scatter2], ["Daylight", "Night-time"])
-    legend2 = plt.legend(bbox_to_anchor=(0., 1),handles=[meanLineLegend, maxLineLegend], loc=2)
-    plt.gca().add_artist(legend1)
+    #legend1 = plt.legend([scatter1, scatter2], ["Daylight", "Night-time"])
+    plt.legend(bbox_to_anchor=(0., 1),handles=[meanLineLegend, maxLineLegend], loc=2)
+    #plt.gca().add_artist(legend1)
+
     title = f"Loggerhead Sea Turtle {tag} Speeds"
     titleCont = " in Km/h"
+
     plt.title(title+titleCont, fontdict={'fontsize': 16, 'fontweight': 'medium'}, loc='center')
     #plt.show()
-    titleToSaveFig = lowerStringAndReplace(title) + "_scatter_graph"
+
+    titleToSaveFig = lowerStringAndReplace(title) + "_scatter"
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
+
+# to generate the graph with difference between dayligth and nigth-time, use this functions bellow 
+# instead of the above
+# def generateSpeedGraph(df, xAxisColumn, YAxisColumn, colorColumn, tag, daysInMonthsDictLen, folderToSaveItems, folderToSave):
+#     df[xAxisColumn] = df[xAxisColumn].astype('str')
+#     x,y = df[xAxisColumn], df[YAxisColumn]
+#     #fig, ax = plt.subplots()
+#     fig, ax = plt.subplots(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
+#     #figure(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
+#     cmap = clrs.ListedColormap(['blue', 'yellow'])
+#     scatter1 = plt.scatter(df[xAxisColumn], df[YAxisColumn], c=df[colorColumn]!= True, cmap=cmap, ec='k')
+#     scatter2 = plt.scatter(df[xAxisColumn], df[YAxisColumn], c=df[colorColumn]== True, cmap=cmap, ec='k')
+#     plt.xlabel('Tracked Months', fontsize=14)
+#     plt.ylabel('Speed (Km/h)', fontsize=14)
+#     plt.ylim(ymin=0, ymax = 4.5)
+#     plt.xlim(xmax = daysInMonthsDictLen + 1)
+#     plt.grid(axis='y', alpha=0.75)
+
+#     # Calculate the simple average of the data
+#     y_mean = [np.mean(y)]*len(x)
+#     y_max = [np.max(y)]*len(x)
+#     # create lines on the graph
+#     averageLine = plt.plot(y_mean, '-', label="Average Speed", color='green')
+#     maxLine = plt.plot(y_max, '-', label="Average Speed", color='red')
+
+#     # Create legend
+#     meanLineLegend = mlines.Line2D(df[xAxisColumn],y_mean, color='green', marker='_',
+#                             markersize=15, label=f'Estimated Average Speed = {round(y.mean(), 2)} km/h')
+#     maxLineLegend = mlines.Line2D(df[xAxisColumn],y_mean, color='red', marker='_',
+#                             markersize=15, label=f'Maximum Speed = {round(y.max(), 2)} km/h')
+
+#     legend1 = plt.legend([scatter1, scatter2], ["Daylight", "Night-time"])
+#     legend2 = plt.legend(bbox_to_anchor=(0., 1),handles=[meanLineLegend, maxLineLegend], loc=2)
+#     plt.gca().add_artist(legend1)
+
+#     title = f"Loggerhead Sea Turtle {tag} Speeds"
+#     titleCont = " in Km/h"
+
+#     plt.title(title+titleCont, fontdict={'fontsize': 16, 'fontweight': 'medium'}, loc='center')
+#     #plt.show()
+
+#     titleToSaveFig = lowerStringAndReplace(title) + "_scatter_graph"
+#     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+#     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
 
 def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave):
     fig, axs = plt.subplots(1, 2, tight_layout=True, figsize=(15, 5))
@@ -798,6 +930,8 @@ def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave
     #plt.show()
     titleToSaveFig = lowerStringAndReplace(title) + "_speed_histogram"
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
-    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)   
+    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)  
+
+
 
         

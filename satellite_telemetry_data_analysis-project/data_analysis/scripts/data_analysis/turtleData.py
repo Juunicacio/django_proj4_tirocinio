@@ -210,6 +210,7 @@ class TurtleData:
         # Create a new set to puth set of years present in the data
         self.setOfResearchYearsGPS = set()
         self.setOfResearchYearsDepth = set()
+        self.daysInMonths = {}
         
 
     def addDataFromCsv(self, filename):
@@ -1249,6 +1250,39 @@ class TurtleData:
         self.reliableGpsDf['Data Year'] = researchYearsGPS
         self.setOfResearchYearsGPS = set(researchYearsGPS)
 
+        self.reliableGpsDf['Data Month'] = self.reliableGpsDf['Data Month'].astype('str')
+        i=0
+        #print(self.reliableGpsDf['Data Month'][0])
+        newColumnList = []
+        while i < len(self.reliableGpsDf['Data Month']):
+            if self.reliableGpsDf['Data Month'][i] == '7':
+                newColumnList.append("July 2020")        
+            elif self.reliableGpsDf['Data Month'][i] == '8':
+                newColumnList.append("August 2020")
+            elif self.reliableGpsDf['Data Month'][i] == '9':
+                newColumnList.append("September 2020")
+            elif self.reliableGpsDf['Data Month'][i] == '10':
+                newColumnList.append("October 2020")
+            elif self.reliableGpsDf['Data Month'][i] == '11':
+                newColumnList.append("November 2020")
+            elif self.reliableGpsDf['Data Month'][i] == '12':
+                newColumnList.append("December 2020")
+            elif self.reliableGpsDf['Data Month'][i] == '1':
+                newColumnList.append("January 2021")
+            elif self.reliableGpsDf['Data Month'][i] == '2':
+                newColumnList.append("February 2021")
+            elif self.reliableGpsDf['Data Month'][i] == '3':
+                newColumnList.append("March 2021")
+            elif self.reliableGpsDf['Data Month'][i] == '4':
+                newColumnList.append("April 2021")
+            elif self.reliableGpsDf['Data Month'][i] == '5':
+                newColumnList.append("May 2021")
+            elif self.reliableGpsDf['Data Month'][i] == '6':
+                newColumnList.append("June 2021")
+            i+=1
+        print(newColumnList)
+        self.reliableGpsDf['Months by Year'] = newColumnList
+
         self.reliableGpsDfWithSkyIllumination = self.reliableGpsDfWithSkyIllumination.append(self.reliableGpsDf, ignore_index=True)        
         print("Assign the reliableGpsDfWithSkyIllumination GPS DF into self")
         print(self.reliableGpsDfWithSkyIllumination)
@@ -1361,7 +1395,42 @@ class TurtleData:
         self.depthDataWithApprxCoordDf['Data Month'] = pd.Series(monthNumber)
         # Year from date
         self.depthDataWithApprxCoordDf['Data Year'] = pd.Series(researchYearsDepth)
+
         self.setOfResearchYearsDepth = set(researchYearsDepth)
+
+
+        self.depthDataWithApprxCoordDf['Data Month'] = self.depthDataWithApprxCoordDf['Data Month'].astype('str')
+        i=0
+        #print(self.depthDataWithApprxCoordDf['Data Month'][0])
+        newColumnList = []
+        while i < len(self.depthDataWithApprxCoordDf['Data Month']):
+            if self.depthDataWithApprxCoordDf['Data Month'][i] == '7':
+                newColumnList.append("July 2020")        
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '8':
+                newColumnList.append("August 2020")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '9':
+                newColumnList.append("September 2020")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '10':
+                newColumnList.append("October 2020")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '11':
+                newColumnList.append("November 2020")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '12':
+                newColumnList.append("December 2020")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '1':
+                newColumnList.append("January 2021")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '2':
+                newColumnList.append("February 2021")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '3':
+                newColumnList.append("March 2021")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '4':
+                newColumnList.append("April 2021")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '5':
+                newColumnList.append("May 2021")
+            elif self.depthDataWithApprxCoordDf['Data Month'][i] == '6':
+                newColumnList.append("June 2021")
+            i+=1
+        #print(newColumnList)
+        self.depthDataWithApprxCoordDf['Months by Year'] = newColumnList
 
         # # example: df1['Avg_Annual'] = df1['Avg_Annual'].str.replace(',', '').str.replace('$', '').astype(int)
         # self.depthDataWithApprxCoordDf['Underwater Percentage'] = self.depthDataWithApprxCoordDf['Underwater Percentage'].str.replace('%', '').astype(float)
@@ -1808,12 +1877,6 @@ class TurtleData:
     def saveReliableGpsDfWithSkyIlluminationAndKmHColumnn(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIlluminationAndKmHColumn, self.reliableGpsDfWithSkyIlluminationAndKmHColumnCsvName)
 
-    def drawSpeedGraphs(self):
-        df = self.reliableGpsDfWithSkyIlluminationAndKmHColumn
-        generateSpeedGraph(df, 'Data Month', 'Speed km/h', 'Daylight',self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
-        speedHistogram(df,'Speed km/h', 20, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
-
-
     def returnPercentageColumnsToFloatValuesDepthDf(self):
         depthDfT1 = self.depthDataWithApprxCoordDfWithSkyIllumination.copy()
         # depthDfT1['Layer 1 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 1 Percentage']]
@@ -1868,3 +1931,29 @@ class TurtleData:
 
     def saveDepthDataSkyIlluminationAndFloatValues(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataSkyIlluminationAndFloatValues, self.depthDataSkyIlluminationAndFloatValuesCsvName)
+
+
+    def howManyDaysInMonth(self):
+        acquisitionTimes = self.reliableGpsDfWithSkyIlluminationAndKmHColumn[['Acquisition Time']].to_numpy()
+        months = self.reliableGpsDfWithSkyIlluminationAndKmHColumn[['Data Month']].to_numpy()
+
+        firstDayOfMonth, toBeKeyOfMonths = getFirstDayOfEachMonthPlusLastDayOfData(months, acquisitionTimes)
+        
+        tripTimes = getNumbersOfDaysForEachResearchMonth(firstDayOfMonth)        
+
+        dictKeys = getMonthsOfTrackedResearch(toBeKeyOfMonths)        
+
+        dictValues = getDaysInEachMonthOfTrackedResearch(tripTimes)        
+
+        self.daysInMonths = makeADictOfMonthsAndDays(dictKeys, dictValues)
+    
+
+    def drawSpeedGraphs(self):
+        df = self.reliableGpsDfWithSkyIlluminationAndKmHColumn
+        generateSpeedGraph(df, 'Months by Year', 'Speed km/h',self.turtleTag, len(self.daysInMonths), self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        # to generate the graph with difference between dayligth and nigth-time, use this functions bellow 
+        # instead of the above
+        #generateSpeedGraph(df, 'Months by Year', 'Speed km/h', 'Daylight',self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        speedHistogram(df,'Speed km/h', 20, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+
+        
