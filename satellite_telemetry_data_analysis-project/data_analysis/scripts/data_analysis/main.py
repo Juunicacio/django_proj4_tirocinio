@@ -141,6 +141,10 @@ def data_analysis_main():
     # getDayNightActivityGraphs(turtlesData)
     getDfKmHSpeedValueColumn(turtlesData)
 
+    getSpeedGraph(turtlesData)
+
+    getDepthDataSkyIlluminationAndFloatValues(turtlesData)
+
 #if __name__ == "__main__":
     #main()
 

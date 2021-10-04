@@ -8,6 +8,12 @@ import pandas as pd
 
 # for graphs
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import figure
+import matplotlib.colors as clrs
+import matplotlib.lines as mlines
+
+from matplotlib import colors
+from matplotlib.ticker import PercentFormatter
 
 # for sunset and sunrise time calculation python library
 # Additional Locations
@@ -668,7 +674,7 @@ def createDistanceWithLighAndDarkAlongYearsGraph(distanceWithLighAndDarkAlongYea
     df['y_day']=df['y_day'].astype(float)
 
     df.plot('x',y=['y_night','y_day'])
-    plt.show()
+    #plt.show()
 
 # def create2020DistanceGraphDayAndNight(d):
 #     df = pd.DataFrame(d)
@@ -708,5 +714,90 @@ def msToKm(x):
 def changeColumnValueCreatingAnotherColumn(df, columnName, newColumnName):
     df[newColumnName] = df[columnName].apply(msToKm)
     return df
+
+def generateSpeedGraph(df, xAxisColumn, YAxisColumn, colorColumn, tag, folderToSaveItems, folderToSave):
+    x,y = df[xAxisColumn], df[YAxisColumn]
+    #fig, ax = plt.subplots()
+    fig, ax = plt.subplots(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
+    #figure(num=None, figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
+    cmap = clrs.ListedColormap(['blue', 'yellow'])
+    scatter1 = plt.scatter(df[xAxisColumn], df[YAxisColumn], c=df[colorColumn]!= True, cmap=cmap, ec='k')
+    scatter2 = plt.scatter(df[xAxisColumn], df[YAxisColumn], c=df[colorColumn]== True, cmap=cmap, ec='k')
+    plt.xlabel('Tracked Months', fontsize=14)
+    plt.ylabel('Speed (Km/h)', fontsize=14)
+    plt.ylim(ymin=0, ymax = 4.5)
+    plt.xlim(xmax = 12.5)
+    plt.grid(axis='y', alpha=0.75)
+
+    # Calculate the simple average of the data
+    y_mean = [np.mean(y)]*len(x)
+    y_max = [np.max(y)]*len(x)
+    # create lines on the graph
+    averageLine = plt.plot(y_mean, '-', label="Average Speed", color='green')
+    maxLine = plt.plot(y_max, '-', label="Average Speed", color='red')
+
+    # Create legend
+    meanLineLegend = mlines.Line2D(df[xAxisColumn],y_mean, color='green', marker='_',
+                            markersize=15, label=f'Estimated Average Speed = {round(y.mean(), 2)} km/h')
+    maxLineLegend = mlines.Line2D(df[xAxisColumn],y_mean, color='red', marker='_',
+                            markersize=15, label=f'Estimated Maximum Speed = {round(y.max(), 2)} km/h')
+
+    legend1 = plt.legend([scatter1, scatter2], ["Daylight", "Night-time"])
+    legend2 = plt.legend(bbox_to_anchor=(0., 1),handles=[meanLineLegend, maxLineLegend], loc=2)
+    plt.gca().add_artist(legend1)
+    title = f"Loggerhead Sea Turtle {tag} Speeds"
+    titleCont = " in Km/h"
+    plt.title(title+titleCont, fontdict={'fontsize': 16, 'fontweight': 'medium'}, loc='center')
+    #plt.show()
+    titleToSaveFig = lowerStringAndReplace(title) + "_scatter_graph"
+    #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
+
+def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave):
+    fig, axs = plt.subplots(1, 2, tight_layout=True, figsize=(15, 5))
+
+    x = df[xAxisColumn]
+
+    # N is the count in each bin, bins is the lower-limit of the bin
+    N, bins, patches = axs[0].hist(x, bins=n_bins)
+    axs[0].set_xlim(xmax = 4.2)
+    axs[0].set_ylim(ymin=0, ymax = 420)
+    axs[0].set_xlabel('Speed km/h', fontsize=14)
+    axs[0].set_ylabel('Frequency', fontsize=14)
+    axs[0].grid(axis='y', alpha=0.75)
+
+    # We'll color code by height, but you could use any scalar
+    fracs = N / N.max()
+
+    # we need to normalize the data to 0..1 for the full range of the colormap
+    norm = colors.Normalize(fracs.min(), fracs.max())
+
+    # Now, we'll loop through our objects and set the color of each accordingly
+    for thisfrac, thispatch in zip(fracs, patches):
+        color = plt.cm.viridis(norm(thisfrac))
+        number_of_colors = thispatch.set_facecolor(color)
+    
+    sm = plt.cm.ScalarMappable(cmap=number_of_colors, norm=norm) #(0.267004, 0.004874, 0.329415, 1.0)
+    sm.set_array([])
+    plt.colorbar(sm, label='Density Gradient')#, ticks=np.arange(0,n))
+
+    # We can also normalize our inputs by the total number of counts
+    axs[1].hist(x, bins=n_bins, density=True)
+
+    # Now we format the y-axis to display percentage
+    axs[1].yaxis.set_major_formatter(PercentFormatter(xmax=1)) 
+    
+    plt.grid(axis='y', alpha=0.75)
+    
+    plt.xlim(xmax = 4.2)
+    plt.ylim(ymin=0, ymax = 1)
+    plt.xlabel('Speed (Km/h)', fontsize=14)
+    plt.ylabel('Frequency (%)', fontsize=14) 
+    title = f"Loggerhead Sea Turtle {tag} Speed Histogram"
+    plt.suptitle(title, fontdict={'fontsize': 22, 'fontweight': 'medium'})#, loc='center')
+    #plt.show()
+    titleToSaveFig = lowerStringAndReplace(title) + "_speed_histogram"
+    #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+    checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)   
 
         

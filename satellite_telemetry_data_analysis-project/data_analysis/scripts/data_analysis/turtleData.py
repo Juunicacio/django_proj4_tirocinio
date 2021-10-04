@@ -10,6 +10,7 @@ from collections import Counter # for reliable gps
 import sys
 #import geopandas as gpd # for geometry column for reliable gps # install first GDAL, then fiona and then geopandas
 import matplotlib.pyplot as plt #produces maps and diagrams
+
 import json
 
 # to calculate middle value, of a data set
@@ -184,6 +185,8 @@ class TurtleData:
         self.depthDataWithApprxCoordDfCsvName = ""
         self.depthDataWithApprxCoordDfWithSkyIllumination = pd.DataFrame()
         self.depthDataWithApprxCoordDfWithSkyIlluminationCsvName = ""
+        self.depthDataSkyIlluminationAndFloatValues = pd.DataFrame()
+        self.depthDataSkyIlluminationAndFloatValuesCsvName = ""
         self.crs = ""
         self.ellps = ""
         self.proj4 = ""
@@ -1804,3 +1807,64 @@ class TurtleData:
 
     def saveReliableGpsDfWithSkyIlluminationAndKmHColumnn(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.reliableGpsDfWithSkyIlluminationAndKmHColumn, self.reliableGpsDfWithSkyIlluminationAndKmHColumnCsvName)
+
+    def drawSpeedGraphs(self):
+        df = self.reliableGpsDfWithSkyIlluminationAndKmHColumn
+        generateSpeedGraph(df, 'Data Month', 'Speed km/h', 'Daylight',self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        speedHistogram(df,'Speed km/h', 20, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+
+
+    def returnPercentageColumnsToFloatValuesDepthDf(self):
+        depthDfT1 = self.depthDataWithApprxCoordDfWithSkyIllumination.copy()
+        # depthDfT1['Layer 1 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 1 Percentage']]
+        # depthDfT1['Layer 2 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 2 Percentage']]
+        # depthDfT1['Layer 3 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 3 Percentage']]
+        # depthDfT1['Layer 4 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 4 Percentage']]
+        # depthDfT1['Layer 5 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 5 Percentage']]
+        # depthDfT1['Layer 6 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 6 Percentage']]
+        # depthDfT1['Layer 7 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 7 Percentage']]
+        # depthDfT1['Layer 8 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 8 Percentage']]
+        # depthDfT1['Layer 9 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 9 Percentage']]
+        # depthDfT1['Layer 10 Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Layer 10 Percentage']]
+        # depthDfT1['Underwater Percentage'] = [float(str(i).replace('%', '').replace(",", "")) for i in depthDfT1['Underwater Percentage']]
+        # depthDfT1['Layer 1 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 1 Percentage']]
+        # depthDfT1['Layer 2 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 2 Percentage']]
+        # depthDfT1['Layer 3 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 3 Percentage']]
+        # depthDfT1['Layer 4 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 4 Percentage']]
+        # depthDfT1['Layer 5 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 5 Percentage']]
+        # depthDfT1['Layer 6 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 6 Percentage']]
+        # depthDfT1['Layer 7 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 7 Percentage']]
+        # depthDfT1['Layer 8 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 8 Percentage']]
+        # depthDfT1['Layer 9 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 9 Percentage']]
+        # depthDfT1['Layer 10 Percentage'] = [float(str(i).replace('%', '').replace(".", ",")) for i in depthDfT1['Layer 10 Percentage']]
+        # depthDfT1['Underwater Percentage'] = [float(str(i).replace('%', '').replace(",", ",")) for i in depthDfT1['Underwater Percentage']]
+        depthDfT1['Layer 1 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 1 Percentage']]
+        depthDfT1['Layer 2 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 2 Percentage']]
+        depthDfT1['Layer 3 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 3 Percentage']]
+        depthDfT1['Layer 4 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 4 Percentage']]
+        depthDfT1['Layer 5 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 5 Percentage']]
+        depthDfT1['Layer 6 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 6 Percentage']]
+        depthDfT1['Layer 7 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 7 Percentage']]
+        depthDfT1['Layer 8 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 8 Percentage']]
+        depthDfT1['Layer 9 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 9 Percentage']]
+        depthDfT1['Layer 10 Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Layer 10 Percentage']]
+        depthDfT1['Underwater Percentage'] = [float(str(i).rstrip(i[-1])) for i in depthDfT1['Underwater Percentage']]
+
+
+        self.depthDataSkyIlluminationAndFloatValues = self.depthDataSkyIlluminationAndFloatValues.append(depthDfT1, ignore_index=True)        
+        print("Assign the depthDataSkyIlluminationAndFloatValues depth DF into self")
+        print(self.depthDataSkyIlluminationAndFloatValues)
+        #depthDataSkyIlluminationAndFloatValuesCsvName
+    
+    def generateDepthDataSkyIlluminationAndFloatValuesCsvName(self):
+        # Last entry:
+        lastEntry = self.depthDataSkyIlluminationAndFloatValues['Acquisition Time'].tail(1)
+        #print(lastEntry)
+        # separing date from time in that column
+        lastEntry = pd.Series([[y for y in x.split()] for x in lastEntry])
+        #print(lastEntry)
+        # assign the Name in the Class Variable
+        self.depthDataSkyIlluminationAndFloatValuesCsvName = basedNamesForCsv(lastEntry, "depthDataSkyIlluminationAndFloatValues", self.turtleTag)
+
+    def saveDepthDataSkyIlluminationAndFloatValues(self):
+        return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER , self.depthDataSkyIlluminationAndFloatValues, self.depthDataSkyIlluminationAndFloatValuesCsvName)
