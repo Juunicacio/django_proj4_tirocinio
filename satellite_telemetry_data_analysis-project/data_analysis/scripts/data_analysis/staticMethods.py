@@ -23,6 +23,9 @@ from astral.sun import night, sun
 # timezone aware datetime
 import pytz
 
+# for the depth graph
+import plotly.graph_objects as go
+
 
 # staticMethodFunctions
 def basedNamesForCsv(lastEntryRowDF, selfDfNameString, selfTurtleTag, selfSpecificFileName=""):
@@ -1077,6 +1080,198 @@ def trackedDaysbyMonthColumn(gpsDfT1, daysInMonths):
     gpsDfT1['Tracked Days by Month'] = newColumnList
 
     return gpsDfT1
+
+# generating depth graphs
+def noneValueWillNotAppearsWithMinAnMax(layerFloatPercentageColumnWanted, depthData): # 1
+    i=0
+    layerDepthWithNoneValues = []
+    layerDepthsWithPercentageSigns = []
+    _min = depthData[layerFloatPercentageColumnWanted][0]
+    _max = depthData[layerFloatPercentageColumnWanted][0]
+    #minPercLay = min(feature for feature in depthData[layerFloatPercentageColumnWanted]) # 1.2
+    #maxPercLay = max(feature for feature in depthData[layerFloatPercentageColumnWanted]) # 1.2
+    while i < len(depthData[layerFloatPercentageColumnWanted]):
+        if _min <= 0.391:
+            _min = depthData[layerFloatPercentageColumnWanted][i]
+            if _min > depthData[layerFloatPercentageColumnWanted][i]:
+                _min = depthData[layerFloatPercentageColumnWanted][i]
+        if _max < depthData[layerFloatPercentageColumnWanted][i]:
+            _max = depthData[layerFloatPercentageColumnWanted][i]
+        value = str(depthData[layerFloatPercentageColumnWanted][i])
+        if value == '0.391':
+            noneValue = depthData.replace(value, pd.NA, inplace=True)
+            layerDepthWithNoneValues.append(noneValue)
+            percSymbol = '{:.2f}%'.format(0)
+            layerDepthsWithPercentageSigns.append(percSymbol)
+        else:
+            layerDepthWithNoneValues.append(depthData[layerFloatPercentageColumnWanted][i])
+            percSymbol = '{:.2f}%'.format(depthData[layerFloatPercentageColumnWanted][i])
+            layerDepthsWithPercentageSigns.append(percSymbol)
+        i+=1
+    #print(layerDepthWithNoneValues)
+    
+    print(_min)
+    print(_max)
+    #print(type(_min))
+    #print(type(_max))
+    #print(layerDepthsWithPercentageSigns)
+    return layerDepthWithNoneValues, _min, _max, layerDepthsWithPercentageSigns
+
+def checkIfLayersDepthGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, fig, graphTitle):
+    GraphsInResultsFolder = []
+    for file in folderToSaveItems:
+        if file.endswith('.png'):
+            GraphsInResultsFolder.append(file) 
+    print(GraphsInResultsFolder)
+    if not GraphsInResultsFolder:
+        print(f"The Graph {graphTitle} is not yet in the folder... saving graph")
+        pathToFilePlusGraphName = os.path.join(folderToSave, graphTitle)
+        # this graphs saves in another way with write_image()
+        fig.write_image(pathToFilePlusGraphName + '.png')
+        print(f"{graphTitle} has been saved in the results folder!")
+    elif graphTitle + '.png' in GraphsInResultsFolder:
+        print(f"The Graph {graphTitle} has already been saved in the results folder")
+    else:
+        print(f"The Graph {graphTitle} is not yet in the folder... saving graph")
+        pathToFilePlusGraphName = os.path.join(folderToSave, graphTitle)
+        # this graphs saves in another way with write_image()
+        fig.write_image(pathToFilePlusGraphName + '.png')
+        print(f"{graphTitle} has been saved in the results folder!")
+    print('--------------')
+
+def generateGeoMap(
+    turtleGpsDf, turtleDepthDf, layerDepthsWithNoneValues, 
+    minPercLay, maxPercLay, 
+    layerDepthsInPercentage, layerNumber, turtleTag, folderToSaveItems, folderToSave
+): # 3
+    
+    if turtleTag == '710333a':
+        mapboxGeoLoc, mapboxZoom = {'lon':6.9, 'lat': 37.8}, 5
+    elif turtleTag == '710348a':
+        mapboxGeoLoc, mapboxZoom = {'lon':16.5, 'lat': 38.9}, 5
+    else:
+        mapboxGeoLoc, mapboxZoom = {'lon':13, 'lat': 38.4}, 5
+        print(f"The Mapbox geolocation of this tagged turtle {turtleTag} has not been saved yet.")
+        print(f"We are going to give it a longitude and latitude at {mapboxGeoLoc} and zoom of {mapboxZoom}")
+    
+    graphTitle = f'Occurrence of Loggerhead Sea Turtle {turtleTag} on Layer {layerNumber}'
+    
+    if layerNumber == 1:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of 0-5 Meters Deep'
+        layerDepths = 'Layer 1 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 2:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -6 to -10 Meters Deep'
+        layerDepths = 'Layer 2 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 3:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -11 to -20 Meters Deep'
+        layerDepths = 'Layer 3 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 4:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -21 to -30 Meters Deep'
+        layerDepths = 'Layer 4 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 5:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -31 to -40 Meters Deep'
+        layerDepths = 'Layer 5 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 6:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -41 to -50 Meters Deep'
+        layerDepths = 'Layer 6 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 7:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -51 to -70 Meters Deep'
+        layerDepths = 'Layer 7 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 8:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -71 to -90 Meters Deep'
+        layerDepths = 'Layer 8 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 9:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -91 to -110 Meters Deep'
+        layerDepths = 'Layer 9 Percentage'
+        my_set_max = maxPercLay
+    if layerNumber == 10:
+        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -111 to -4095 Meters Deep'
+        layerDepths = 'Layer 10 Percentage'
+        my_set_max = maxPercLay + 10
+        #'Loggerhead Sea Turtle Percentage of Occurrences in Water Depths within the range of -111 to -4095 Meters Deep'
+    
+    gomaptraceLayer = go.Figure(go.Scattermapbox(
+                                    lat=turtleGpsDf['GPS Latitude'],
+                                    lon=turtleGpsDf['GPS Longitude'],
+                                    name = 'GPS Data Tracking Route',
+                                    mode="markers+lines",
+                                    marker = {'size': 2, 'color': 'rgb(201, 97, 161)'},
+                                    # {'size': 2, 'color': 'red'}, # {'size': 8, 'color': 'yellow'}, # changed the size
+                                    text = turtleGpsDf['Acquisition Time'],
+                                    hoverinfo='text'
+                                ))
+    gomaptraceLayer.add_trace(go.Scattermapbox(
+                                    lat=turtleDepthDf['Approx Depth AQ Time Latitude'],
+                                    lon=turtleDepthDf['Approx Depth AQ Time Longitude'],
+                                    name = 'Depth Approximate Location', #############
+                                    mode = "markers", # "markers+lines",
+                                    text = turtleDepthDf[layerDepths],
+                                    marker = {        
+                                        'colorscale': [[0, 'rgb(133, 230, 159)'], [0.5, 'rgb(78, 153, 98)'], [1, 'rgb(25, 0, 83)']],
+                                        # [[0, 'green'], [0.5, 'rgb(78, 153, 98)'], [1, 'rgb(25, 0, 83)']],
+                                        # [[0, 'green'], [0.5, 'blue'], [1, 'rgb(25, 0, 83)']],
+                                        # [[0, 'rgb(255, 242, 0)'], [0.5, 'rgb(60, 163, 122)'], [1, 'rgb(25, 0, 83)']],
+                                        # [[0, 'yellow'], [1, 'red']],# [[0, 'green'], [1, 'rgb(0, 0, 255)']],
+                                        'color': turtleDepthDf[layerDepths],
+                                        'cmax': maxPercLay, # float(maxPercLay.replace("%", "")),
+                                        'cmin': minPercLay, # float(minPercLay.replace("%", "")),
+                                        'size': turtleDepthDf[layerDepths],
+                                        'sizemin':0.1,
+                                        'sizemode': 'area',
+                                        'sizeref': my_set_max / 6 **2, # float(maxPercLay.replace("%", "")) / 6 **2,
+                                        'showscale':True,
+                                        'colorbar': {
+                                            'title': '% Occurrence', # including a colorbar
+                                            'bgcolor': 'white',
+                                            'titleside':'top',
+                                            'x': 0,
+                                            'y': 0.5,
+                                            'tickformat': "0.%", # Formating tick labels to percentage on color bar
+                                            'tickfont': {
+                                                'color': '#000000',
+                                                'family':"Open Sans",
+                                                'size': 14
+                                            }
+                                        }
+                                    },   
+                                    hoverinfo='text',
+                                    hovertext = layerDepthsInPercentage,  #100 * x), #(lambda x: '{0:1.2f}%'.format(x)#{:. n%} 
+                                    opacity = 1
+                                ))    
+    
+    gomaptraceLayer.update_layout(
+        width=1000,
+        height=500,
+        margin ={'l':0,'t':0,'b':0,'r':0},
+        legend=dict(
+            yanchor="top",
+            y=0.99,
+            xanchor="right",
+            x=.99,#1.01
+            ),
+        legend_title_text=textOfMeters,
+        showlegend=True, # change if you want to see the legend *
+        #title={'text': textOfMeters, 'font':dict(size=18), 'y':0.9, 'x':0.5, 'xanchor': 'center', 'yanchor': 'top'},
+        #font=dict(size=18), # family="Courier New, monospace", size=18), #color="RebeccaPurple"),
+        mapbox = {
+            'style': "stamen-terrain",
+            'center': mapboxGeoLoc,
+            'zoom': mapboxZoom})
+    
+    titleToSaveFig = lowerStringAndReplace(graphTitle) + "_graph"
+    #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
+    #fig.write_image("images/fig1.png")
+    checkIfLayersDepthGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, gomaptraceLayer, titleToSaveFig)
+
+    return gomaptraceLayer
 
 
 

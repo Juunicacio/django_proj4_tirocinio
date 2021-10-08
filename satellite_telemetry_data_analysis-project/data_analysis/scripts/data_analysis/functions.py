@@ -453,3 +453,8 @@ def getDaysInMonthsGpsAnDepthDf(turtlesData):
 def getSpeedGraph(turtlesData):
     for turtleData in turtlesData:
         turtleData.drawSpeedGraphs()
+
+def getDepthGraphs(turtlesData):
+    for turtleData in turtlesData:
+        turtleData.saveToInstanceMinAndMaxValuesFromDepthDfLayersPercentagesWithoutNoneValues()
+        turtleData.drawDepthGraphs()

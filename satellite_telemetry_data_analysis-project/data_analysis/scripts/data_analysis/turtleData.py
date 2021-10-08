@@ -214,7 +214,57 @@ class TurtleData:
         self.lastReliableGpsDf = pd.DataFrame()
         self.lastReliableGpsDfCsvName = "" 
         self.lastDepthDataDf = pd.DataFrame()  
-        self.lastDepthDataDfCsvName = ""           
+        self.lastDepthDataDfCsvName = "" 
+        # depth graphs data - Layer 1
+        self.depthsWithNoneValuesLayer1 = []
+        self.minValueLayer1 = None
+        self.maxValueLayer1 = None
+        self.depthsWithPercentageSignsLayer1 = []    
+        # depth graphs data - Layer 2
+        self.depthsWithNoneValuesLayer2 = []
+        self.minValueLayer2 = None
+        self.maxValueLayer2 = None
+        self.depthsWithPercentageSignsLayer2 = []  
+        # depth graphs data - Layer 3
+        self.depthsWithNoneValuesLayer3 = []
+        self.minValueLayer3 = None
+        self.maxValueLayer3 = None
+        self.depthsWithPercentageSignsLayer3 = []  
+        # depth graphs data - Layer 4
+        self.depthsWithNoneValuesLayer4 = []
+        self.minValueLayer4 = None
+        self.maxValueLayer4 = None
+        self.depthsWithPercentageSignsLayer4 = []  
+        # depth graphs data - Layer 5
+        self.depthsWithNoneValuesLayer5 = []
+        self.minValueLayer5 = None
+        self.maxValueLayer5 = None
+        self.depthsWithPercentageSignsLayer5 = []  
+        # depth graphs data - Layer 6
+        self.depthsWithNoneValuesLayer6 = []
+        self.minValueLayer6 = None
+        self.maxValueLayer6 = None
+        self.depthsWithPercentageSignsLayer6 = []  
+        # depth graphs data - Layer 7
+        self.depthsWithNoneValuesLayer7 = []
+        self.minValueLayer7 = None
+        self.maxValueLayer7 = None
+        self.depthsWithPercentageSignsLayer7 = []  
+        # depth graphs data - Layer 8
+        self.depthsWithNoneValuesLayer8 = []
+        self.minValueLayer8 = None
+        self.maxValueLayer8 = None
+        self.depthsWithPercentageSignsLayer8 = []  
+        # depth graphs data - Layer 9
+        self.depthsWithNoneValuesLayer9 = []
+        self.minValueLayer9 = None
+        self.maxValueLayer9 = None
+        self.depthsWithPercentageSignsLayer9 = []  
+        # depth graphs data - Layer 10
+        self.depthsWithNoneValuesLayer10 = []
+        self.minValueLayer10 = None
+        self.maxValueLayer10 = None
+        self.depthsWithPercentageSignsLayer10 = []
         
 
     def addDataFromCsv(self, filename):
@@ -1993,6 +2043,7 @@ class TurtleData:
     def saveLastDepthDataDf(self):
         return checkIfDfHasBeenSavedAndSaveDf(self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER, self.lastDepthDataDf, self.lastDepthDataDfCsvName)
 
+    # generating speed graphs with GPS data
     def drawSpeedGraphs(self):
         df = self.lastReliableGpsDf
         generateSpeedGraph(df, 'Tracked Days by Month', 'Speed km/h',self.turtleTag, len(self.daysInMonths), self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
@@ -2000,3 +2051,68 @@ class TurtleData:
         # instead of the above
         #generateSpeedGraph(df, 'Months by Year', 'Speed km/h', 'Daylight',self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
         speedHistogram(df,'Speed km/h', 20, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+
+    # generating DEPTH graphs
+    def saveToInstanceMinAndMaxValuesFromDepthDfLayersPercentagesWithoutNoneValues(self):
+        self.depthsWithNoneValuesLayer1, self.minValueLayer1, self.maxValueLayer1, self.depthsWithPercentageSignsLayer1 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 1 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer2, self.minValueLayer2, self.maxValueLayer2, self.depthsWithPercentageSignsLayer2 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 2 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer3, self.minValueLayer3, self.maxValueLayer3, self.depthsWithPercentageSignsLayer3 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 3 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer4, self.minValueLayer4, self.maxValueLayer4, self.depthsWithPercentageSignsLayer4 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 4 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer5, self.minValueLayer5, self.maxValueLayer5, self.depthsWithPercentageSignsLayer5 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 5 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer6, self.minValueLayer6, self.maxValueLayer6, self.depthsWithPercentageSignsLayer6 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 6 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer7, self.minValueLayer7, self.maxValueLayer7, self.depthsWithPercentageSignsLayer7 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 7 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer8, self.minValueLayer8, self.maxValueLayer8, self.depthsWithPercentageSignsLayer8 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 8 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer9, self.minValueLayer9, self.maxValueLayer9, self.depthsWithPercentageSignsLayer9 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 9 Percentage',self.lastDepthDataDf
+        )
+        self.depthsWithNoneValuesLayer10, self.minValueLayer10, self.maxValueLayer10, self.depthsWithPercentageSignsLayer10 = noneValueWillNotAppearsWithMinAnMax(
+            'Layer 10 Percentage',self.lastDepthDataDf
+        )
+    
+    def drawDepthGraphs(self):
+        gomaptraceLayer1 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf, 
+        self.depthsWithNoneValuesLayer1, self.minValueLayer1, self.maxValueLayer1, 
+        self.depthsWithPercentageSignsLayer1, 1, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer2 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf,
+        self.depthsWithNoneValuesLayer2, self.minValueLayer2, self.maxValueLayer2, 
+        self.depthsWithPercentageSignsLayer2, 2, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer3 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf, 
+        self.depthsWithNoneValuesLayer3, self.minValueLayer3, self.maxValueLayer3, 
+        self.depthsWithPercentageSignsLayer3, 3, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer4 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf,  
+        self.depthsWithNoneValuesLayer4, self.minValueLayer4, self.maxValueLayer4, 
+        self.depthsWithPercentageSignsLayer4, 4, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer5 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf, 
+        self.depthsWithNoneValuesLayer5, self.minValueLayer5, self.maxValueLayer5, 
+        self.depthsWithPercentageSignsLayer5, 5, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer6 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf,  
+        self.depthsWithNoneValuesLayer6, self.minValueLayer6, self.maxValueLayer6, 
+        self.depthsWithPercentageSignsLayer6, 6, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer7 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf, 
+        self.depthsWithNoneValuesLayer7, self.minValueLayer7, self.maxValueLayer7, 
+        self.depthsWithPercentageSignsLayer7, 7, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer8 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf,  
+        self.depthsWithNoneValuesLayer8, self.minValueLayer8, self.maxValueLayer8, 
+        self.depthsWithPercentageSignsLayer8, 8, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer9 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf,  
+        self.depthsWithNoneValuesLayer9, self.minValueLayer9, self.maxValueLayer9, 
+        self.depthsWithPercentageSignsLayer9, 9, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)
+        gomaptraceLayer10 = generateGeoMap(self.lastReliableGpsDf, self.lastDepthDataDf,  
+        self.depthsWithNoneValuesLayer10, self.minValueLayer10, self.maxValueLayer10, 
+        self.depthsWithPercentageSignsLayer10, 10, self.turtleTag, self.DATACLEANINGRESULTS_FOLDER_ITENS, self.DATACLEANINGRESULTS_FOLDER)

@@ -149,6 +149,8 @@ def data_analysis_main():
 
     getSpeedGraph(turtlesData)
 
+    getDepthGraphs(turtlesData)
+
 #if __name__ == "__main__":
     #main()
 

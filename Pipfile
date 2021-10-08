@@ -25,6 +25,7 @@ pyproj = "*"
 suntime = "*"
 astral = "*"
 jupyter = "*"
+kaleido = "*"
 
 [dev-packages]
 
