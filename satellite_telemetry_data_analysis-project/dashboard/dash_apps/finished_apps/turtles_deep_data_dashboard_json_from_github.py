@@ -338,18 +338,18 @@ dash_app.layout = html.Div([
     Output('page-content', 'children'),
     Input('pop_dropdown', 'value'))
 def update_layout(selected_value):
-    if(selected_value == 'mycanvas_graph'):
-        return app(output1)
-    elif (selected_value == 'hist_graph'):
-        return app(output4)
-    elif (selected_value == 'box_graph'):
-        return app(output5)
-    elif (selected_value == 'map_graph'):
+    if(selected_value == 'map_graph'):
         return app(output6)
+    #elif (selected_value == 'hist_graph'):
+        #return app(output4)
+    #elif (selected_value == 'box_graph'):
+        #return app(output5)
+    #elif(selected_value == 'mycanvas_graph'):
+        #return app(output1)
     elif (selected_value == 'scatter_graph'):
         return app(output7)
     else:
-        return app(output1)
+        return app(output6)
 
 ################################## For hist_graph, box_graph and map_graph, select layer = output2
 @dash_app.callback(
