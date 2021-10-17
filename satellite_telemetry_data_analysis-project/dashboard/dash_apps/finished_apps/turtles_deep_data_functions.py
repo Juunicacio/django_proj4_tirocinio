@@ -108,7 +108,8 @@ def generateGeoMap (jyDegreeGps, jxDegreeGps, jacquisitionGps, jyDegreeDepth, jx
                                     lon=jxDegreeGps,
                                     name = 'GPS Data',
                                     mode="markers+lines",
-                                    marker = {'size': 8, 'color': 'yellow'}, # changed the size
+                                    marker = {'size': 2, 'color': 'rgb(201, 97, 161)'}, # changed
+                                    #marker = {'size': 8, 'color': 'yellow'},
                                     text = jacquisitionGps,
                                     hoverinfo='text'
                                 ))
@@ -116,24 +117,31 @@ def generateGeoMap (jyDegreeGps, jxDegreeGps, jacquisitionGps, jyDegreeDepth, jx
                                     lat=jyDegreeDepth,
                                     lon=jxDegreeDepth,
                                     name = 'Depth data from 0 to -5 meters deep', #############
-                                    mode = "markers+lines",
+                                    mode = "markers", # changed
+                                    #mode = "markers+lines",
                                     text = jlayerDepths,
                                     marker = {        
-                                        'colorscale':[[0, 'green'], [1, 'rgb(0, 0, 255)']],
+                                        'colorscale': [[0, 'rgb(133, 230, 159)'], [0.5, 'rgb(78, 153, 98)'], [1, 'rgb(25, 0, 83)']], # changed
+                                        #'colorscale':[[0, 'green'], [1, 'rgb(0, 0, 255)']],
                                         'color': jlayerDepths,
-                                        'cmax':float(jmaxPercLay.replace("%", "")),
-                                        'cmin':float(jminPercLay.replace("%", "")),
+                                        'cmax': jmaxPercLay, # changed
+                                        'cmin': jminPercLay, # changed
+                                        #'cmax':float(jmaxPercLay.replace("%", "")),
+                                        #'cmin':float(jminPercLay.replace("%", "")),
                                         'size': jlayerDepths,
                                         'sizemin':0.1,
                                         'sizemode': 'area',
-                                        'sizeref': float(jmaxPercLay.replace("%", "")) / 6 **2,
+                                        'sizeref': jmaxPercLay / 6 **2, # changed
+                                        #'sizeref': float(jmaxPercLay.replace("%", "")) / 6 **2,
                                         'showscale':True,
                                         'colorbar': {
-                                            'title': f'Layer {LayerNumber} occurrence in %', # including a colorbar
+                                            'title': f'Layer {LayerNumber} % of Permanence', # including a colorbar
+                                            #'title': f'Layer {LayerNumber} occurrence in %', # including a colorbar
                                             'titleside':'top',
                                             'x': 0,
                                             'y': 0.5,
-                                            'tickformat': ".0%", # Formating tick labels to percentage on color bar
+                                            'tickformat': "0.%",
+                                            #'tickformat': ".0%", # Formating tick labels to percentage on color bar
                                             'tickfont': {
                                                 'color': '#000000',
                                                 'family':"Open Sans",

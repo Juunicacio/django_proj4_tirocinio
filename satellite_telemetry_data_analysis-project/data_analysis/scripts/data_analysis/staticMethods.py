@@ -223,14 +223,14 @@ def checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, g
     print('--------------')
 
 
-def pieCompareTwoData(group1, group2, labels ,startangle, colors, title, folderToSaveItems, folderToSave):
+def pieCompareTwoData(group1, group2, labels ,startangle, colors, title,turtleTag, folderToSaveItems, folderToSave):
     plt.figure(figsize=(7,7))
     plt.pie([group1, group2], #labels=labels, 
         autopct= autopct_format([group1,group2]), shadow=True, 
         startangle=startangle, colors=colors, pctdistance=0.6, explode=[0,.1])
     plt.title(title, fontsize=18) #bbox={'facecolor':'0.9', 'pad':5})
     #titleToSaveFig = title.rsplit(' ', 10)[0]
-    titleToSaveFig = lowerStringAndReplace(title) + "_graph"
+    titleToSaveFig = lowerStringAndReplace(title+turtleTag) + "_graph"
     #print("TITLE TO SAVE THE FIGURES")
     plt.legend(labels, loc="lower right", fontsize=16)#loc="best")
     print(titleToSaveFig)
@@ -332,8 +332,8 @@ def drawBarFixAttemptGraph(fixDf, title, turtleTag, folderToSaveItems, folderToS
     graph = plt.bar(x=fixDf.index, height=fixDf["Filtered QFP"], align='center', data=fixDf)
     #graph = plt.bar(fixDf.Format, fixDf["Filtered QFP"], colors=colors)
     # draw title on the graph
-    titleComplement = turtleTag + " Transmitter Tag Data"
-    graphTitle = plt.title(title[1:] + "\n- " + titleComplement, fontsize=18)
+    #titleComplement = turtleTag + " Transmitter Tag Data"
+    graphTitle = plt.title(title[1:], fontsize=18)
     print(graphTitle)
 
     totals = fixDf["Overall Recorded QFP"]
@@ -373,7 +373,7 @@ def drawBarFixAttemptGraph(fixDf, title, turtleTag, folderToSaveItems, folderToS
     plt.ylabel("Overall %", fontsize=14)
     # Add a legend
     plt.legend(loc='upper left', bbox_to_anchor=(1,1), ncol=1)
-    titleToSaveFig = lowerStringAndReplace(title) + "_bar_chart"
+    titleToSaveFig = lowerStringAndReplace(title+ turtleTag)# + "_bar_chart"
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
 
@@ -834,13 +834,13 @@ def generateSpeedGraph(df, xAxisColumn, YAxisColumn, tag, daysInMonthsDictLen, f
     plt.legend(bbox_to_anchor=(0., 1),handles=[meanLineLegend, maxLineLegend], loc=2)
     #plt.gca().add_artist(legend1)
 
-    title = f"Loggerhead Sea Turtle {tag} Speeds"
-    titleCont = " in Km/h"
+    title = "Loggerhead Sea Turtle Speeds along Months "
+    titleCont = f"{tag}"
 
-    plt.title(title+titleCont, fontdict={'fontsize': 16, 'fontweight': 'medium'}, loc='center')
+    plt.title(title, fontdict={'fontsize': 16, 'fontweight': 'medium'}, loc='center')
     #plt.show()
 
-    titleToSaveFig = lowerStringAndReplace(title) + "_scatter_days"
+    titleToSaveFig = lowerStringAndReplace(title+titleCont) + "_scatter_days"
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig)
 
@@ -917,10 +917,11 @@ def speedHistogram(df, xAxisColumn, n_bins, tag, folderToSaveItems, folderToSave
     
     plt.suptitle("Loggerhead Sea Turtle Speed Histogram", fontdict={'fontsize':22, 'fontweight': 'medium'})#, loc='center')
     
-    title = f"Loggerhead Sea Turtle {tag} Speed Histogram"
+    title = "Loggerhead Sea Turtle Speed Histogram"
+    titleCont = f"{tag}"
     plt.suptitle(title, fontdict={'fontsize': 22, 'fontweight': 'medium'})#, loc='center')
     #plt.show()
-    titleToSaveFig = lowerStringAndReplace(title) + "histogram"
+    titleToSaveFig = lowerStringAndReplace(title+titleCont)
     #plt.savefig(os.path.join(folderToSave, titleToSaveFig + '.png'), dpi=300)
     checkIfGraphHasBeenSavedAndSaveGraph(folderToSaveItems, folderToSave, plt, titleToSaveFig) 
 
@@ -1154,49 +1155,49 @@ def generateGeoMap(
         print(f"The Mapbox geolocation of this tagged turtle {turtleTag} has not been saved yet.")
         print(f"We are going to give it a longitude and latitude at {mapboxGeoLoc} and zoom of {mapboxZoom}")
     
-    graphTitle = f'Occurrence of Loggerhead Sea Turtle {turtleTag} on Layer {layerNumber}'
+    graphTitle = f'Permanence of Loggerhead Sea Turtle {turtleTag} on Layer {layerNumber}'
     
     if layerNumber == 1:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of 0-5 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of 0-5 Meters Deep'
         layerDepths = 'Layer 1 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 2:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -6 to -10 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -6 to -10 Meters Deep'
         layerDepths = 'Layer 2 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 3:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -11 to -20 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -11 to -20 Meters Deep'
         layerDepths = 'Layer 3 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 4:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -21 to -30 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -21 to -30 Meters Deep'
         layerDepths = 'Layer 4 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 5:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -31 to -40 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -31 to -40 Meters Deep'
         layerDepths = 'Layer 5 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 6:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -41 to -50 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -41 to -50 Meters Deep'
         layerDepths = 'Layer 6 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 7:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -51 to -70 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -51 to -70 Meters Deep'
         layerDepths = 'Layer 7 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 8:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -71 to -90 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -71 to -90 Meters Deep'
         layerDepths = 'Layer 8 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 9:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -91 to -110 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -91 to -110 Meters Deep'
         layerDepths = 'Layer 9 Percentage'
         my_set_max = maxPercLay
     if layerNumber == 10:
-        textOfMeters = f'Layer {layerNumber} Occurrences - Water Depths within the range of -111 to -4095 Meters Deep'
+        textOfMeters = f'Layer {layerNumber} - Water Depths within the range of -111 to -4095 Meters Deep'
         layerDepths = 'Layer 10 Percentage'
         my_set_max = maxPercLay + 10
-        #'Loggerhead Sea Turtle Percentage of Occurrences in Water Depths within the range of -111 to -4095 Meters Deep'
+        #'Loggerhead Sea Turtle Percentage of permanence in Water Depths within the range of -111 to -4095 Meters Deep'
     
     gomaptraceLayer = go.Figure(go.Scattermapbox(
                                     lat=turtleGpsDf['GPS Latitude'],
@@ -1226,10 +1227,11 @@ def generateGeoMap(
                                         'size': turtleDepthDf[layerDepths],
                                         'sizemin':0.1,
                                         'sizemode': 'area',
-                                        'sizeref': my_set_max / 6 **2, # float(maxPercLay.replace("%", "")) / 6 **2,
+                                        'sizeref': maxPercLay / 6 **2, # changed
+                                        #'sizeref': my_set_max / 6 **2, # float(maxPercLay.replace("%", "")) / 6 **2,
                                         'showscale':True,
                                         'colorbar': {
-                                            'title': '% Occurrence', # including a colorbar
+                                            'title': '% of Permanence', # including a colorbar
                                             'bgcolor': 'white',
                                             'titleside':'top',
                                             'x': 0,
