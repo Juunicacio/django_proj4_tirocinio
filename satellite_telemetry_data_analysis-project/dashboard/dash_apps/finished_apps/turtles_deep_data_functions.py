@@ -124,14 +124,16 @@ def generateGeoMap (jyDegreeGps, jxDegreeGps, jacquisitionGps, jyDegreeDepth, jx
                                         'colorscale': [[0, 'rgb(133, 230, 159)'], [0.5, 'rgb(78, 153, 98)'], [1, 'rgb(25, 0, 83)']], # changed
                                         #'colorscale':[[0, 'green'], [1, 'rgb(0, 0, 255)']],
                                         'color': jlayerDepths,
-                                        'cmax': jmaxPercLay, # changed
-                                        'cmin': jminPercLay, # changed
+                                        #'cmax': jmaxPercLay, # changed
+                                        #'cmin': jminPercLay, # changed
                                         #'cmax':float(jmaxPercLay.replace("%", "")),
-                                        #'cmin':float(jminPercLay.replace("%", "")),
+                                        'cmax':float(100),
+                                        'cmin':float(0),
                                         'size': jlayerDepths,
                                         'sizemin':0.1,
                                         'sizemode': 'area',
-                                        'sizeref': jmaxPercLay / 6 **2, # changed
+                                        #'sizeref': jmaxPercLay / 6 **2, # changed
+                                        'sizeref': float(jmaxPercLay.replace("%", "")) / 6 **2,
                                         #'sizeref': float(jmaxPercLay.replace("%", "")) / 6 **2,
                                         'showscale':True,
                                         'colorbar': {
