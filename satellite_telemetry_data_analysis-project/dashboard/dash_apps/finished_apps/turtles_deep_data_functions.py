@@ -137,7 +137,7 @@ def generateGeoMap (jyDegreeGps, jxDegreeGps, jacquisitionGps, jyDegreeDepth, jx
                                         #'sizeref': float(jmaxPercLay.replace("%", "")) / 6 **2,
                                         'showscale':True,
                                         'colorbar': {
-                                            'title': f'Layer {LayerNumber} % of Permanence', # including a colorbar
+                                            'title': '% of Permanence', # including a colorbar
                                             #'title': f'Layer {LayerNumber} occurrence in %', # including a colorbar
                                             'titleside':'top',
                                             'x': 0,
