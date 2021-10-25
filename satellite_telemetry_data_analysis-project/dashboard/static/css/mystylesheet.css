@@ -112,7 +112,7 @@ body {
 
 .header { /* 3 */
 	background: var(--powderpuff);/*(--pumpkins);*/
-	padding: 50px; /* 2 */;
+	padding: 30px; /* 2 */;
 }
 .main {
 	background: var(--white);/*(--powderpuff);*/
